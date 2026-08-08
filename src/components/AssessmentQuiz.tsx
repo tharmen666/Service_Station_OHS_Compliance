@@ -2,9 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Question, RemediationInfo } from '../types';
 import { assessmentQuestions } from '../data/assessmentData';
 import { VideoRemediationModal } from './VideoRemediationModal';
-import { CheckCircle2, XCircle, Clock, Award, RotateCcw, AlertTriangle, Play, HelpCircle } from 'lucide-react';
+import { AuditCertificateModal } from './AuditCertificateModal';
+import { Language, translations } from '../data/translations';
+import { 
+  CheckCircle2, 
+  XCircle, 
+  Clock, 
+  Award, 
+  RotateCcw, 
+  Play, 
+  FileCheck,
+  ShieldAlert,
+  ChevronRight,
+  ChevronLeft
+} from 'lucide-react';
 
-export const AssessmentQuiz: React.FC = () => {
+interface AssessmentQuizProps {
+  lang: Language;
+}
+
+export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
+  const t = translations[lang];
+
   const [selectedTopic, setSelectedTopic] = useState<string>('All');
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -20,6 +39,9 @@ export const AssessmentQuiz: React.FC = () => {
   const [modalQuestionText, setModalQuestionText] = useState<string>('');
   const [modalIncorrectChoice, setModalIncorrectChoice] = useState<string>('');
   const [modalCorrectChoice, setModalCorrectChoice] = useState<string>('');
+
+  // Certificate Modal State
+  const [isCertModalOpen, setIsCertModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedTopic === 'All') {
@@ -105,31 +127,38 @@ export const AssessmentQuiz: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header Bar */}
-      <div className="pos-card p-6 rounded-2xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="pos-card p-6 rounded-3xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900/90 shadow-xl">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2 border border-amber-500/30">
-            <Award className="w-3.5 h-3.5" />
-            60-Second Micro-Assessment Loop
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-black uppercase tracking-wider mb-2 border border-amber-500/30">
+            <Award className="w-4 h-4" />
+            60-Second Micro-Assessment Loop • SANS 10089
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">Forecourt OHS Competency Test</h2>
-          <p className="text-slate-300 text-sm mt-1">Ingested from <code className="text-amber-300 font-mono">assessment_bank.json</code> with instant local video remediation.</p>
+          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">{t.quizTitle}</h2>
+          <p className="text-slate-300 text-sm mt-1">{t.quizSubtitle}</p>
         </div>
 
-        {/* Quiz Controls & Timer */}
-        <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-end">
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800">
+        {/* Quiz Controls & Actions */}
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+          <div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-950 border border-slate-800">
             <Clock className={`w-5 h-5 ${timerSeconds < 15 ? 'text-red-400 animate-bounce' : 'text-amber-400'}`} />
-            <span className="font-mono text-lg font-black text-white">{timerSeconds}s</span>
+            <span className="font-mono text-xl font-black text-white">{timerSeconds}s</span>
           </div>
 
-          <div className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-extrabold">
+          <div className="px-4 py-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-black">
             Score: {score} / {filteredQuestions.length}
           </div>
 
           <button
+            onClick={() => setIsCertModalOpen(true)}
+            className="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition border border-emerald-400/30 min-h-[44px]"
+          >
+            <FileCheck className="w-4 h-4" /> {t.hitlSignoffBtn}
+          </button>
+
+          <button
             onClick={resetQuiz}
-            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
-            title="Reset Quiz"
+            className="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition min-h-[44px] min-w-[44px]"
+            title={t.resetQuiz}
           >
             <RotateCcw className="w-5 h-5" />
           </button>
@@ -137,51 +166,51 @@ export const AssessmentQuiz: React.FC = () => {
       </div>
 
       {/* Topic Filter Tabs */}
-      <div className="flex flex-wrap gap-2 p-1.5 rounded-2xl bg-slate-900/80 border border-slate-800">
-        {['All', 'Customer Service', 'Emergency Spill Response', 'Fire Safety', 'Evacuation'].map((t) => (
+      <div className="flex flex-wrap gap-2 p-2 rounded-2xl bg-slate-950 border border-slate-800">
+        {['All', 'Customer Service', 'Emergency Spill Response', 'Fire Safety', 'Evacuation'].map((topicName) => (
           <button
-            key={t}
-            onClick={() => setSelectedTopic(t)}
-            className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all ${
-              selectedTopic === t
+            key={topicName}
+            onClick={() => setSelectedTopic(topicName)}
+            className={`px-4 py-3 rounded-xl text-xs font-black transition-all min-h-[44px] ${
+              selectedTopic === topicName
                 ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-950/40'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                : 'text-slate-400 hover:text-white hover:bg-slate-900'
             }`}
           >
-            {t} {t === 'All' ? '(40 Qs)' : '(10 Qs)'}
+            {topicName} {topicName === 'All' ? '(40 Qs)' : '(10 Qs)'}
           </button>
         ))}
       </div>
 
       {/* Question Card */}
-      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-6 shadow-xl">
-        <div className="flex justify-between items-center text-xs font-bold text-slate-400">
-          <span className="px-3 py-1 rounded-md bg-slate-800 text-amber-300 border border-slate-700">
+      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-6 shadow-2xl">
+        <div className="flex justify-between items-center text-xs font-extrabold text-slate-400">
+          <span className="px-3 py-1 rounded-lg bg-slate-950 text-amber-400 border border-slate-800 uppercase tracking-wider">
             {currentQuestion.topic}
           </span>
-          <span>Question {currentIndex + 1} of {filteredQuestions.length}</span>
+          <span className="font-mono text-slate-300">Question {currentIndex + 1} of {filteredQuestions.length}</span>
         </div>
 
         <h3 className="text-lg md:text-xl font-extrabold text-white leading-relaxed">
           {currentQuestion.question}
         </h3>
 
-        {/* 4 Multiple Choice Options */}
-        <div className="grid grid-cols-1 gap-3">
+        {/* 4 Multiple Choice Options (Touch-First Minimum 48px Height) */}
+        <div className="grid grid-cols-1 gap-3.5">
           {(['A', 'B', 'C', 'D'] as const).map((optKey) => {
             const optText = currentQuestion.options[optKey];
             const isSelected = selectedAnswer === optKey;
             const isCorrectAnswer = currentQuestion.correct_answer === optKey;
             const hasAnswered = selectedAnswer !== null;
 
-            let btnStyle = 'bg-slate-800/60 border-slate-700 text-slate-200 hover:border-amber-500/50 hover:bg-slate-800';
+            let btnStyle = 'bg-slate-950/70 border-slate-800 text-slate-200 hover:border-amber-500/60 hover:bg-slate-800/80';
             if (hasAnswered) {
               if (isCorrectAnswer) {
-                btnStyle = 'bg-emerald-950/60 border-emerald-500 text-emerald-200 font-bold ring-1 ring-emerald-500';
+                btnStyle = 'bg-emerald-950/70 border-emerald-500 text-emerald-200 font-bold ring-2 ring-emerald-500/40';
               } else if (isSelected && !isCorrectAnswer) {
-                btnStyle = 'bg-red-950/60 border-red-500 text-red-200 font-bold ring-1 ring-red-500';
+                btnStyle = 'bg-red-950/70 border-red-500 text-red-200 font-bold ring-2 ring-red-500/40';
               } else {
-                btnStyle = 'bg-slate-900/40 border-slate-800 text-slate-500 opacity-60';
+                btnStyle = 'bg-slate-950/30 border-slate-900 text-slate-600 opacity-50';
               }
             }
 
@@ -190,9 +219,9 @@ export const AssessmentQuiz: React.FC = () => {
                 key={optKey}
                 onClick={() => handleSelectAnswer(optKey)}
                 disabled={hasAnswered}
-                className={`w-full p-4 rounded-2xl border text-left transition-all duration-200 flex items-start gap-3.5 ${btnStyle}`}
+                className={`w-full p-4 rounded-2xl border text-left transition-all duration-200 flex items-start gap-4 min-h-[56px] ${btnStyle}`}
               >
-                <span className={`w-8 h-8 rounded-xl font-black text-sm flex items-center justify-center flex-shrink-0 border ${
+                <span className={`w-9 h-9 rounded-xl font-black text-sm flex items-center justify-center flex-shrink-0 border ${
                   hasAnswered && isCorrectAnswer
                     ? 'bg-emerald-500 text-slate-950 border-emerald-400'
                     : hasAnswered && isSelected && !isCorrectAnswer
@@ -202,7 +231,7 @@ export const AssessmentQuiz: React.FC = () => {
                   {optKey}
                 </span>
 
-                <span className="text-sm pt-1 leading-relaxed flex-1">{optText}</span>
+                <span className="text-sm pt-1 leading-relaxed flex-1 font-semibold">{optText}</span>
 
                 {hasAnswered && isCorrectAnswer && (
                   <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
@@ -218,21 +247,25 @@ export const AssessmentQuiz: React.FC = () => {
         {/* Explanation & Remediation Callout when Answered */}
         {selectedAnswer !== null && (
           <div className="space-y-3 pt-4 border-t border-slate-800 animate-fadeIn">
-            <div className={`p-4 rounded-xl border text-xs space-y-1 ${
+            <div className={`p-4 rounded-2xl border text-xs space-y-1.5 ${
               selectedAnswer === currentQuestion.correct_answer
-                ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-200'
-                : 'bg-red-950/30 border-red-500/30 text-red-200'
+                ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-200'
+                : 'bg-red-950/40 border-red-500/40 text-red-200'
             }`}>
-              <strong className="block text-sm font-bold">
-                {selectedAnswer === currentQuestion.correct_answer ? '✓ Excellent! Correct Answer.' : '❌ Incorrect.'}
+              <strong className="block text-sm font-extrabold flex items-center gap-2">
+                {selectedAnswer === currentQuestion.correct_answer ? (
+                  <><CheckCircle2 className="w-4 h-4 text-emerald-400" /> {t.correctAnswer}</>
+                ) : (
+                  <><ShieldAlert className="w-4 h-4 text-red-400" /> {t.incorrectAnswer}</>
+                )}
               </strong>
-              <p>{currentQuestion.explanation}</p>
+              <p className="leading-relaxed">{currentQuestion.explanation}</p>
             </div>
 
             {selectedAnswer !== currentQuestion.correct_answer && (
-              <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-center justify-between gap-4">
+              <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="text-xs text-amber-200">
-                  <strong className="text-amber-400 font-bold block mb-0.5">Video Remediation Available</strong>
+                  <strong className="text-amber-400 font-extrabold block mb-0.5">{t.remediationAvailable}</strong>
                   <span>Watch the video clip at cue <strong>{currentQuestion.remediation.timestamp_start}</strong> to review this topic.</span>
                 </div>
 
@@ -244,31 +277,31 @@ export const AssessmentQuiz: React.FC = () => {
                     setModalCorrectChoice(`${currentQuestion.correct_answer}: ${currentQuestion.options[currentQuestion.correct_answer]}`);
                     setIsRemediationOpen(true);
                   }}
-                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs flex items-center gap-2 flex-shrink-0 transition"
+                  className="px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center gap-2 flex-shrink-0 transition shadow-lg shadow-amber-950/50 min-h-[44px]"
                 >
-                  <Play className="w-4 h-4 fill-slate-950" /> Launch Video Clip
+                  <Play className="w-4 h-4 fill-slate-950" /> {t.launchVideo}
                 </button>
               </div>
             )}
           </div>
         )}
 
-        {/* Navigation Buttons */}
+        {/* Navigation Buttons (Touch-First min 48px Height) */}
         <div className="flex justify-between items-center pt-4 border-t border-slate-800">
           <button
             onClick={handlePrev}
             disabled={currentIndex === 0}
-            className="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700 transition"
+            className="px-5 py-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-extrabold text-xs disabled:opacity-40 disabled:cursor-not-allowed border border-slate-700 transition flex items-center gap-2 min-h-[48px]"
           >
-            ← Previous Question
+            <ChevronLeft className="w-4 h-4" /> {t.prevQuestion}
           </button>
 
           <button
             onClick={handleNext}
             disabled={currentIndex === filteredQuestions.length - 1}
-            className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-amber-950/40 transition"
+            className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs disabled:opacity-40 disabled:cursor-not-allowed shadow-lg shadow-amber-950/40 transition flex items-center gap-2 min-h-[48px]"
           >
-            Next Question →
+            {t.nextQuestion} <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -281,6 +314,15 @@ export const AssessmentQuiz: React.FC = () => {
         questionText={modalQuestionText}
         incorrectChoice={modalIncorrectChoice}
         correctChoice={modalCorrectChoice}
+      />
+
+      {/* HITL Audit Certificate Modal */}
+      <AuditCertificateModal
+        isOpen={isCertModalOpen}
+        onClose={() => setIsCertModalOpen(false)}
+        lang={lang}
+        score={score}
+        totalQuestions={filteredQuestions.length}
       />
     </div>
   );
