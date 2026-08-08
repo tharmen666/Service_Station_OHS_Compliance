@@ -5,6 +5,13 @@ import { PASSFirefighting } from './components/PASSFirefighting';
 import { CustomerServiceModule } from './components/CustomerServiceModule';
 import { AssessmentQuiz } from './components/AssessmentQuiz';
 import { CurriculumBrowser } from './components/CurriculumBrowser';
+import { DemoVideoTab } from './components/DemoVideoTab';
+import { DemoVideoModal } from './components/DemoVideoModal';
+import { NightshiftFirstResponder } from './components/NightshiftFirstResponder';
+import { MonthlyRefresherHub } from './components/MonthlyRefresherHub';
+import { RetailerNotificationCenter } from './components/RetailerNotificationCenter';
+import { CorporateStewardshipExporter } from './components/CorporateStewardshipExporter';
+import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
 import { Language, translations } from './data/translations';
@@ -22,14 +29,26 @@ import {
   Globe,
   FileCheck,
   Building2,
-  Lock
+  Lock,
+  Video,
+  HeartPulse,
+  RotateCcw,
+  BellRing,
+  FileSpreadsheet,
+  Scale
 } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum'>('evacuation');
+  const [activeTab, setActiveTab] = useState<
+    'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights'
+  >('evacuation');
+  
   const [lang, setLang] = useState<Language>('EN');
   const [isAIStudioOpen, setIsAIStudioOpen] = useState<boolean>(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState<boolean>(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
+  const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState<boolean>(false);
+  const [isDossierOpen, setIsDossierOpen] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
@@ -108,19 +127,37 @@ export const App: React.FC = () => {
           {/* Action Buttons & Mobile Menu Toggle */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setIsCertModalOpen(true)}
-              className="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition border border-emerald-400/30 min-h-[40px]"
+              onClick={() => setIsNotificationCenterOpen(true)}
+              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-extrabold text-xs flex items-center gap-2 border border-slate-700 transition min-h-[40px]"
+              title="Retailer Notification Center"
             >
-              <FileCheck className="w-4 h-4" />
-              <span className="hidden sm:inline">HITL Audit</span> Cert
+              <BellRing className="w-4 h-4 text-amber-400" />
+              <span className="hidden xl:inline">Alerts</span>
             </button>
 
             <button
-              onClick={() => setIsAIStudioOpen(true)}
-              className="px-3.5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-purple-950/50 transition border border-purple-400/30 min-h-[40px]"
+              onClick={() => setIsDossierOpen(true)}
+              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-extrabold text-xs flex items-center gap-2 border border-slate-700 transition min-h-[40px]"
+              title="Oil Company Corporate Stewardship Dossier"
             >
-              <Bot className="w-4 h-4" />
-              <span className="hidden sm:inline">{t.aiPromptBtn}</span> Prompt
+              <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+              <span className="hidden xl:inline">Dossier</span>
+            </button>
+
+            <button
+              onClick={() => setIsDemoModalOpen(true)}
+              className="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-950/50 transition min-h-[40px]"
+            >
+              <Video className="w-4 h-4 fill-slate-950" />
+              <span className="hidden sm:inline">🎬 Live Demo</span>
+            </button>
+
+            <button
+              onClick={() => setIsCertModalOpen(true)}
+              className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition border border-emerald-400/30 min-h-[40px]"
+            >
+              <FileCheck className="w-4 h-4" />
+              <span className="hidden sm:inline">HITL Audit</span>
             </button>
 
             <button
@@ -159,7 +196,7 @@ export const App: React.FC = () => {
           <div className="flex items-center gap-2 min-w-max">
             <button
               onClick={() => setActiveTab('evacuation')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'evacuation'
                   ? 'bg-red-600 text-white shadow-lg shadow-red-950/60 border border-red-400/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -171,7 +208,7 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('spill')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'spill'
                   ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-950/60 border border-amber-400/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -183,7 +220,7 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('customer')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'customer'
                   ? 'bg-blue-600 text-white shadow-lg shadow-blue-950/60 border border-blue-400/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -195,7 +232,7 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('fire')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'fire'
                   ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/60 border border-emerald-400/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -207,7 +244,7 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('quiz')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'quiz'
                   ? 'bg-purple-600 text-white shadow-lg shadow-purple-950/60 border border-purple-400/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -219,7 +256,7 @@ export const App: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('curriculum')}
-              className={`px-4 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
                 activeTab === 'curriculum'
                   ? 'bg-slate-800 text-amber-400 shadow-lg border border-amber-500/40'
                   : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
@@ -227,6 +264,55 @@ export const App: React.FC = () => {
             >
               <BookOpen className="w-4 h-4" />
               {t.tabCurriculum}
+            </button>
+
+            <button
+              onClick={() => setActiveTab('demo')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'demo'
+                  ? 'bg-gradient-to-r from-emerald-500 to-amber-500 text-slate-950 shadow-xl border border-amber-400'
+                  : 'bg-emerald-950/60 text-emerald-300 hover:text-white hover:bg-emerald-900 border border-emerald-500/40'
+              }`}
+            >
+              <Video className="w-4 h-4 fill-current" />
+              {t.tabDemoVideo}
+            </button>
+
+            <button
+              onClick={() => setActiveTab('firstResponder')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'firstResponder'
+                  ? 'bg-red-600 text-white shadow-xl border border-red-400'
+                  : 'bg-red-950/40 text-red-300 hover:text-white hover:bg-red-900 border border-red-500/40'
+              }`}
+            >
+              <HeartPulse className="w-4 h-4 text-red-400 animate-pulse" />
+              {t.tabFirstResponder}
+            </button>
+
+            <button
+              onClick={() => setActiveTab('refresher')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'refresher'
+                  ? 'bg-amber-500 text-slate-950 shadow-xl border border-amber-300'
+                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
+              }`}
+            >
+              <RotateCcw className="w-4 h-4 text-amber-400" />
+              Refresher
+            </button>
+
+            {/* Employee Statutory Rights (BCEA & OHSA) */}
+            <button
+              onClick={() => setActiveTab('rights')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'rights'
+                  ? 'bg-blue-600 text-white shadow-xl border border-blue-400'
+                  : 'bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900 border border-blue-500/40'
+              }`}
+            >
+              <Scale className="w-4 h-4 text-blue-400" />
+              9. ⚖️ Employee Rights (BCEA)
             </button>
           </div>
         </div>
@@ -240,6 +326,21 @@ export const App: React.FC = () => {
         {activeTab === 'fire' && <PASSFirefighting />}
         {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
         {activeTab === 'curriculum' && <CurriculumBrowser />}
+        {activeTab === 'demo' && (
+          <DemoVideoTab 
+            lang={lang} 
+            onNavigateTab={(target) => setActiveTab(target)} 
+            onOpenCertModal={() => setIsCertModalOpen(true)}
+          />
+        )}
+        {activeTab === 'firstResponder' && <NightshiftFirstResponder lang={lang} />}
+        {activeTab === 'refresher' && (
+          <MonthlyRefresherHub 
+            lang={lang} 
+            onOpenDossier={() => setIsDossierOpen(true)}
+          />
+        )}
+        {activeTab === 'rights' && <StatutoryRightsModule />}
       </main>
 
       {/* Statutory Footer & Regulatory Standards */}
@@ -247,7 +348,7 @@ export const App: React.FC = () => {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
           <div className="flex items-center gap-2">
             <Lock className="w-4 h-4 text-emerald-400" />
-            <span className="font-bold">OHSA 85 OF 1993 • SANS 10089-3:2010 • SANS 10263 • ISO 45001:2018</span>
+            <span className="font-bold">OHSA 85 OF 1993 • SANS 10089-3:2010 • SANS 10263 • BCEA ACT 75 OF 1997</span>
           </div>
 
           <div className="flex items-center gap-4 text-[11px]">
@@ -268,6 +369,27 @@ export const App: React.FC = () => {
       <AuditCertificateModal
         isOpen={isCertModalOpen}
         onClose={() => setIsCertModalOpen(false)}
+        lang={lang}
+      />
+
+      {/* Multilingual Demo Video Modal */}
+      <DemoVideoModal
+        isOpen={isDemoModalOpen}
+        onClose={() => setIsDemoModalOpen(false)}
+        lang={lang}
+      />
+
+      {/* Retailer Notification Center Modal */}
+      <RetailerNotificationCenter
+        isOpen={isNotificationCenterOpen}
+        onClose={() => setIsNotificationCenterOpen(false)}
+        lang={lang}
+      />
+
+      {/* Oil Company Corporate Stewardship Exporter Modal */}
+      <CorporateStewardshipExporter
+        isOpen={isDossierOpen}
+        onClose={() => setIsDossierOpen(false)}
         lang={lang}
       />
     </div>

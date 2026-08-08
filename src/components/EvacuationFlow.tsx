@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { evacuationSteps } from '../data/assessmentData';
-import { AlertOctagon, ShieldAlert, PhoneCall, Flame, SearchCheck, Users, CheckCircle2, Volume2, ArrowRight, RefreshCw } from 'lucide-react';
+import { AlertOctagon, ShieldAlert, PhoneCall, Flame, SearchCheck, Users, CheckCircle2, Volume2, ArrowRight, RefreshCw, Maximize2, Image as ImageIcon } from 'lucide-react';
+import { PosterLightboxModal } from './PosterLightboxModal';
 
 export const EvacuationFlow: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [activeStep, setActiveStep] = useState<number>(1);
   const [isAudioSimulating, setIsAudioSimulating] = useState<boolean>(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   const toggleStepComplete = (stepNum: number) => {
     if (completedSteps.includes(stepNum)) {
@@ -55,118 +57,121 @@ export const EvacuationFlow: React.FC = () => {
 
         <div className="flex items-center gap-3 w-full md:w-auto">
           <button
+            onClick={() => setIsLightboxOpen(true)}
+            className="px-4 py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-black text-xs flex items-center gap-2 shadow-lg transition min-h-[44px]"
+          >
+            <Maximize2 className="w-4 h-4" />
+            <span>Evacuation Poster Lightbox</span>
+          </button>
+
+          <button
             onClick={simulateAlarmSound}
-            className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold transition ${
+            className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold transition min-h-[44px] ${
               isAudioSimulating ? 'bg-red-600 text-white animate-pulse' : 'bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/40'
             }`}
           >
             <Volume2 className="w-5 h-5" />
-            {isAudioSimulating ? 'SIREN ACTIVE (00:03)' : 'Simulate Alarm Siren'}
-          </button>
-
-          <button
-            onClick={resetFlow}
-            className="px-4 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm flex items-center gap-2 border border-slate-700 transition"
-          >
-            <RefreshCw className="w-4 h-4" /> Reset Drill
+            <span className="text-xs">{isAudioSimulating ? 'ESD ALARM SOUNDING...' : 'Simulate ESD Siren'}</span>
           </button>
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="bg-slate-900/90 p-4 rounded-xl border border-slate-800">
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Evacuation Completion Progress</span>
-          <span className="text-sm font-extrabold text-red-400">{completedSteps.length} of 6 Steps Completed ({Math.round((completedSteps.length / 6) * 100)}%)</span>
+      {/* Bound Evacuation Poster Infographic Card */}
+      <div className="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 shadow-xl">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span className="text-xs font-extrabold text-white flex items-center gap-2">
+            <ImageIcon className="w-4 h-4 text-red-400" /> ESD Activation & Assembly Point Diagram Poster
+          </span>
+          <span className="text-xs font-mono text-slate-400">Tap poster to expand</span>
         </div>
-        <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden p-0.5 border border-slate-700">
-          <div
-            className="bg-gradient-to-r from-red-600 via-red-500 to-rose-400 h-full rounded-full transition-all duration-500"
-            style={{ width: `${(completedSteps.length / 6) * 100}%` }}
-          ></div>
+
+        <div 
+          onClick={() => setIsLightboxOpen(true)}
+          className="relative group cursor-pointer overflow-hidden rounded-2xl border border-red-500/40 bg-slate-950 p-2 shadow-inner"
+        >
+          <img
+            src="/assets/posters/evacuation_poster.png"
+            alt="Evacuation Diagram Poster"
+            className="w-full max-h-[320px] object-contain rounded-xl transition duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+            <span className="px-4 py-2 rounded-xl bg-red-600 text-white font-black text-xs flex items-center gap-2 shadow-2xl">
+              <Maximize2 className="w-4 h-4" /> Single-Tap for Full-Screen View
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* 6 Steps Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Interactive Step Timeline Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {evacuationSteps.map((step) => {
           const isDone = completedSteps.includes(step.step_number);
-          const isActive = activeStep === step.step_number;
+          const isCurrent = activeStep === step.step_number;
 
           return (
             <div
               key={step.step_number}
               onClick={() => setActiveStep(step.step_number)}
-              className={`relative p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+              className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
                 isDone
-                  ? 'bg-slate-900/90 border-emerald-500/50 shadow-lg shadow-emerald-950/20'
-                  : isActive
-                  ? 'bg-gradient-to-b from-red-950/40 to-slate-900 border-red-500 ring-2 ring-red-500/30'
-                  : 'bg-slate-900/60 border-slate-800 hover:border-slate-700'
+                  ? 'bg-slate-900/90 border-emerald-500/60 ring-1 ring-emerald-500/30'
+                  : isCurrent
+                  ? 'bg-gradient-to-b from-red-950/60 to-slate-900 border-red-500 ring-2 ring-red-500/40'
+                  : 'bg-slate-900/40 border-slate-800 opacity-80 hover:opacity-100'
               }`}
             >
-              {/* Step Header */}
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg border ${
-                      isDone ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/30'
-                    }`}>
-                      {step.step_number}
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Step {step.step_number}</span>
-                      <h3 className="text-base font-bold text-white leading-tight">{step.title}</h3>
-                    </div>
-                  </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-extrabold text-sm ${
+                    isDone ? 'bg-emerald-500 text-slate-950' : 'bg-red-500/20 text-red-400 border border-red-500/30'
+                  }`}>
+                    #{step.step_number}
+                  </span>
 
-                  {isDone ? (
-                    <CheckCircle2 className="w-6 h-6 text-emerald-400 fill-emerald-500/20" />
-                  ) : (
-                    getIcon(step.icon_name)
-                  )}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleStepComplete(step.step_number);
+                    }}
+                    className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
+                      isDone
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    {isDone ? 'Executed' : 'Mark Done'}
+                  </button>
                 </div>
 
-                {/* Role Badge */}
-                <div className="inline-block px-2.5 py-1 rounded-md bg-slate-800 text-slate-300 text-xs font-semibold mb-3 border border-slate-700">
-                  👤 Role: <span className="text-red-300 font-bold">{step.role}</span>
+                <div className="flex items-center gap-2">
+                  {getIcon(step.icon_name)}
+                  <h3 className="font-extrabold text-base text-white">{step.title}</h3>
                 </div>
 
-                {/* Action Details */}
-                <p className="text-slate-300 text-xs leading-relaxed mb-4">
-                  {step.action}
-                </p>
-
-                {/* Warning Callout */}
-                <div className="p-3 rounded-lg bg-red-950/40 border border-red-500/30 text-red-200 text-xs flex items-start gap-2">
-                  <span className="text-red-400 font-bold">⚠️</span>
-                  <span><strong>Warning:</strong> {step.critical_warning}</span>
+                <div className="text-xs font-semibold text-amber-400">
+                  Assigned: <strong>{step.role}</strong>
                 </div>
+
+                <p className="text-xs text-slate-300 leading-relaxed">{step.action}</p>
               </div>
 
-              {/* Action Button */}
-              <div className="mt-4 pt-3 border-t border-slate-800/80 flex justify-between items-center">
-                <span className="text-[11px] font-medium text-slate-500">
-                  {isDone ? 'Verified Step' : 'Click to Verify Action'}
-                </span>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleStepComplete(step.step_number);
-                  }}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 ${
-                    isDone
-                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30'
-                      : 'bg-red-500 hover:bg-red-600 text-white shadow-md shadow-red-950/50'
-                  }`}
-                >
-                  {isDone ? 'Completed ✓' : 'Mark Completed'}
-                </button>
+              <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-red-300/90 font-bold">
+                ⚠️ Warning: {step.critical_warning}
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Lightbox Modal */}
+      <PosterLightboxModal
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        imageSrc="/assets/posters/evacuation_poster.png"
+        title="ESD Activation & Assembly Point Evacuation Diagram"
+        subtitle="SANS 10089-3 Emergency Evacuation Plan and Site Assembly Protocol."
+      />
     </div>
   );
 };

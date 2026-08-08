@@ -1,7 +1,7 @@
 {
   "title": "Service Station OHS Compliance Assessment Bank",
   "version": "1.0.0",
-  "total_questions": 40,
+  "total_questions": 42,
   "topics_covered": [
     "Customer Service",
     "Emergency Spill Response",
@@ -808,6 +808,46 @@
         "timestamp_start": "00:00",
         "timestamp_end": "00:30",
         "remediation_guidance": "Review evacuation debrief reporting and CAPA (Corrective Action) logging."
+      }
+    },
+    {
+      "question_id": "FA_Q01",
+      "topic": "Fire Safety",
+      "question": "Under the Nightshift Forecourt First Responder Protocol, what is the mandatory first PPE action an attendant must take before rendering first aid to an injured customer or colleague?",
+      "options": {
+        "A": "Attempt to carry the victim into the Quick Shop immediately.",
+        "B": "Don disposable nitrile/latex medical gloves from the forecourt emergency kit before touching the victim or blood.",
+        "C": "Wipe the wound with a dry shop rag.",
+        "D": "Offer the victim a hot beverage before assessing wounds."
+      },
+      "correct_answer": "B",
+      "explanation": "Disposable medical gloves are mandatory PPE to prevent transmission of bloodborne pathogens and chemical contamination.",
+      "remediation": {
+        "video_reference": "invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4",
+        "video_path": "D:\\new info for melly Dec 2025\\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4",
+        "timestamp_start": "00:45",
+        "timestamp_end": "01:10",
+        "remediation_guidance": "Review Forecourt First Responder PPE and nitrile glove mandatory protocol."
+      }
+    },
+    {
+      "question_id": "FA_Q02",
+      "topic": "Fire Safety",
+      "question": "When conducting a primary diagnostic check on a conscious injured patient on the forecourt, which 4 key diagnostic questions must be checked?",
+      "options": {
+        "A": "Car make, fuel tank capacity, payment method, and receipt preference.",
+        "B": "Patient orientation (name/location), pain level (1-10), chronic medical conditions (diabetes/meds), and emergency contact numbers.",
+        "C": "Attendant staff ID, cashier register balance, nozzle flow rate, and ESD pressure.",
+        "D": "Tire pressure, oil dipstick level, wiper fluid, and fuel octane."
+      },
+      "correct_answer": "B",
+      "explanation": "Checking orientation, pain severity, chronic meds (e.g. insulin), and next of kin contacts provides critical triage data for EMS paramedics.",
+      "remediation": {
+        "video_reference": "invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4",
+        "video_path": "D:\\new info for melly Dec 2025\\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4",
+        "timestamp_start": "01:10",
+        "timestamp_end": "01:35",
+        "remediation_guidance": "Review Conscious Patient Diagnostics and EMS hand-over protocols."
       }
     }
   ]

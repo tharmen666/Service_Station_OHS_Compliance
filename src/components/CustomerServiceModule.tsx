@@ -1,7 +1,10 @@
-import React from 'react';
-import { Shield, Sparkles, Fuel, Smartphone, Cigarette, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Shield, Sparkles, Fuel, Smartphone, Cigarette, AlertCircle, Maximize2, Image as ImageIcon } from 'lucide-react';
+import { PosterLightboxModal } from './PosterLightboxModal';
 
 export const CustomerServiceModule: React.FC = () => {
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
+
   const rules = [
     {
       title: 'No-Smoking Rule Enforcement',
@@ -46,8 +49,38 @@ export const CustomerServiceModule: React.FC = () => {
           <p className="text-slate-300 text-sm mt-1">Professional de-escalation, hazard enforcement, and hospitality standards for service station attendants.</p>
         </div>
 
-        <div className="px-4 py-2.5 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-bold">
-          High-Visibility Service Protocol
+        <button
+          onClick={() => setIsLightboxOpen(true)}
+          className="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs flex items-center gap-2 shadow-lg transition min-h-[44px]"
+        >
+          <Maximize2 className="w-4 h-4" />
+          <span>Greeting & Conduct Poster</span>
+        </button>
+      </div>
+
+      {/* Bound Customer Service Poster Card */}
+      <div className="p-5 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 shadow-xl">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+          <span className="text-xs font-extrabold text-white flex items-center gap-2">
+            <ImageIcon className="w-4 h-4 text-blue-400" /> Forecourt Greeting & Pump Service Illustration Poster
+          </span>
+          <span className="text-xs font-mono text-slate-400">Tap poster to expand</span>
+        </div>
+
+        <div 
+          onClick={() => setIsLightboxOpen(true)}
+          className="relative group cursor-pointer overflow-hidden rounded-2xl border border-blue-500/40 bg-slate-950 p-2 shadow-inner"
+        >
+          <img
+            src="/assets/posters/customer_service_poster.png"
+            alt="Customer Service Conduct Poster"
+            className="w-full max-h-[320px] object-contain rounded-xl transition duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+            <span className="px-4 py-2 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center gap-2 shadow-2xl">
+              <Maximize2 className="w-4 h-4" /> Single-Tap for High-Res View
+            </span>
+          </div>
         </div>
       </div>
 
@@ -59,29 +92,37 @@ export const CustomerServiceModule: React.FC = () => {
             <div key={idx} className="p-6 rounded-2xl bg-slate-900/70 border border-slate-800 hover:border-blue-500/50 transition-all duration-300 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
-                    <IconComp className="w-5 h-5" />
-                  </div>
-                  <span className="px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-300 text-[11px] font-bold border border-blue-500/30">
+                  <span className="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30">
                     {item.policy}
                   </span>
+                  <IconComp className="w-6 h-6 text-blue-400" />
                 </div>
 
-                <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
+                <h3 className="text-lg font-extrabold text-white mb-2">{item.title}</h3>
 
-                <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-200 mb-3">
-                  🗣️ <strong>Mandatory Staff Script:</strong> <em className="text-blue-300">"{item.action}"</em>
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1 mb-3">
+                  <strong className="text-blue-300 font-bold block">Attendant Dialogue Action:</strong>
+                  <p className="text-slate-200 font-semibold">{item.action}</p>
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-blue-950/30 border border-blue-500/20 text-xs text-blue-200 flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-                <span><strong>Safety Rationale:</strong> {item.reason}</span>
+              <div className="pt-3 border-t border-slate-800 text-xs text-slate-400 flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+                <span><strong>Technical Rationale:</strong> {item.reason}</span>
               </div>
             </div>
           );
         })}
       </div>
+
+      {/* Lightbox Modal */}
+      <PosterLightboxModal
+        isOpen={isLightboxOpen}
+        onClose={() => setIsLightboxOpen(false)}
+        imageSrc="/assets/posters/customer_service_poster.png"
+        title="Forecourt Greeting & Pump Service Conduct Poster"
+        subtitle="Attendant customer engagement and static ignition de-escalation SOP."
+      />
     </div>
   );
 };
