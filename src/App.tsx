@@ -162,6 +162,15 @@ export const App: React.FC = () => {
             </button>
 
             <button
+              onClick={() => setIsAIStudioOpen(true)}
+              className="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-purple-950/50 transition border border-purple-400/30 min-h-[40px]"
+              title="Google AI Studio OHS Prompt Drawer"
+            >
+              <Bot className="w-4 h-4 text-purple-300" />
+              <span className="hidden sm:inline">AI Studio</span>
+            </button>
+
+            <button
               onClick={() => setIsCertModalOpen(true)}
               className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition border border-emerald-400/30 min-h-[40px]"
             >
