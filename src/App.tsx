@@ -15,6 +15,8 @@ import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
 import { Language, translations } from './data/translations';
+import { getActiveTenant } from './multiTenantConfig';
+import { verifyPOPIAEncryption } from './popiActCompliance';
 import { 
   AlertOctagon, 
   Shield, 
@@ -53,6 +55,8 @@ export const App: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const t = translations[lang];
+  const activeTenant = getActiveTenant();
+  const popiaStatus = verifyPOPIAEncryption();
 
   useEffect(() => {
     const updateClock = () => {
@@ -79,11 +83,16 @@ export const App: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
-                  {t.headerBadge}
+                  {t.headerBadge} • {activeTenant.siteCode}
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
                 </span>
+                {popiaStatus.compliant && (
+                  <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 flex items-center gap-1">
+                    <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256
+                  </span>
+                )}
               </div>
               <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5">{t.headerTitle}</h1>
             </div>

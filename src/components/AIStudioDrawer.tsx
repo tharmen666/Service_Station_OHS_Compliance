@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { aiStudioPromptTemplate } from '../data/assessmentData';
-import { X, Sparkles, Copy, Check, ExternalLink, Code2, Bot } from 'lucide-react';
+import { getOHSSystemInstruction, DEFAULT_OHS_GUARDRAILS } from '../ohsComplianceGuardrails';
+import { X, Sparkles, Copy, Check, ExternalLink, Code2, Bot, ShieldCheck, Lock } from 'lucide-react';
 
 interface AIStudioDrawerProps {
   isOpen: boolean;
@@ -13,8 +14,10 @@ export const AIStudioDrawer: React.FC<AIStudioDrawerProps> = ({ isOpen, onClose 
 
   if (!isOpen) return null;
 
+  const systemPromptText = getOHSSystemInstruction();
+
   const copySystemInstruction = () => {
-    navigator.clipboard.writeText(aiStudioPromptTemplate.system_instruction);
+    navigator.clipboard.writeText(systemPromptText);
     setIsSystemInstructionCopied(true);
     setTimeout(() => setIsSystemInstructionCopied(false), 2000);
   };
@@ -53,6 +56,20 @@ export const AIStudioDrawer: React.FC<AIStudioDrawerProps> = ({ isOpen, onClose 
 
         {/* Drawer Body */}
         <div className="p-6 space-y-6 overflow-y-auto flex-1">
+          {/* Temperature Lock Badge */}
+          <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Lock className="w-4 h-4 text-emerald-400" />
+              <div>
+                <span className="font-extrabold text-emerald-300">Temperature Parameter Locked: 0.0</span>
+                <span className="block text-[11px] text-emerald-400/80">Zero Hallucination Compliance Mode (OHS Act 85 / SANS 10089)</span>
+              </div>
+            </div>
+            <span className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 text-[10px] flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> STRICT
+            </span>
+          </div>
+
           {/* Quick Info Box */}
           <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-500/30 text-xs text-purple-200 flex items-start gap-3">
             <Code2 className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
@@ -79,7 +96,7 @@ export const AIStudioDrawer: React.FC<AIStudioDrawerProps> = ({ isOpen, onClose 
 
             <textarea
               readOnly
-              value={aiStudioPromptTemplate.system_instruction}
+              value={systemPromptText}
               className="w-full h-44 p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs font-mono text-purple-200 focus:outline-none resize-none leading-relaxed select-all"
             />
           </div>
