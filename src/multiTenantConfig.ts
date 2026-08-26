@@ -10,7 +10,7 @@ export interface TenantBrandConfig {
   brandName: string;
   companyLegalName: string;
   logoUrl: string;
-  primaryColor: string; // Tailwind hex / class reference
+  primaryColor: string;
   accentColor: string;
   siteCode: string;
   stationName: string;
@@ -24,49 +24,33 @@ export interface TenantBrandConfig {
 
 export const defaultTenants: Record<string, TenantBrandConfig> = {
   default: {
-    tenantId: 'tenant_apex_fuel',
-    brandName: 'Apex Energy Forecourt',
-    companyLegalName: 'Apex Petroleum Retailers (Pty) Ltd',
+    tenantId: 'ENG-JHB-042',
+    brandName: 'Engen Retail Service Station',
+    companyLegalName: 'Engen Petroleum Limited (Gauteng South)',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
-    primaryColor: '#f59e0b', // Amber-500
-    accentColor: '#ef4444',  // Red-500
-    siteCode: 'ZA-OHS-40921',
-    stationName: 'Apex Station Forecourt #104',
-    address: 'Corner N1 Highway & Main Road, Midrand, Johannesburg, Gauteng',
-    emergencyContactNumber: '+27 11 999 0100 / 10177',
-    fuelBrand: 'Shell',
-    customPoliciesEnabled: true,
-    sans10089Compliant: true,
-    popiaEncryptionActive: true,
-  },
-  engen: {
-    tenantId: 'tenant_engen_01',
-    brandName: 'Engen QuickShop & Forecourt',
-    companyLegalName: 'Engen Petroleum Limited',
-    logoUrl: '/assets/posters/statutory_rights_poster.png',
-    primaryColor: '#0284c7', // Sky-600
-    accentColor: '#f97316',  // Orange-500
-    siteCode: 'ENG-ZA-8841',
-    stationName: 'Engen 1-Stop Cape Highway',
-    address: 'N2 Highway Km 42, Somerset West, Western Cape',
-    emergencyContactNumber: '+27 21 850 1100 / 112',
+    primaryColor: '#005A9C',
+    accentColor: '#ED1C24',
+    siteCode: 'ENG-JHB-042',
+    stationName: 'Gauteng South Forecourt Network',
+    address: 'Lenasia, Gauteng',
+    emergencyContactNumber: '+27 11 852 1000 / 10177',
     fuelBrand: 'Engen',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
   },
-  totalenergies: {
-    tenantId: 'tenant_total_01',
-    brandName: 'TotalEnergies Station',
-    companyLegalName: 'TotalEnergies Marketing South Africa (Pty) Ltd',
+  engen: {
+    tenantId: 'ENG-JHB-042',
+    brandName: 'Engen Retail Service Station',
+    companyLegalName: 'Engen Petroleum Limited',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
-    primaryColor: '#dc2626', // Red-600
-    accentColor: '#2563eb',  // Blue-600
-    siteCode: 'TOT-ZA-5520',
-    stationName: 'TotalEnergies Gateway Forecourt',
-    address: 'Umhlanga Rocks Drive, Durban, KwaZulu-Natal',
-    emergencyContactNumber: '+27 31 566 2000 / 10177',
-    fuelBrand: 'TotalEnergies',
+    primaryColor: '#005A9C',
+    accentColor: '#ED1C24',
+    siteCode: 'ENG-JHB-042',
+    stationName: 'Gauteng South Forecourt Network',
+    address: 'Lenasia, Gauteng',
+    emergencyContactNumber: '+27 11 852 1000 / 112',
+    fuelBrand: 'Engen',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
@@ -74,19 +58,28 @@ export const defaultTenants: Record<string, TenantBrandConfig> = {
 };
 
 /**
- * Loads current tenant configuration from environment variables or active state
+ * Loads current tenant configuration dynamically from environment variables or default tenant
  */
 export function getTenantConfig(): TenantBrandConfig {
   const envTenantId = import.meta.env.VITE_TENANT_ID;
   const envBrandName = import.meta.env.VITE_WHITE_LABEL_BRAND_NAME;
+  const envSiteName = import.meta.env.VITE_TENANT_SITE_NAME;
+  const envLocation = import.meta.env.VITE_TENANT_LOCATION;
+  const envPrimaryColor = import.meta.env.VITE_TENANT_PRIMARY_COLOR;
+  const envSecondaryColor = import.meta.env.VITE_TENANT_SECONDARY_COLOR;
   const envSiteCode = import.meta.env.VITE_STATION_SITE_CODE;
 
   const baseConfig = defaultTenants[envTenantId as string] || defaultTenants.default;
 
   return {
     ...baseConfig,
+    tenantId: envTenantId || baseConfig.tenantId,
     brandName: envBrandName || baseConfig.brandName,
-    siteCode: envSiteCode || baseConfig.siteCode,
+    stationName: envSiteName || baseConfig.stationName,
+    address: envLocation || baseConfig.address,
+    primaryColor: envPrimaryColor || baseConfig.primaryColor,
+    accentColor: envSecondaryColor || baseConfig.accentColor,
+    siteCode: envSiteCode || envTenantId || baseConfig.siteCode,
   };
 }
 
