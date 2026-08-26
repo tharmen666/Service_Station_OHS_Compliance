@@ -1,11 +1,29 @@
 #!/usr/bin/env python3
 """
 Service Station OHS Compliance Platform - Multi-Tenant Integrated Health & Safety (IHS) Manual Generator
-Refactored ReportLab script generating audit-ready PDF documentation with multi-tenant headers/footers.
+Refactored ReportLab script generating audit-ready PDF documentation with dynamic .env.local tenant settings.
 """
 
 import sys
 import os
+
+def load_env_local():
+    """Reads .env.local if present and populates os.environ."""
+    env_paths = [".env.local", ".env.white-label.template", ".env"]
+    for path in env_paths:
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        val = val.strip().strip('"').strip("'")
+                        if key not in os.environ:
+                            os.environ[key] = val
+
+load_env_local()
+
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -15,12 +33,15 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-# Multi-Tenant Site Configuration Defaults
-TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Apex Energy Forecourt Compliance Portal")
-COMPANY_LEGAL_NAME = os.getenv("VITE_WHITE_LABEL_COMPANY_LEGAL_NAME", "Apex Petroleum Retailers (Pty) Ltd")
-SITE_CODE = os.getenv("VITE_STATION_SITE_CODE", "ZA-OHS-40921")
-STATION_NAME = os.getenv("VITE_STATION_NAME", "Apex Station Forecourt #104")
-EMERGENCY_CONTACT = os.getenv("VITE_EMERGENCY_CONTACT", "+27 11 999 0100 / 10177")
+# Multi-Tenant Site Configuration Parsed from Environment
+TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Engen Retail Service Station")
+SITE_CODE = os.getenv("VITE_TENANT_ID", os.getenv("VITE_STATION_SITE_CODE", "ENG-JHB-042"))
+STATION_NAME = os.getenv("VITE_TENANT_SITE_NAME", os.getenv("VITE_STATION_NAME", "Gauteng South Forecourt Network"))
+LOCATION = os.getenv("VITE_TENANT_LOCATION", "Lenasia, Gauteng")
+COMPANY_LEGAL_NAME = os.getenv("VITE_WHITE_LABEL_COMPANY_LEGAL_NAME", f"{TENANT_NAME} ({LOCATION})")
+EMERGENCY_CONTACT = os.getenv("VITE_EMERGENCY_CONTACT", "+27 11 852 1000 / 10177")
+PRIMARY_COLOR_HEX = os.getenv("VITE_TENANT_PRIMARY_COLOR", "#005A9C")
+SECONDARY_COLOR_HEX = os.getenv("VITE_TENANT_SECONDARY_COLOR", "#ED1C24")
 
 class NumberedCanvas(canvas.Canvas):
     """Multi-tenant canvas with custom running headers and footers."""
@@ -43,19 +64,20 @@ class NumberedCanvas(canvas.Canvas):
     def draw_header_footer(self, page_count):
         self.saveState()
         self.setFont("Helvetica-Bold", 8)
-        self.setFillColor(colors.HexColor("#475569"))
+        self.setFillColor(colors.HexColor(PRIMARY_COLOR_HEX))
 
         # Header (Top of page)
         self.drawString(36, 11 * inch - 28, f"STATUTORY MANUAL: {TENANT_NAME.upper()}")
         self.drawRightString(8.5 * inch - 36, 11 * inch - 28, f"SITE CODE: {SITE_CODE}")
-        self.setStrokeColor(colors.HexColor("#cbd5e1"))
-        self.setLineWidth(0.5)
+        self.setStrokeColor(colors.HexColor(PRIMARY_COLOR_HEX))
+        self.setLineWidth(0.75)
         self.line(36, 11 * inch - 32, 8.5 * inch - 36, 11 * inch - 32)
 
         # Footer (Bottom of page)
         self.line(36, 42, 8.5 * inch - 36, 42)
         self.setFont("Helvetica", 8)
-        self.drawString(36, 28, f"{COMPANY_LEGAL_NAME} | OHS Act 85 of 1993 & SANS 10089 Compliant")
+        self.setFillColor(colors.HexColor("#475569"))
+        self.drawString(36, 28, f"{COMPANY_LEGAL_NAME} | OHS Act 85 & SANS 10089 ESD Enforced")
         self.drawRightString(8.5 * inch - 36, 28, f"Page {self._pageNumber} of {page_count}")
         self.restoreState()
 
@@ -76,11 +98,11 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
         'DocTitle',
         parent=styles['Title'],
         fontName='Helvetica-Bold',
-        fontSize=20,
-        leading=24,
-        textColor=colors.HexColor('#0f172a'),
+        fontSize=18,
+        leading=22,
+        textColor=colors.HexColor(PRIMARY_COLOR_HEX),
         alignment=0,
-        spaceAfter=10
+        spaceAfter=8
     )
 
     subtitle_style = ParagraphStyle(
@@ -89,29 +111,29 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
         fontName='Helvetica-Bold',
         fontSize=11,
         leading=14,
-        textColor=colors.HexColor('#d97706'),
-        spaceAfter=15
+        textColor=colors.HexColor(SECONDARY_COLOR_HEX),
+        spaceAfter=12
     )
 
     h1_style = ParagraphStyle(
         'Heading1_Custom',
         parent=styles['Heading1'],
         fontName='Helvetica-Bold',
-        fontSize=14,
-        leading=18,
-        textColor=colors.HexColor('#1e293b'),
-        spaceBefore=14,
-        spaceAfter=8
+        fontSize=13,
+        leading=16,
+        textColor=colors.HexColor(PRIMARY_COLOR_HEX),
+        spaceBefore=12,
+        spaceAfter=6
     )
 
     body_style = ParagraphStyle(
         'Body_Custom',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=9.5,
-        leading=13.5,
+        fontSize=9,
+        leading=13,
         textColor=colors.HexColor('#334155'),
-        spaceAfter=8
+        spaceAfter=6
     )
 
     bullet_style = ParagraphStyle(
@@ -124,34 +146,35 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
     story = []
 
     # Title Banner Block
-    story.append(Paragraph(f"INTEGRATED HEALTH & SAFETY (IHS) MANUAL", title_style))
-    story.append(Paragraph(f"Site: {STATION_NAME} ({SITE_CODE}) | Fuel Brand: Shell / Engen / Multi-Tenant", subtitle_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#f59e0b"), spaceAfter=15))
+    story.append(Paragraph(f"INTEGRATED HEALTH & SAFETY (IHS) COMPLIANCE MANUAL", title_style))
+    story.append(Paragraph(f"Site: {STATION_NAME} | Code: {SITE_CODE} | Location: {LOCATION}", subtitle_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor(SECONDARY_COLOR_HEX), spaceAfter=12))
 
     # Section 1: Executive Site Profile & Statutory Registration
     story.append(Paragraph("1. Executive Site Profile & Legal Registration", h1_style))
     site_table_data = [
-        [Paragraph("<b>Station Name:</b>", body_style), Paragraph(STATION_NAME, body_style)],
-        [Paragraph("<b>Company Legal Entity:</b>", body_style), Paragraph(COMPANY_LEGAL_NAME, body_style)],
+        [Paragraph("<b>Tenant Brand Name:</b>", body_style), Paragraph(TENANT_NAME, body_style)],
+        [Paragraph("<b>Forecourt Network Site:</b>", body_style), Paragraph(STATION_NAME, body_style)],
+        [Paragraph("<b>Location / Physical Address:</b>", body_style), Paragraph(LOCATION, body_style)],
         [Paragraph("<b>Site Regulatory Code:</b>", body_style), Paragraph(SITE_CODE, body_style)],
         [Paragraph("<b>Statutory Oversight:</b>", body_style), Paragraph("OHS Act 85 of 1993, Section 16.1 & 16.2 Appointees", body_style)],
-        [Paragraph("<b>24/7 Emergency Line:</b>", body_style), Paragraph(EMERGENCY_CONTACT, body_style)],
+        [Paragraph("<b>Emergency Line:</b>", body_style), Paragraph(EMERGENCY_CONTACT, body_style)],
     ]
     t_site = Table(site_table_data, colWidths=[2.2 * inch, 5.2 * inch])
     t_site.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor("#f8fafc")),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#e2e8f0")),
-        ('PADDING', (0,0), (-1,-1), 6),
+        ('PADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_site)
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
 
-    # Section 2: Statutory Compliance Mandates
+    # Section 2: Statutory Compliance Mandates & SANS 10089 ESD
     story.append(Paragraph("2. Statutory Mandates & SANS 10089 Forecourt Standards", h1_style))
     story.append(Paragraph("This manual establishes mandatory compliance under South African occupational safety law:", body_style))
-    story.append(Paragraph("• <b>OHS Act 85 of 1993 (Section 8):</b> General duties of employers to ensure all forecourt operations, fuel dispensing, and retail store activities are safe without risk to workers or customers.", bullet_style))
-    story.append(Paragraph("• <b>SANS 10089 (Parts 1 & 3):</b> South African National Standard governing bulk petroleum storage, underground tanks, dispenser hydraulics, static bonding during fuel offloading, and mandatory ESD (Emergency Stop Device) switches.", bullet_style))
-    story.append(Paragraph("• <b>POPIA (Act 4 of 2013):</b> Mandatory client-side AES-256-GCM encryption of employee SA ID numbers and incident log signatures.", bullet_style))
+    story.append(Paragraph("• <b>OHS Act 85 of 1993 (Section 8):</b> General duties of employers to provide a safe working environment on all forecourt fuel dispenser islands and retail stores.", bullet_style))
+    story.append(Paragraph("• <b>SANS 10089 Parts 1 & 3 (ESD Policy Enforced):</b> Bulk petroleum handling, dispenser hydraulics, mandatory static bonding during fuel offloading, and 2-second Emergency Stop Device (ESD) isolation.", bullet_style))
+    story.append(Paragraph("• <b>POPIA (Act 4 of 2013):</b> AES-256-GCM client-side encryption of employee SA ID numbers and incident log signatures.", bullet_style))
     story.append(Spacer(1, 10))
 
     # Section 3: Section 24 Incident Escalation Protocol
@@ -164,13 +187,13 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
     ]
     t_sec24 = Table(sec24_data, colWidths=[2.5 * inch, 2.3 * inch, 2.6 * inch])
     t_sec24.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0f172a")),
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor(PRIMARY_COLOR_HEX)),
         ('TEXTCOLOR', (0,0), (-1,0), colors.white),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#cbd5e1")),
-        ('PADDING', (0,0), (-1,-1), 6),
+        ('PADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_sec24)
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
 
     # Section 4: 4-Stage Emergency Forecourt Procedures
     story.append(Paragraph("4. Emergency Forecourt Action Procedures", h1_style))
@@ -180,14 +203,14 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
     story.append(Paragraph("3. Dial 10177 / 112 from landline with site code.", bullet_style))
     story.append(Paragraph("4. Position certified Fire Warden upwind with 9kg DCP Extinguisher.", bullet_style))
     story.append(Paragraph("5. Sweep Quick Shop and restrooms; evacuate to Assembly Point.", bullet_style))
-    story.append(Spacer(1, 8))
+    story.append(Spacer(1, 6))
 
     story.append(Paragraph("<b>4.2 4-Stage Forecourt Fuel Spill Containment Protocol:</b>", body_style))
     story.append(Paragraph("• <b>Role 1 (Fetcher):</b> Don nitrile gloves + safety goggles; lay booms around storm drain grates.", bullet_style))
     story.append(Paragraph("• <b>Role 2 (Spade Applicator):</b> Apply non-sparking plastic spade to spread peat moss / absorbent granules.", bullet_style))
     story.append(Paragraph("• <b>Role 3 (Sweeper):</b> Sweep encapsulated granules into centralized piles using soft non-static brooms.", bullet_style))
     story.append(Paragraph("• <b>Role 4 (Waste Disposer):</b> Seal waste into marked hazardous waste bags and deposit into drum.", bullet_style))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
 
     # Sign-off Block
     story.append(KeepTogether([
@@ -195,7 +218,7 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
         Table([
             [Paragraph("<b>Station General Manager:</b> ___________________________", body_style), Paragraph("<b>Date:</b> ______________", body_style)],
             [Paragraph("<b>OHS Representative (Sec 17):</b> _________________________", body_style), Paragraph("<b>Date:</b> ______________", body_style)],
-        ], colWidths=[5.2 * inch, 2.2 * inch], style=[('PADDING', (0,0), (-1,-1), 8)])
+        ], colWidths=[5.2 * inch, 2.2 * inch], style=[('PADDING', (0,0), (-1,-1), 6)])
     ]))
 
     doc.build(story, canvasmaker=NumberedCanvas)

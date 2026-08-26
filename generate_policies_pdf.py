@@ -1,11 +1,29 @@
 #!/usr/bin/env python3
 """
 Service Station OHS Compliance Platform - Statutory OHS Policy Documents Generator
-Refactored ReportLab script generating statutory policy documentation with multi-tenant headers/footers.
+Refactored ReportLab script generating statutory policy documentation with dynamic .env.local tenant settings.
 """
 
 import sys
 import os
+
+def load_env_local():
+    """Reads .env.local if present and populates os.environ."""
+    env_paths = [".env.local", ".env.white-label.template", ".env"]
+    for path in env_paths:
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        val = val.strip().strip('"').strip("'")
+                        if key not in os.environ:
+                            os.environ[key] = val
+
+load_env_local()
+
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -15,11 +33,14 @@ from reportlab.platypus import (
 )
 from reportlab.pdfgen import canvas
 
-# Multi-Tenant Site Configuration Defaults
-TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Apex Energy Forecourt Compliance Portal")
-COMPANY_LEGAL_NAME = os.getenv("VITE_WHITE_LABEL_COMPANY_LEGAL_NAME", "Apex Petroleum Retailers (Pty) Ltd")
-SITE_CODE = os.getenv("VITE_STATION_SITE_CODE", "ZA-OHS-40921")
-STATION_NAME = os.getenv("VITE_STATION_NAME", "Apex Station Forecourt #104")
+# Multi-Tenant Site Configuration Parsed from Environment
+TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Engen Retail Service Station")
+SITE_CODE = os.getenv("VITE_TENANT_ID", os.getenv("VITE_STATION_SITE_CODE", "ENG-JHB-042"))
+STATION_NAME = os.getenv("VITE_TENANT_SITE_NAME", os.getenv("VITE_STATION_NAME", "Gauteng South Forecourt Network"))
+LOCATION = os.getenv("VITE_TENANT_LOCATION", "Lenasia, Gauteng")
+COMPANY_LEGAL_NAME = os.getenv("VITE_WHITE_LABEL_COMPANY_LEGAL_NAME", f"{TENANT_NAME} ({LOCATION})")
+PRIMARY_COLOR_HEX = os.getenv("VITE_TENANT_PRIMARY_COLOR", "#005A9C")
+SECONDARY_COLOR_HEX = os.getenv("VITE_TENANT_SECONDARY_COLOR", "#ED1C24")
 
 class PolicyCanvas(canvas.Canvas):
     """Multi-tenant canvas with custom running headers and footers."""
@@ -42,18 +63,19 @@ class PolicyCanvas(canvas.Canvas):
     def draw_header_footer(self, page_count):
         self.saveState()
         self.setFont("Helvetica-Bold", 8)
-        self.setFillColor(colors.HexColor("#0284c7"))
+        self.setFillColor(colors.HexColor(PRIMARY_COLOR_HEX))
 
         # Header (Top of page)
-        self.drawString(36, 11 * inch - 28, f"STATUTORY POLICY: {TENANT_NAME.upper()}")
+        self.drawString(36, 11 * inch - 28, f"STATUTORY POLICY SUITE: {TENANT_NAME.upper()}")
         self.drawRightString(8.5 * inch - 36, 11 * inch - 28, f"SITE CODE: {SITE_CODE}")
-        self.setStrokeColor(colors.HexColor("#38bdf8"))
-        self.setLineWidth(0.5)
+        self.setStrokeColor(colors.HexColor(PRIMARY_COLOR_HEX))
+        self.setLineWidth(0.75)
         self.line(36, 11 * inch - 32, 8.5 * inch - 36, 11 * inch - 32)
 
         # Footer (Bottom of page)
         self.line(36, 42, 8.5 * inch - 36, 42)
         self.setFont("Helvetica", 8)
+        self.setFillColor(colors.HexColor("#475569"))
         self.drawString(36, 28, f"{COMPANY_LEGAL_NAME} | Mandated OHS Act 85 & SANS 10089 Policy Suite")
         self.drawRightString(8.5 * inch - 36, 28, f"Page {self._pageNumber} of {page_count}")
         self.restoreState()
@@ -77,7 +99,7 @@ def build_policies_pdf(filename="Service_Station_OHS_Policies.pdf"):
         fontName='Helvetica-Bold',
         fontSize=18,
         leading=22,
-        textColor=colors.HexColor('#0f172a'),
+        textColor=colors.HexColor(PRIMARY_COLOR_HEX),
         alignment=0,
         spaceAfter=8
     )
@@ -88,7 +110,7 @@ def build_policies_pdf(filename="Service_Station_OHS_Policies.pdf"):
         fontName='Helvetica-Bold',
         fontSize=13,
         leading=16,
-        textColor=colors.HexColor('#0284c7'),
+        textColor=colors.HexColor(PRIMARY_COLOR_HEX),
         spaceBefore=12,
         spaceAfter=6
     )
@@ -107,8 +129,8 @@ def build_policies_pdf(filename="Service_Station_OHS_Policies.pdf"):
 
     # Title Banner Block
     story.append(Paragraph(f"MANDATORY SERVICE STATION OHS POLICY SUITE", title_style))
-    story.append(Paragraph(f"Site: {STATION_NAME} ({SITE_CODE})", body_style))
-    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor("#0284c7"), spaceAfter=12))
+    story.append(Paragraph(f"Site: {STATION_NAME} | Code: {SITE_CODE} | Location: {LOCATION}", body_style))
+    story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor(SECONDARY_COLOR_HEX), spaceAfter=12))
 
     # Policy 1: Emergency Forecourt Evacuation Policy
     story.append(Paragraph("Policy 1: Forecourt Emergency Evacuation & ESD Isolation", h1_style))
@@ -150,7 +172,7 @@ def build_policies_pdf(filename="Service_Station_OHS_Policies.pdf"):
         "(e.g., dispensing fuel near naked flames or ungrounded tankers). Under POPIA Act 4 of 2013, employee SA ID numbers "
         "and medical records are protected by client-side AES-256-GCM encryption.", body_style
     ))
-    story.append(Spacer(1, 15))
+    story.append(Spacer(1, 12))
 
     # Sign-off Table
     story.append(KeepTogether([
@@ -164,7 +186,7 @@ def build_policies_pdf(filename="Service_Station_OHS_Policies.pdf"):
         style=[
             ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#f1f5f9")),
             ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#cbd5e1")),
-            ('PADDING', (0,0), (-1,-1), 6)
+            ('PADDING', (0,0), (-1,-1), 5)
         ])
     ]))
 
