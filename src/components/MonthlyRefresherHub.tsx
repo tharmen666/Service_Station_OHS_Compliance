@@ -176,9 +176,9 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
   const activeCase = caseStudies[selectedCaseStudy];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full max-w-full overflow-x-hidden min-w-0 box-border">
       {/* Header Banner */}
-      <div className="pos-card p-6 rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-2xl">
+      <div className="pos-card p-6 rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 via-slate-900 to-slate-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-2xl w-full max-w-full overflow-x-hidden min-w-0 box-border">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-wider mb-2 border border-amber-500/30">
             <RotateCcw className="w-4 h-4 text-amber-400" />
@@ -204,7 +204,7 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
       </div>
 
       {/* Case Studies Carousel Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-full overflow-x-hidden min-w-0 box-border">
         {caseStudies.map((cs, idx) => {
           const IconComp = cs.icon;
           const isSelected = selectedCaseStudy === idx;
@@ -234,7 +234,7 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
       </div>
 
       {/* Case Study Details & Prevention Card */}
-      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl">
+      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl w-full max-w-full overflow-x-hidden min-w-0 box-border">
         <div className="flex justify-between items-center border-b border-slate-800 pb-3">
           <h3 className="text-lg font-black text-amber-400">{activeCase.title}</h3>
           <span className="text-xs font-mono text-slate-400">3-Minute Refresher Spec</span>
@@ -254,7 +254,7 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
       </div>
 
       {/* 5-Question Refresher Quiz Container */}
-      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-6 shadow-2xl">
+      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-6 shadow-2xl w-full max-w-full overflow-x-hidden min-w-0 box-border">
         <div className="flex justify-between items-center border-b border-slate-800 pb-4">
           <div>
             <span className="text-xs font-black uppercase text-amber-400 tracking-wider block">
@@ -341,7 +341,7 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
       </div>
 
       {/* Local Refresher Logs Table */}
-      <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl">
+      <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl w-full max-w-full overflow-x-hidden min-w-0 box-border">
         <div className="flex justify-between items-center border-b border-slate-800 pb-3">
           <h4 className="text-sm font-extrabold text-white flex items-center gap-2">
             <UserCheck className="w-4 h-4 text-emerald-400" />
@@ -350,8 +350,8 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
           <span className="text-xs text-slate-400">Auto-Indexed for SANS Audits</span>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="w-full overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 max-w-full box-border">
+          <table className="w-full text-left text-xs min-w-[600px]">
             <thead>
               <tr className="border-b border-slate-800 text-slate-400 font-bold uppercase tracking-wider">
                 <th className="py-2.5 px-3">Log ID</th>

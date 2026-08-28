@@ -14,8 +14,12 @@ import { CorporateStewardshipExporter } from './components/CorporateStewardshipE
 import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
+import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashboard';
+import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
+import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
+import { RSDChecklistModule } from './components/RSDChecklistModule';
 import { Language, translations } from './data/translations';
-import { getActiveTenant } from './multiTenantConfig';
+import { getActiveTenant, subscribeTenantChange, switchTenantBrand } from './multiTenantConfig';
 import { verifyPOPIAEncryption } from './popiActCompliance';
 import { 
   AlertOctagon, 
@@ -37,13 +41,16 @@ import {
   RotateCcw,
   BellRing,
   FileSpreadsheet,
-  Scale
+  Scale,
+  Sliders,
+  Sparkles,
+  LayoutDashboard
 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights'
-  >('evacuation');
+    'executiveDashboard' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
+  >('executiveDashboard');
   
   const [lang, setLang] = useState<Language>('EN');
   const [isAIStudioOpen, setIsAIStudioOpen] = useState<boolean>(false);
@@ -51,12 +58,19 @@ export const App: React.FC = () => {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState<boolean>(false);
   const [isDossierOpen, setIsDossierOpen] = useState<boolean>(false);
+  const [isNellyOpen, setIsNellyOpen] = useState<boolean>(true);
+  const [isGearModalOpen, setIsGearModalOpen] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [activeTenant, setActiveTenantState] = useState(getActiveTenant());
 
   const t = translations[lang];
-  const activeTenant = getActiveTenant();
   const popiaStatus = verifyPOPIAEncryption();
+
+  useEffect(() => {
+    const unsubTenant = subscribeTenantChange((t) => setActiveTenantState(t));
+    return () => unsubTenant();
+  }, []);
 
   useEffect(() => {
     const updateClock = () => {
@@ -69,7 +83,29 @@ export const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans w-full max-w-full overflow-x-hidden min-w-0">
+      
+      {/* Floating GEAR Pillar Settings Button (fixed top-4 right-4 z-50) */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        <button
+          onClick={() => setIsGearModalOpen(true)}
+          className="p-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-2xl shadow-amber-950/80 border-2 border-amber-300 transition transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2"
+          title="Open G.E.A.R. Pillar Settings Suite"
+        >
+          <Sliders className="w-5 h-5 text-slate-950 animate-spin-slow" />
+          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">GEAR Pillars</span>
+        </button>
+
+        <button
+          onClick={() => setIsNellyOpen(!isNellyOpen)}
+          className="p-3 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-black shadow-2xl shadow-purple-950/80 border-2 border-purple-300 transition transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2"
+          title="Toggle Nelly AI Avatar Guide"
+        >
+          <Bot className="w-5 h-5 text-purple-100" />
+          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">Nelly AI</span>
+        </button>
+      </div>
+
       {/* Top POS Header Bar */}
       <header className="bg-slate-900/95 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 shadow-xl">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -77,7 +113,7 @@ export const App: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-red-500 p-0.5 shadow-lg shadow-amber-950/60">
               <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center font-black text-2xl">
-                ⛽
+                {activeTenant.badgeSymbol || '⛽'}
               </div>
             </div>
             <div>
@@ -94,12 +130,12 @@ export const App: React.FC = () => {
                   </span>
                 )}
               </div>
-              <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5">{t.headerTitle}</h1>
+              <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5">{activeTenant.brandName}</h1>
             </div>
           </div>
 
           {/* POS Status & Multilingual Selector */}
-          <div className="hidden lg:flex items-center gap-3 text-xs font-semibold text-slate-300">
+          <div className="hidden lg:flex items-center gap-3 text-xs font-semibold text-slate-300 pr-32">
             {/* Multilingual Selector */}
             <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
               <Globe className="w-4 h-4 text-amber-400 ml-1" />
@@ -134,7 +170,7 @@ export const App: React.FC = () => {
           </div>
 
           {/* Action Buttons & Mobile Menu Toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mr-32 lg:mr-0">
             <button
               onClick={() => setIsNotificationCenterOpen(true)}
               className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-extrabold text-xs flex items-center gap-2 border border-slate-700 transition min-h-[40px]"
@@ -212,6 +248,20 @@ export const App: React.FC = () => {
         {/* Hazard Module Tabs Navigation */}
         <div className="max-w-7xl mx-auto px-4 py-2 border-t border-slate-800/80 overflow-x-auto">
           <div className="flex items-center gap-2 min-w-max">
+            
+            {/* Executive Dashboard & HQ Demo Primary Tab */}
+            <button
+              onClick={() => setActiveTab('executiveDashboard')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'executiveDashboard'
+                  ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-slate-950 shadow-xl border-2 border-amber-300'
+                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
+              }`}
+            >
+              <LayoutDashboard className="w-4 h-4 text-slate-950" />
+              0. 🚀 Executive Briefing & HQ Demo
+            </button>
+
             <button
               onClick={() => setActiveTab('evacuation')}
               className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
@@ -320,7 +370,6 @@ export const App: React.FC = () => {
               Refresher
             </button>
 
-            {/* Employee Statutory Rights (BCEA & OHSA) */}
             <button
               onClick={() => setActiveTab('rights')}
               className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
@@ -330,14 +379,34 @@ export const App: React.FC = () => {
               }`}
             >
               <Scale className="w-4 h-4 text-blue-400" />
-              9. ⚖️ Employee Rights (BCEA)
+              9. ⚖️ Employee Rights
+            </button>
+
+            <button
+              onClick={() => setActiveTab('rsdChecklists')}
+              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
+                activeTab === 'rsdChecklists'
+                  ? 'bg-amber-500 text-slate-950 shadow-xl border border-amber-300'
+                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
+              }`}
+            >
+              <FileCheck className="w-4 h-4 text-amber-400" />
+              10. 📋 RSD 26 Checklists
             </button>
           </div>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6 max-w-full overflow-x-hidden min-w-0 box-border">
+        {activeTab === 'executiveDashboard' && (
+          <ExecutiveBriefingDashboard
+            lang={lang}
+            onOpenNelly={() => setIsNellyOpen(true)}
+            onOpenGearModal={() => setIsGearModalOpen(true)}
+            onNavigateTab={(target) => setActiveTab(target)}
+          />
+        )}
         {activeTab === 'evacuation' && <EvacuationFlow />}
         {activeTab === 'spill' && <SpillTeamwork />}
         {activeTab === 'customer' && <CustomerServiceModule />}
@@ -359,6 +428,7 @@ export const App: React.FC = () => {
           />
         )}
         {activeTab === 'rights' && <StatutoryRightsModule />}
+        {activeTab === 'rsdChecklists' && <RSDChecklistModule lang={lang} />}
       </main>
 
       {/* Statutory Footer & Regulatory Standards */}
@@ -376,6 +446,21 @@ export const App: React.FC = () => {
           </div>
         </div>
       </footer>
+
+      {/* Persistent Dockable Nelly AI Agent Window */}
+      <NellyAIAgentWindow
+        isOpen={isNellyOpen}
+        onClose={() => setIsNellyOpen(false)}
+        lang={lang}
+        onTriggerBrandSwitch={(b) => switchTenantBrand(b)}
+        onOpenGearModal={() => setIsGearModalOpen(true)}
+      />
+
+      {/* G.E.A.R. Pillar Settings Overlay Modal */}
+      <GearPillarSettingsModal
+        isOpen={isGearModalOpen}
+        onClose={() => setIsGearModalOpen(false)}
+      />
 
       {/* Google AI Studio Drawer */}
       <AIStudioDrawer
