@@ -18,14 +18,14 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     await expect(page).toHaveTitle(/Forecourt OHS/i);
 
     // Verify main header title is rendered
-    const headerTitle = page.locator('h1');
+    const headerTitle = page.locator('h1').first();
     await expect(headerTitle).toBeVisible();
 
     // Test switching tabs (Evacuation, Spill, Fire, Rights, Quiz, Refresher)
     const spillTabButton = page.getByRole('button', { name: /Spill Response/i }).first();
     if (await spillTabButton.isVisible()) {
       await spillTabButton.click();
-      await expect(page.locator('text=4-Stage Forecourt Fuel Spill')).toBeVisible();
+      await expect(page.locator('text=Emergency Spill Response Teamwork Protocol')).toBeVisible();
     }
 
     const rightsTabButton = page.getByRole('button', { name: /Employee Rights/i }).first();
