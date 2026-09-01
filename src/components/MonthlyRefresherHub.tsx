@@ -45,7 +45,7 @@ export const MonthlyRefresherHub: React.FC<MonthlyRefresherHubProps> = ({
   const [quizScore, setQuizScore] = useState<number>(0);
   const [quizCompleted, setQuizCompleted] = useState<boolean>(false);
   const [refresherLogs, setRefresherLogs] = useState<RefresherLog[]>([
-    { id: 'LOG-101', candidateName: 'Melly Tharmen', role: 'Senior Attendant', score: 5, total: 5, date: '2026-08-01', status: 'PASSED' },
+    { id: 'LOG-101', candidateName: 'Nelly Tharmen', role: 'Senior Attendant', score: 5, total: 5, date: '2026-08-01', status: 'PASSED' },
     { id: 'LOG-102', candidateName: 'Sipho Ndlovu', role: 'Cashier Supervisor', score: 4, total: 5, date: '2026-08-03', status: 'PASSED' },
     { id: 'LOG-103', candidateName: 'Pieter van Zyl', role: 'Nightshift Attendant', score: 5, total: 5, date: '2026-08-06', status: 'PASSED' }
   ]);

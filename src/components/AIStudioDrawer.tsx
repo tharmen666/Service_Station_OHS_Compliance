@@ -83,7 +83,7 @@ export const AIStudioDrawer: React.FC<AIStudioDrawerProps> = ({ isOpen, onClose 
           <div className="space-y-2">
             <div className="flex justify-between items-center">
               <label className="text-xs font-extrabold text-slate-300 uppercase tracking-wider">
-                System Instructions (Melly OHS Advisor persona)
+                System Instructions (Nelly OHS Advisor persona)
               </label>
               <button
                 onClick={copySystemInstruction}

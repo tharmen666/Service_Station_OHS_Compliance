@@ -33,7 +33,7 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
   const t = translations[lang];
 
   // Form State for HITL Sign-off
-  const [candidateName, setCandidateName] = useState<string>('Melly Tharmen');
+  const [candidateName, setCandidateName] = useState<string>('Nelly Tharmen');
   const [employeeId, setEmployeeId] = useState<string>('EMP-904281');
   const [stationLocation, setStationLocation] = useState<string>('Engen Convenience Centre - Forecourt #4');
   const [roleTitle, setRoleTitle] = useState<string>('Senior Forecourt Attendant & Fire Warden');
