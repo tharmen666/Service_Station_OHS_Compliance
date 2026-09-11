@@ -28,21 +28,25 @@ import {
   ArrowUpRight,
   ChevronRight,
   Flame,
-  Award
+  Award,
+  Scale
 } from 'lucide-react';
+
 
 interface ExecutiveBriefingDashboardProps {
   lang: Language;
   onOpenNelly: () => void;
   onOpenGearModal: () => void;
   onNavigateTab: (tab: 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights') => void;
+  onOpenStatutoryModal?: () => void;
 }
 
 export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProps> = ({
   lang,
   onOpenNelly,
   onOpenGearModal,
-  onNavigateTab
+  onNavigateTab,
+  onOpenStatutoryModal
 }) => {
   const t = translations[lang];
   const [gearState, setGearState] = useState<GearState>(getGearState());
@@ -94,6 +98,16 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
 
           {/* Quick Action Buttons */}
           <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+            {onOpenStatutoryModal && (
+              <button
+                onClick={onOpenStatutoryModal}
+                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-emerald-950/50 transition transform hover:-translate-y-0.5 min-h-[48px] flex-1 sm:flex-none border border-emerald-300/40"
+              >
+                <Scale className="w-4 h-4 text-slate-950" />
+                <span>Generate Statutory Doc</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenGearModal}
               className="px-5 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-xl shadow-amber-950/50 transition transform hover:-translate-y-0.5 min-h-[48px] flex-1 sm:flex-none"
@@ -112,6 +126,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
           </div>
         </div>
 
+
         {/* Brand Theme Quick Selector */}
         <div className="mt-6 pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
           <span className="text-slate-400 font-bold flex items-center gap-1.5">
@@ -120,7 +135,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
-            {(['engen', 'shell', 'caltex', 'freshstop'] as const).map((brandKey) => (
+            {(['standard', 'express', 'highway', 'urban'] as const).map((brandKey) => (
               <button
                 key={brandKey}
                 onClick={() => switchTenantBrand(brandKey)}
@@ -130,7 +145,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
                     : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'
                 }`}
               >
-                {brandKey}
+                {brandKey} Profile
               </button>
             ))}
           </div>

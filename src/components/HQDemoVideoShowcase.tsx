@@ -109,13 +109,37 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
 
   const activeStep = demoSteps[activeStepIndex];
 
-  // Speech synthesis audio playback
-  const speakStepScript = (scriptText: string) => {
+  // Speech synthesis audio playback with Rachel Female Voiceover priority
+  const speakStepScript = (scriptText: string, langCode: string = 'en-US') => {
     if (isMuted || !('speechSynthesis' in window)) return;
+
+    // 1. Clear any stuck utterance queue in Chrome/Edge
     window.speechSynthesis.cancel();
+
     const utterance = new SpeechSynthesisUtterance(scriptText);
-    utterance.rate = 0.95;
-    utterance.pitch = 1.0;
+    
+    // 2. Select appropriate voice or fallback
+    const voices = window.speechSynthesis.getVoices();
+    let matchedVoice = voices.find(v => v.name.toLowerCase().includes('rachel'))
+                    || voices.find(v => v.lang.startsWith(langCode.toLowerCase()))
+                    || voices.find(v => 
+                         v.lang.startsWith('en') && 
+                         (v.name.toLowerCase().includes('female') || 
+                          v.name.toLowerCase().includes('zira') || 
+                          v.name.toLowerCase().includes('samantha') || 
+                          v.name.toLowerCase().includes('victoria') ||
+                          v.name.toLowerCase().includes('karen') ||
+                          v.name.toLowerCase().includes('google us english'))
+                       )
+                    || voices.find(v => v.lang.includes('en'))
+                    || voices[0];
+
+    if (matchedVoice) utterance.voice = matchedVoice;
+    utterance.lang = matchedVoice ? matchedVoice.lang : 'en-US';
+    utterance.rate = 1.0;
+    utterance.pitch = 1.15; // Natural female voice timbre
+
+    // 3. Resume queue and trigger
     window.speechSynthesis.speak(utterance);
   };
 
@@ -180,7 +204,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
               🎬 60-Second HQ Interactive Showcase
             </span>
             <span className="px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-500/30">
-              Guided by 'Nelly' AI Avatar
+              🎙️ Guided by 'Rachel' Female Voiceover
             </span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
@@ -274,7 +298,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
 
                   <div className="flex items-center justify-center gap-2 pt-2">
                     <span className="text-xs text-slate-400 font-bold">Switch Brand:</span>
-                    {(['engen', 'shell', 'caltex', 'freshstop'] as const).map((b) => (
+                    {(['standard', 'express', 'highway', 'urban'] as const).map((b) => (
                       <button
                         key={b}
                         onClick={() => switchTenantBrand(b)}
@@ -445,7 +469,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
             
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <span className="text-xs font-black uppercase text-purple-300 tracking-wider">
-                Nelly AI Avatar Voice Script
+                Rachel HQ Female Voiceover Script
               </span>
               <span className="px-2 py-0.5 rounded bg-slate-950 text-amber-400 text-[10px] font-mono font-bold border border-slate-800">
                 {activeStep.timeRange}

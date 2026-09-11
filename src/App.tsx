@@ -15,7 +15,9 @@ import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
 import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashboard';
+import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
+
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
 import { RSDChecklistModule } from './components/RSDChecklistModule';
 import { Language, translations } from './data/translations';
@@ -30,8 +32,6 @@ import {
   Bot, 
   HardDrive, 
   Zap, 
-  Menu,
-  X,
   Globe,
   FileCheck,
   Building2,
@@ -43,7 +43,6 @@ import {
   FileSpreadsheet,
   Scale,
   Sliders,
-  Sparkles,
   LayoutDashboard
 } from 'lucide-react';
 
@@ -58,10 +57,10 @@ export const App: React.FC = () => {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState<boolean>(false);
   const [isDossierOpen, setIsDossierOpen] = useState<boolean>(false);
-  const [isNellyOpen, setIsNellyOpen] = useState<boolean>(true);
+  const [isNellyOpen, setIsNellyOpen] = useState<boolean>(false);
   const [isGearModalOpen, setIsGearModalOpen] = useState<boolean>(false);
+  const [isStatutoryModalOpen, setIsStatutoryModalOpen] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>('');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [activeTenant, setActiveTenantState] = useState(getActiveTenant());
 
   const t = translations[lang];
@@ -82,10 +81,25 @@ export const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const moduleTabs = [
+    { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
+    { id: 'evacuation', label: '1. ESD & Evacuation', icon: AlertOctagon },
+    { id: 'spill', label: '2. Fuel Spill Containment', icon: Shield },
+    { id: 'customer', label: '3. Customer Hazmat', icon: Building2 },
+    { id: 'fire', label: '4. PASS Firefighting', icon: Flame },
+    { id: 'quiz', label: '5. 60s Assessment (40 Qs)', icon: Award },
+    { id: 'curriculum', label: '6. Curriculum Bank', icon: BookOpen },
+    { id: 'demo', label: '7. Video Showcase', icon: Video },
+    { id: 'firstResponder', label: '8. First Responder', icon: HeartPulse },
+    { id: 'refresher', label: '9. Refresher Hub', icon: RotateCcw },
+    { id: 'rights', label: '10. Employee Rights', icon: Scale },
+    { id: 'rsdChecklists', label: '11. RSD 26 Checklists', icon: FileCheck },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#070b14] text-slate-100 flex flex-col font-sans w-full max-w-full overflow-x-hidden min-w-0">
+    <div style={{ display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#070d1e' }} className="font-sans">
       
-      {/* Floating GEAR Pillar Settings Button (fixed top-4 right-4 z-50) */}
+      {/* Floating GEAR Pillar Settings & AI Guide Buttons */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <button
           onClick={() => setIsGearModalOpen(true)}
@@ -99,23 +113,69 @@ export const App: React.FC = () => {
         <button
           onClick={() => setIsNellyOpen(!isNellyOpen)}
           className="p-3 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-black shadow-2xl shadow-purple-950/80 border-2 border-purple-300 transition transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2"
-          title="Toggle Nelly AI Avatar Guide"
+          title="Toggle AI Avatar Guide"
         >
           <Bot className="w-5 h-5 text-purple-100" />
-          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">Nelly AI</span>
+          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">AI Advisor</span>
         </button>
       </div>
 
-      {/* Top POS Header Bar */}
-      <header className="bg-slate-900/95 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Logo & Brand */}
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-amber-500 via-orange-500 to-red-500 p-0.5 shadow-lg shadow-amber-950/60">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center font-black text-2xl">
-                {activeTenant.badgeSymbol || '⛽'}
-              </div>
-            </div>
+      {/* PERSISTENT LEFT SIDEBAR */}
+      <aside style={{ width: '260px', minWidth: '260px', height: '100%', backgroundColor: '#0b1329', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', flexShrink: 0, zIndex: 50 }}>
+        
+        {/* System Brand Header */}
+        <div style={{ padding: '16px', borderBottom: '1px solid #1e293b' }}>
+          <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#38bdf8', letterSpacing: '0.05em' }}>FORECOURT POS OHS</div>
+          <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#ffffff' }}>Service Station Compliance Tablet</div>
+          <div style={{ fontSize: '10px', color: '#94a3b8' }}>SANS 10089 • Act 85 of 1993</div>
+        </div>
+
+        {/* Vertical Module Navigation */}
+        <nav style={{ flex: 1, overflowY: 'auto', padding: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          {moduleTabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                style={{
+                  width: '100%',
+                  textAlign: 'left',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  fontWeight: isActive ? '900' : '600',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  backgroundColor: isActive ? '#f59e0b' : 'transparent',
+                  color: isActive ? '#020617' : '#cbd5e1',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-slate-400'}`} />
+                <span className="truncate">{tab.label}</span>
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* Anonymous Footer in Sidebar */}
+        <div style={{ padding: '12px 16px', borderTop: '1px solid #1e293b', fontSize: '10px', color: '#64748b' }}>
+          System Status: <span style={{ color: '#34d399', fontWeight: 'bold' }}>Active</span> • AES-256
+        </div>
+      </aside>
+
+      {/* RIGHT MAIN VIEWPORT */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, overflow: 'hidden', backgroundColor: '#070d1e' }}>
+        
+        {/* Top Header Bar */}
+        <header style={{ flexShrink: 0, borderBottom: '1px solid #1e293b', padding: '12px 24px', backgroundColor: '#070d1e' }}>
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
@@ -125,334 +185,144 @@ export const App: React.FC = () => {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
                 </span>
                 {popiaStatus.compliant && (
-                  <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 flex items-center gap-1">
+                  <span className="hidden sm:flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1">
                     <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256
                   </span>
                 )}
               </div>
               <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5">{activeTenant.brandName}</h1>
             </div>
-          </div>
 
-          {/* POS Status & Multilingual Selector */}
-          <div className="hidden lg:flex items-center gap-3 text-xs font-semibold text-slate-300 pr-32">
-            {/* Multilingual Selector */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
-              <Globe className="w-4 h-4 text-amber-400 ml-1" />
-              {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
-                <button
-                  key={l}
-                  onClick={() => setLang(l)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all min-h-[32px] ${
-                    lang === l
-                      ? 'bg-amber-500 text-slate-950 shadow-md'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-900'
-                  }`}
-                >
-                  {l}
-                </button>
-              ))}
-            </div>
+            {/* POS Status & Action Widgets */}
+            <div className="flex items-center gap-2.5 pr-32 lg:pr-36">
+              <div className="hidden xl:flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
+                <Globe className="w-4 h-4 text-amber-400 ml-1" />
+                {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLang(l)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all min-h-[32px] ${
+                      lang === l
+                        ? 'bg-amber-500 text-slate-950 shadow-md'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                    }`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
 
-            <div className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-2 text-[11px]">
-              <HardDrive className="w-3.5 h-3.5 text-amber-400" />
-              <span>{t.usbStatus}</span>
-            </div>
+              <div className="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-[11px]">
+                <HardDrive className="w-3.5 h-3.5 text-amber-400" />
+                <span>{t.usbStatus}</span>
+              </div>
 
-            <div className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-2 text-[11px]">
-              <Zap className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{t.esdStatus}</span>
-            </div>
+              <div className="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-[11px]">
+                <Zap className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{t.esdStatus}</span>
+              </div>
 
-            <div className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-xs">
-              🕒 {currentTime}
-            </div>
-          </div>
+              <div className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-xs">
+                🕒 {currentTime}
+              </div>
 
-          {/* Action Buttons & Mobile Menu Toggle */}
-          <div className="flex items-center gap-2 mr-32 lg:mr-0">
-            <button
-              onClick={() => setIsNotificationCenterOpen(true)}
-              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-extrabold text-xs flex items-center gap-2 border border-slate-700 transition min-h-[40px]"
-              title="Retailer Notification Center"
-            >
-              <BellRing className="w-4 h-4 text-amber-400" />
-              <span className="hidden xl:inline">Alerts</span>
-            </button>
-
-            <button
-              onClick={() => setIsDossierOpen(true)}
-              className="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 font-extrabold text-xs flex items-center gap-2 border border-slate-700 transition min-h-[40px]"
-              title="Oil Company Corporate Stewardship Dossier"
-            >
-              <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-              <span className="hidden xl:inline">Dossier</span>
-            </button>
-
-            <button
-              onClick={() => setIsDemoModalOpen(true)}
-              className="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-emerald-500 text-slate-950 font-black text-xs flex items-center gap-2 shadow-lg shadow-amber-950/50 transition min-h-[40px]"
-            >
-              <Video className="w-4 h-4 fill-slate-950" />
-              <span className="hidden sm:inline">🎬 Live Demo</span>
-            </button>
-
-            <button
-              onClick={() => setIsAIStudioOpen(true)}
-              className="px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-purple-950/50 transition border border-purple-400/30 min-h-[40px]"
-              title="Google AI Studio OHS Prompt Drawer"
-            >
-              <Bot className="w-4 h-4 text-purple-300" />
-              <span className="hidden sm:inline">AI Studio</span>
-            </button>
-
-            <button
-              onClick={() => setIsCertModalOpen(true)}
-              className="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs flex items-center gap-2 shadow-lg shadow-emerald-950/50 transition border border-emerald-400/30 min-h-[40px]"
-            >
-              <FileCheck className="w-4 h-4" />
-              <span className="hidden sm:inline">HITL Audit</span>
-            </button>
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-800 text-slate-300 border border-slate-700 min-h-[40px] min-w-[40px]"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Multilingual Selector for Mobile Screens */}
-        <div className="lg:hidden px-4 pb-2 pt-1 border-t border-slate-800 flex items-center justify-between text-xs">
-          <span className="text-slate-400 font-bold flex items-center gap-1">
-            <Globe className="w-3.5 h-3.5 text-amber-400" /> Language:
-          </span>
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
-            {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
               <button
-                key={l}
-                onClick={() => setLang(l)}
-                className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all ${
-                  lang === l
-                    ? 'bg-amber-500 text-slate-950'
-                    : 'text-slate-400 hover:text-white'
-                }`}
+                onClick={() => setIsStatutoryModalOpen(true)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
+                title="Autonomous Statutory OHS Doc Generator"
               >
-                {l}
+                <Scale className="w-4 h-4 text-emerald-400" />
+                <span className="hidden md:inline">Statutory Doc</span>
               </button>
-            ))}
+
+              <button
+                onClick={() => setIsNotificationCenterOpen(true)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition"
+                title="Retailer Notification Center"
+              >
+                <BellRing className="w-4 h-4 text-amber-400" />
+              </button>
+
+              <button
+                onClick={() => setIsDossierOpen(true)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition"
+                title="Corporate Stewardship Dossier"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
+              </button>
+
+              <button
+                onClick={() => setIsAIStudioOpen(true)}
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
+                title="Google AI Studio Integration & Guardrails"
+              >
+                <Bot className="w-4 h-4 text-purple-400" />
+                <span>AI Studio</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </header>
 
-        {/* Hazard Module Tabs Navigation */}
-        <div className="max-w-7xl mx-auto px-4 py-2 border-t border-slate-800/80 overflow-x-auto">
-          <div className="flex items-center gap-2 min-w-max">
-            
-            {/* Executive Dashboard & HQ Demo Primary Tab */}
-            <button
-              onClick={() => setActiveTab('executiveDashboard')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'executiveDashboard'
-                  ? 'bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-slate-950 shadow-xl border-2 border-amber-300'
-                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
-              }`}
-            >
-              <LayoutDashboard className="w-4 h-4 text-slate-950" />
-              0. 🚀 Executive Briefing & HQ Demo
-            </button>
+        {/* Main Active Screen */}
+        <main style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
+          {activeTab === 'executiveDashboard' && (
+            <ExecutiveBriefingDashboard
+              lang={lang}
+              onOpenNelly={() => setIsNellyOpen(true)}
+              onOpenGearModal={() => setIsGearModalOpen(true)}
+              onNavigateTab={(target) => setActiveTab(target)}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+            />
+          )}
+          {activeTab === 'evacuation' && <EvacuationFlow />}
+          {activeTab === 'spill' && <SpillTeamwork />}
+          {activeTab === 'customer' && <CustomerServiceModule />}
+          {activeTab === 'fire' && <PASSFirefighting />}
+          {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
+          {activeTab === 'curriculum' && <CurriculumBrowser />}
+          {activeTab === 'demo' && (
+            <DemoVideoTab 
+              lang={lang} 
+              onNavigateTab={(target) => setActiveTab(target)} 
+              onOpenCertModal={() => setIsCertModalOpen(true)}
+            />
+          )}
+          {activeTab === 'firstResponder' && <NightshiftFirstResponder lang={lang} />}
+          {activeTab === 'refresher' && (
+            <MonthlyRefresherHub 
+              lang={lang} 
+              onOpenDossier={() => setIsDossierOpen(true)}
+            />
+          )}
+          {activeTab === 'rights' && <StatutoryRightsModule />}
+          {activeTab === 'rsdChecklists' && <RSDChecklistModule lang={lang} />}
+        </main>
 
-            <button
-              onClick={() => setActiveTab('evacuation')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'evacuation'
-                  ? 'bg-red-600 text-white shadow-lg shadow-red-950/60 border border-red-400/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <AlertOctagon className="w-4 h-4" />
-              {t.tabEvacuation}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('spill')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'spill'
-                  ? 'bg-amber-500 text-slate-950 shadow-lg shadow-amber-950/60 border border-amber-400/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <Shield className="w-4 h-4" />
-              {t.tabSpill}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('customer')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'customer'
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-950/60 border border-blue-400/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <Building2 className="w-4 h-4" />
-              {t.tabCustomer}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('fire')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'fire'
-                  ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/60 border border-emerald-400/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <Flame className="w-4 h-4" />
-              {t.tabFire}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('quiz')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'quiz'
-                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-950/60 border border-purple-400/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <Award className="w-4 h-4" />
-              {t.tabQuiz}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('curriculum')}
-              className={`px-3.5 py-2.5 rounded-xl font-extrabold text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'curriculum'
-                  ? 'bg-slate-800 text-amber-400 shadow-lg border border-amber-500/40'
-                  : 'bg-slate-950/60 text-slate-400 hover:text-white hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              <BookOpen className="w-4 h-4" />
-              {t.tabCurriculum}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('demo')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'demo'
-                  ? 'bg-gradient-to-r from-emerald-500 to-amber-500 text-slate-950 shadow-xl border border-amber-400'
-                  : 'bg-emerald-950/60 text-emerald-300 hover:text-white hover:bg-emerald-900 border border-emerald-500/40'
-              }`}
-            >
-              <Video className="w-4 h-4 fill-current" />
-              {t.tabDemoVideo}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('firstResponder')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'firstResponder'
-                  ? 'bg-red-600 text-white shadow-xl border border-red-400'
-                  : 'bg-red-950/40 text-red-300 hover:text-white hover:bg-red-900 border border-red-500/40'
-              }`}
-            >
-              <HeartPulse className="w-4 h-4 text-red-400 animate-pulse" />
-              {t.tabFirstResponder}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('refresher')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'refresher'
-                  ? 'bg-amber-500 text-slate-950 shadow-xl border border-amber-300'
-                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
-              }`}
-            >
-              <RotateCcw className="w-4 h-4 text-amber-400" />
-              Refresher
-            </button>
-
-            <button
-              onClick={() => setActiveTab('rights')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'rights'
-                  ? 'bg-blue-600 text-white shadow-xl border border-blue-400'
-                  : 'bg-blue-950/40 text-blue-300 hover:text-white hover:bg-blue-900 border border-blue-500/40'
-              }`}
-            >
-              <Scale className="w-4 h-4 text-blue-400" />
-              9. ⚖️ Employee Rights
-            </button>
-
-            <button
-              onClick={() => setActiveTab('rsdChecklists')}
-              className={`px-3.5 py-2.5 rounded-xl font-black text-xs flex items-center gap-2 transition-all min-h-[44px] ${
-                activeTab === 'rsdChecklists'
-                  ? 'bg-amber-500 text-slate-950 shadow-xl border border-amber-300'
-                  : 'bg-amber-950/40 text-amber-300 hover:text-white hover:bg-amber-900 border border-amber-500/40'
-              }`}
-            >
-              <FileCheck className="w-4 h-4 text-amber-400" />
-              10. 📋 RSD 26 Checklists
-            </button>
+        {/* CREATED BY FOOTER */}
+        <footer style={{ flexShrink: 0, borderTop: '1px solid #1e293b', padding: '10px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: '#64748b', backgroundColor: '#070d1e' }}>
+          <div>Forecourt POS OHS Compliance System • SANS 10089 Hard-Locked</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span>Created by</span>
+            <span style={{ color: '#fbbf24', fontWeight: 'bold', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(245, 158, 11, 0.3)', backgroundColor: 'rgba(245, 158, 11, 0.1)' }}>
+              Desigan Tharmen
+            </span>
           </div>
-        </div>
-      </header>
+        </footer>
 
-      {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6 max-w-full overflow-x-hidden min-w-0 box-border">
-        {activeTab === 'executiveDashboard' && (
-          <ExecutiveBriefingDashboard
-            lang={lang}
-            onOpenNelly={() => setIsNellyOpen(true)}
-            onOpenGearModal={() => setIsGearModalOpen(true)}
-            onNavigateTab={(target) => setActiveTab(target)}
-          />
-        )}
-        {activeTab === 'evacuation' && <EvacuationFlow />}
-        {activeTab === 'spill' && <SpillTeamwork />}
-        {activeTab === 'customer' && <CustomerServiceModule />}
-        {activeTab === 'fire' && <PASSFirefighting />}
-        {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
-        {activeTab === 'curriculum' && <CurriculumBrowser />}
-        {activeTab === 'demo' && (
-          <DemoVideoTab 
-            lang={lang} 
-            onNavigateTab={(target) => setActiveTab(target)} 
-            onOpenCertModal={() => setIsCertModalOpen(true)}
-          />
-        )}
-        {activeTab === 'firstResponder' && <NightshiftFirstResponder lang={lang} />}
-        {activeTab === 'refresher' && (
-          <MonthlyRefresherHub 
-            lang={lang} 
-            onOpenDossier={() => setIsDossierOpen(true)}
-          />
-        )}
-        {activeTab === 'rights' && <StatutoryRightsModule />}
-        {activeTab === 'rsdChecklists' && <RSDChecklistModule lang={lang} />}
-      </main>
+      </div>
 
-      {/* Statutory Footer & Regulatory Standards */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 py-4 px-4 text-slate-400 text-xs mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Lock className="w-4 h-4 text-emerald-400" />
-            <span className="font-bold">OHSA 85 OF 1993 • SANS 10089-3:2010 • SANS 10263 • BCEA ACT 75 OF 1997</span>
-          </div>
-
-          <div className="flex items-center gap-4 text-[11px]">
-            <span>Department of Employment & Labour Approved</span>
-            <span className="text-slate-600">•</span>
-            <span>Local USB Storage: <code className="text-amber-400">D:\ Active</code></span>
-          </div>
-        </div>
-      </footer>
+      {/* Statutory OHS Document Generator Modal */}
+      <StatutoryDocGeneratorModal
+        isOpen={isStatutoryModalOpen}
+        onClose={() => setIsStatutoryModalOpen(false)}
+      />
 
       {/* Persistent Dockable Nelly AI Agent Window */}
       <NellyAIAgentWindow
         isOpen={isNellyOpen}
         onClose={() => setIsNellyOpen(false)}
         lang={lang}
-        onTriggerBrandSwitch={(b) => switchTenantBrand(b)}
+        onTriggerBrandSwitch={(b) => switchTenantBrand(b as any)}
         onOpenGearModal={() => setIsGearModalOpen(true)}
       />
 
@@ -498,3 +368,4 @@ export const App: React.FC = () => {
     </div>
   );
 };
+

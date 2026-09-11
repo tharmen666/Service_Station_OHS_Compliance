@@ -29,9 +29,9 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
 }) => {
   const t = translations[lang];
 
-  const [brandName, setBrandName] = useState<string>('Engen Petroleum / Convenience Retail');
-  const [siteCode, setSiteCode] = useState<string>('ENG-JHB-90428');
-  const [siteLocation, setSiteLocation] = useState<string>('Engen Convenice Centre - Dalview / Gauteng');
+  const [brandName, setBrandName] = useState<string>('National Petroleum / Convenience Retail');
+  const [siteCode, setSiteCode] = useState<string>('STN-REG-90428');
+  const [siteLocation, setSiteLocation] = useState<string>('Authorized Convenience Centre - Regional Site');
   const [complianceScore, setComplianceScore] = useState<number>(94);
   const [refresherRate, setRefresherRate] = useState<number>(96);
   const [dossierHash] = useState<string>(
@@ -130,6 +130,9 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
               <p className="text-slate-300 text-xs font-semibold">
                 SANS 10089-3:2010 • SANS 10263 • OHSA 85 OF 1993 Audit Verification
               </p>
+              <div style={{ color: '#fbbf24', fontWeight: 'bold', fontSize: '12px', marginTop: '4px' }}>
+                Created by Desigan Tharmen
+              </div>
             </div>
 
             {/* Site Credentials */}

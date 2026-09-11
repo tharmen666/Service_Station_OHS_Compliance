@@ -145,15 +145,38 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-video rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6">
-            <video
-              className="absolute inset-0 w-full h-full object-cover rounded-3xl"
-              src="/Service_Station_OHS_Compliance_Demo.mp4"
-              controls
-              muted
-              poster="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80"
-            >
-              Your browser does not support HTML5 video.
-            </video>
+            {/* High-Tech Slate Compliance Preview Frame */}
+            <div className="absolute inset-0 bg-[#070d1e] border-2 border-purple-500/50 rounded-3xl flex flex-col justify-between p-6">
+              {/* Subtle Grid Overlay & High-Tech Glow */}
+              <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40" />
+              
+              {/* Center Animated Compliance Engine Icon & Waveform */}
+              <div className="relative z-10 my-auto text-center space-y-4">
+                <div className="w-16 h-16 rounded-2xl bg-purple-500/10 border-2 border-purple-500/40 text-purple-300 flex items-center justify-center mx-auto shadow-2xl shadow-purple-950/50">
+                  <ShieldCheck className="w-8 h-8 text-purple-400 animate-pulse" />
+                </div>
+                
+                <div className="space-y-1">
+                  <div className="text-xs font-black uppercase tracking-widest text-purple-400">
+                    Interactive Forecourt Compliance Engine
+                  </div>
+                  <div className="text-sm font-extrabold text-slate-200">
+                    Simulation Feed Active • Chapter {activeChapter.id} Visual Guide
+                  </div>
+                </div>
+
+                {/* Animated Audio Waveform */}
+                <div className="flex items-center justify-center gap-1.5 pt-2">
+                  {[40, 70, 30, 90, 50, 80, 40, 60, 100, 45, 75, 35].map((h, idx) => (
+                    <div
+                      key={idx}
+                      className="w-1.5 rounded-full bg-gradient-to-t from-purple-500 to-amber-400 animate-pulse"
+                      style={{ height: `${isPlaying ? h * 0.4 : 12}px`, animationDelay: `${idx * 0.1}s` }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 pointer-events-none" />
 

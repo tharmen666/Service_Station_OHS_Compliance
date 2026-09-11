@@ -1,5 +1,5 @@
-// Extracted Woolworths Foodstop & Engen RSD 26 Risk Assessment Checklists
-// Source: C:\\Users\\Desigan Tharmen\\Desktop\\1 Jan 2020 RSD risk assessments
+// Extracted Forecourt & Convenience Store RSD 26 Risk Assessment Checklists
+// Standard Compliance Framework: RSD 26 Risk Assessments
 
 export interface ChecklistItem {
   id: string;
@@ -19,7 +19,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "All entries on the SDN auto receipts report are valid and correct.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Not sure which reports are available as a tool for Engen for Woolworths deliveries."
+    "guidance": "Not sure which reports are available as a tool for Retail Store deliveries."
   },
   {
     "id": "DAILY-02",
@@ -46,7 +46,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "Shrinkage adjustment transaction created on SIMS where there are lug discrepancies.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Shortage of lugs received and not a full dolley. Not sure how this is processed in an Engen environment."
+    "guidance": "Shortage of lugs received and not a full dolley. Not sure how this is processed in a Service Station environment."
   },
   {
     "id": "DAILY-05",
@@ -199,7 +199,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "Price management in place \u2013 price discrepancy report on Matra actioned.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Not sure what pricing tool Engen has to ensure that there is a detective control in place. Select a sample period for review."
+    "guidance": "Not sure what pricing tool Service Station has to ensure that there is a detective control in place. Select a sample period for review."
   },
   {
     "id": "DAILY-22",
@@ -226,7 +226,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "The Price Changes report has been printed, actioned and new SELs updated and been placed on the shelves.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Select a sample of 20 items across all disciplines. Not sure which reporting / implementation tool available at Engen."
+    "guidance": "Select a sample of 20 items across all disciplines. Not sure which reporting / implementation tool available at Service Station."
   },
   {
     "id": "DAILY-25",
@@ -235,7 +235,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "The \u201cOn / Off\u201d promotions report has been actioned and new SELs updated and been placed on the shelves.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Select a sample of 10 items. Not sure which reporting / implementation tool available at Engen."
+    "guidance": "Select a sample of 10 items. Not sure which reporting / implementation tool available at Service Station."
   },
   {
     "id": "DAILY-26",
@@ -244,7 +244,7 @@ export const dailyChecklists: ChecklistItem[] = [
     "item": "Products on promotion are valid i.e. promotion ended and relevant stock removed from display.",
     "weighting": 2,
     "frequency": "Daily",
-    "guidance": "Select a sample of 10 items. Not sure which reporting / implementation tool available at Engen."
+    "guidance": "Select a sample of 10 items. Not sure which reporting / implementation tool available at Service Station."
   },
   {
     "id": "DAILY-27",
@@ -334,7 +334,7 @@ export const weeklyChecklists: ChecklistItem[] = [
     "id": "WEEKLY-09",
     "category": "2. Cleaning Equipment and Chemicals",
     "referenceCode": "2.2",
-    "item": "Are all chemicals compliant to the Woolworths guidelines for chemical suppliers",
+    "item": "Are all chemicals compliant to the Retail Store guidelines for chemical suppliers",
     "weighting": 2,
     "frequency": "Weekly",
     "guidance": "Conduct weekly high-level hygiene, display, and temperature check."
@@ -343,7 +343,7 @@ export const weeklyChecklists: ChecklistItem[] = [
     "id": "WEEKLY-10",
     "category": "2. Cleaning Equipment and Chemicals",
     "referenceCode": "2.3",
-    "item": "Only Ecolab or Kay products listed below may be used unless proof of an agreement with Woolworths is in place. Ecolab range:",
+    "item": "Only approved food-grade chemical products listed below may be used under SANS 1828 and SANS 1853 guidelines:",
     "weighting": 2,
     "frequency": "Weekly",
     "guidance": "Conduct weekly high-level hygiene, display, and temperature check."
@@ -415,7 +415,7 @@ export const weeklyChecklists: ChecklistItem[] = [
     "id": "WEEKLY-18",
     "category": "3. Cold Chain",
     "referenceCode": "3.5",
-    "item": "Woolworths Cold Room Temperature Compliance",
+    "item": "Retail Store Cold Room Temperature Compliance",
     "weighting": 2,
     "frequency": "Weekly",
     "guidance": "Conduct weekly high-level hygiene, display, and temperature check."
@@ -703,7 +703,7 @@ export const weeklyChecklists: ChecklistItem[] = [
     "id": "WEEKLY-50",
     "category": "6. Hygiene and Housekeeping for front and back areas",
     "referenceCode": "9.1",
-    "item": "Sales floor is layed out according to the Woolworths Floor Plan",
+    "item": "Sales floor is layed out according to the Retail Store Floor Plan",
     "weighting": 2,
     "frequency": "Weekly",
     "guidance": "Conduct weekly high-level hygiene, display, and temperature check."
@@ -796,10 +796,10 @@ export const monthlyChecklists: ChecklistItem[] = [
     "id": "MONTHLY-01",
     "category": "1. Merchandising Standards & Disciplines Perishables (Dairy,Partyfoods,Takeaways,Recipe Dishes,Desserts,Prepared Salads,Protein ,Deli Meats & Frozens))",
     "referenceCode": "RSD26-M01",
-    "item": "Sales floor is layed out according to the Woolworths Floor Plan(If floor plan differs there needs to be written confirmation by WW Regional of changes done.)",
+    "item": "Sales floor is layed out according to the Retail Store Floor Plan(If floor plan differs there needs to be written confirmation by Regional Management of changes done.)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-02",
@@ -808,7 +808,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Products are faced up (To load lines) & fronted (Name/ labels facing forward)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-03",
@@ -817,7 +817,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Approved price tickets for all products & out of stock labels in use for out of stock items all in good condition and correctly positioned.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-04",
@@ -826,7 +826,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stacking disciplines adhered to (Height) and two finger rule to apply",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-05",
@@ -835,7 +835,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Category flow/ blocked correctly (Planogram implementation)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-06",
@@ -844,7 +844,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock pressure maintained across category ( 85% full) & No gaps between products (OOS disciplines applied)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-07",
@@ -853,7 +853,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "No expired, stale or damaged stock is found on the sales floor",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-08",
@@ -862,7 +862,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock Rotation in place on sales floor and back area's (Take a sample of 10 lines from Sales Floor and 10 from Back area)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-09",
@@ -871,16 +871,16 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Check that all lines are merchandised on sales floor and not in back area(No stock in back area that is not represented on sales floor )",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-10",
     "category": "2. Merchandising Standards & Disciplines Ambient ( Bakery,Fruit &Veg)",
     "referenceCode": "RSD26-M10",
-    "item": "Sales floor is layed out according to the Woolworths Floor Plan(If floor plan differs there needs to be written confirmation by WW Regional of changes done.)",
+    "item": "Sales floor is layed out according to the Retail Store Floor Plan(If floor plan differs there needs to be written confirmation by Regional Management of changes done.)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-11",
@@ -889,7 +889,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Products are faced up (To load lines) & fronted (Name/ labels facing forward)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-12",
@@ -898,7 +898,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Approved price tickets for all products & out of stock labels in use for out of stock items all in good condition and correctly positioned.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-13",
@@ -907,7 +907,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stacking disciplines adhered to (Height) and two finger rule to apply",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-14",
@@ -916,7 +916,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Category flow/ blocked correctly (Planogram implementation)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-15",
@@ -925,7 +925,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock pressure maintained across category ( 85% full) & No gaps between products (OOS disciplines applied)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-16",
@@ -934,7 +934,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "No expired, stale or damaged stock is found on the sales floor",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-17",
@@ -943,7 +943,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock Rotation in place on sales floor and back area's (Take a sample of 10 lines from Sales Floor and 10 from Back area)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-18",
@@ -952,7 +952,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Check that all lines are merchandised on sales floor and not in back area(No stock in back area that is not represented on sales floor )",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-19",
@@ -961,16 +961,16 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Equipment - Gondolas, Ambients etc. - WW products merchandising in WW area and not QS and vice versa",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-20",
     "category": "3. Merchandising Standards & Disciplines Snacks & Confectionery ( Chips , Biltong, Nuts, Dry Fruit & Impulse Run)",
     "referenceCode": "RSD26-M20",
-    "item": "Sales floor is layed out according to the Woolworths Floor Plan(If floor plan differs there needs to be written confirmation by WW Regional of changes done.)",
+    "item": "Sales floor is layed out according to the Retail Store Floor Plan(If floor plan differs there needs to be written confirmation by Regional Management of changes done.)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-21",
@@ -979,7 +979,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Products are faced up (To load lines) & fronted (Name/ labels facing forward)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-22",
@@ -988,7 +988,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Approved price tickets for all products & out of stock labels in use for out of stock items all in good condition and correctly positioned.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-23",
@@ -997,7 +997,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stacking disciplines adhered to (Height) and two finger rule to apply",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-24",
@@ -1006,7 +1006,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock pressure maintained across category ( 85% full) & No gaps between products (OOS disciplines applied)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-25",
@@ -1015,7 +1015,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Category flow/ blocked correctly (Planogram implementation)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-26",
@@ -1024,7 +1024,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "No expired, stale or damaged stock is found on the sales floor",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-27",
@@ -1033,7 +1033,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock Rotation in place on sales floor and back area's (Take a sample of 10 lines from Sales Floor and 10 from Back area)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-28",
@@ -1042,7 +1042,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Check that all lines are merchandised on sales floor and not in back area(No stock in back area that is not represented on sales floor )",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-29",
@@ -1051,7 +1051,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Impulse Drops merchandised 50/50 with WW & QS range on either side",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-30",
@@ -1060,7 +1060,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "WW Longlife positioned in designated allocation that was agreed on",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-31",
@@ -1069,7 +1069,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Buckets -- all buckets have T-bag or Vitabrick in and the date is no older than 7 days",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-32",
@@ -1078,7 +1078,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Horti mats in place in front of flower stand & check buckets have clean water (15cm)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-33",
@@ -1087,7 +1087,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stock pressure maintained across category and no expired, stale or damaged stock - (Rotation evident)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-34",
@@ -1096,7 +1096,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Horti Check sheet completed",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-35",
@@ -1105,7 +1105,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Promotions & Special Offers  - Promotions and Special offers identified by shelf talkers or 3x8 tickets",
     "weighting": 10,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-36",
@@ -1114,7 +1114,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Promotions & Special Offers  - Site participating in National / Advertised promotion(s) with all relavent point of Sale (Posters etc) on display",
     "weighting": 15,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-37",
@@ -1123,7 +1123,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "A General Cleaning Standards :Frequency of cleaning is cleaning roster in place for current week and followed.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-38",
@@ -1132,7 +1132,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Standard and depth of cleaning :Cleaning of floor surface areas, no spillages, smear marks or waste.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-39",
@@ -1141,7 +1141,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Produce and Bakery Display Tall Boys Cleaning Standards:Surface areas underneath ambient display racks are free from excessive dust build-up and loose products, Area clean and free from excessive dust build-up Visual inspection of hygiene standards Product free from dust Auditors to inspect under racks, baskets.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-40",
@@ -1150,7 +1150,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "High Level Cleaning Walls/Ceiling: No smear marks against high level walls where maintenance took place. Walls free from cobwebs and visible dust and fluff",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-41",
@@ -1159,7 +1159,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Refrigerated and Freezer Display Units Standard and Frequency of Cleaning :Auditors assess casing shelves and rear shelves for build-up, unpack product at bottom level and open display plate to assess interior condition of well for water/ice build-up, product residue, pest activity Open kick plates and assess cleaning standard underneath unit.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-42",
@@ -1168,7 +1168,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Trolley and Basket Cleaning: Clean and free of foreign objects ( Check Cleaning check list for frequency of cleaning)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-43",
@@ -1177,7 +1177,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Clean and in good condition Visual hygiene and housekeeping inspection: (Check walls, roof, light fittings, chiller fans, floors and edges)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-44",
@@ -1186,7 +1186,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Food products separate from chemicals and oils.( Longlife Store room)",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-45",
@@ -1195,7 +1195,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Visual inspection of hygiene standards. Auditors to inspect under racks free from excessive dust build-up and loose products.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-46",
@@ -1204,7 +1204,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Clean, no equipment stored",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-47",
@@ -1213,7 +1213,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Area clean and free from debris not to be used as miscellaneous storage area",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-48",
@@ -1222,7 +1222,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Standards of hygiene and housekeeping maintained",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-49",
@@ -1231,7 +1231,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Waste removal times, Frequency of removal dependent on store size/waste output disciplines.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-50",
@@ -1240,7 +1240,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Dustbins and waste bins covered/lidded and no excessive papers or plastic fragments.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-51",
@@ -1249,7 +1249,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Court yard and receiving area clean and no visible food spillages or residue",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-52",
@@ -1258,7 +1258,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Standards of hygiene and housekeeping maintenance :Check method of washing baskets, trolleys and equipment if applicable in rear area, not using fire hoses to wash",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-53",
@@ -1267,25 +1267,25 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "All chemicals clearly labelled and correctly stored in cleaning cage. (No pine-scented chemicals in use).",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-54",
     "category": "9.Operating Disciplines Cleaning Equipment and Chemicals",
     "referenceCode": "RSD26-M54",
-    "item": "Cleaning chemicals compliant to the Woolworths guidelines for chemical suppliers:",
+    "item": "Cleaning chemicals compliant to the Retail Store guidelines for chemical suppliers:",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-55",
     "category": "9.Operating Disciplines Cleaning Equipment and Chemicals",
     "referenceCode": "RSD26-M55",
-    "item": "Are all chemicals compliant to the Woolworths guidelines for chemical suppliers SABS approved and food graded for food market and related areas (SANS 1828 and/or 1853) All cleaning chemicals on premises to be SABS or EU / USA approved and labelled accordingly.  Spray bottled to be correctly labelled.",
+    "item": "Are all chemicals compliant to the Retail Store guidelines for chemical suppliers SABS approved and food graded for food market and related areas (SANS 1828 and/or 1853) All cleaning chemicals on premises to be SABS or EU / USA approved and labelled accordingly.  Spray bottled to be correctly labelled.",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-56",
@@ -1294,16 +1294,16 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Store to ensure that chemical charts are on file.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-57",
     "category": "9.Operating Disciplines Cleaning Equipment and Chemicals",
     "referenceCode": "RSD26-M57",
-    "item": "Only Ecolab or Kay products listed below may be used unless proof of an agreement with Woolworths is in place. Ecolab range:All guard 10 (multipurpose cleaner)  Oasis Enforce or Floor Guard 30 (floor cleaner)  Dish guard 71 (dishwashing liquid)  Greenpro (glass cleaner)  Ecoshine (stainless steel polish for non-food contact areas  Actichlor (all-purpose sanitizer)    Epivera E (antibacterial soap) Sanitizer Plus (hand sanitizer) . Kay product:Exceed Multi Surface & Glass Cleaner (general purpose hard surface cleaner),Kadet Quarry Tile Floor Cleaner,Conquest Anti-Bacterial Hand Soap (washing hands)",
+    "item": "Only approved food-grade chemical products listed below may be used under SANS 1828 and SANS 1853 guidelines:All guard 10 (multipurpose cleaner)  Oasis Enforce or Floor Guard 30 (floor cleaner)  Dish guard 71 (dishwashing liquid)  Greenpro (glass cleaner)  Ecoshine (stainless steel polish for non-food contact areas  Actichlor (all-purpose sanitizer)    Epivera E (antibacterial soap) Sanitizer Plus (hand sanitizer) . Approved product range:Exceed Multi Surface & Glass Cleaner (general purpose hard surface cleaner),Kadet Quarry Tile Floor Cleaner,Conquest Anti-Bacterial Hand Soap (washing hands)",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-58",
@@ -1312,7 +1312,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "No mops, wooden brooms, feather dusters  ( Only WW approved cleaning equipment to be used)",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-59",
@@ -1321,7 +1321,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "All equipment colour to be colour coded",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-60",
@@ -1330,7 +1330,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Is colour-coding chart available to demonstrate that system is in place?",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-61",
@@ -1339,7 +1339,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "WW approved cleaning equipment  to be stored separately, off the floor",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-62",
@@ -1348,7 +1348,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Actual product temperatures recorded must be between 0\u00b0C to 5\u00b0C, test at least one product per case to be probed and the temperature recorded.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-63",
@@ -1357,7 +1357,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Actual frozen / freezer product temperatures recorded must be -18\u00b0C or colder,test at least one product per case to be probed and the temperature recorded.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-64",
@@ -1366,7 +1366,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Black mats (used for produce :Black mats must be present for bagged apples, pillow packs and herbs, clean and in good condition)",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-65",
@@ -1375,7 +1375,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Lift mats to assess cleaning.",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-66",
@@ -1384,7 +1384,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Actual product temperatures recorded must be between 0\u00b0C to 5\u00b0C, at least one product to be probed and the temperature recorded.",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-67",
@@ -1393,7 +1393,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Receiving Temp Recording recorded on the LCS Load Control Sheet and Receiving temperature recording (regime for cold chain temp regime 0\u00b0C to 5 \u00b0 C and frozen -18 \u00b0 C or colder)",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-68",
@@ -1402,7 +1402,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "3 x Daily temperature check recorded ,temperatures recorded for each case the temperatures must be between 0\u00b0C to 5\u00b0C.Corrective action or second temperature reading to be in place for temperatures out of specification. ( Check Temp check list )",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-69",
@@ -1411,7 +1411,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Thermometer calibration (Testo) -- annual certificate available and valid",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-70",
@@ -1420,7 +1420,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Is the thermometer in good working condition?",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-71",
@@ -1429,7 +1429,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Frequency of cleaning detailing captured in roster , check that Cleaning inspection conducted and signed off by management.( Cleaning Check list)",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-72",
@@ -1438,7 +1438,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Waste Recorded against correct reason code(All waste to be captured on branch daily)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-73",
@@ -1447,7 +1447,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "The seal number on the truck is verified to the seal number recorded on the LCS. (Check 1 day per week from the last 6 weeks)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-74",
@@ -1456,7 +1456,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Stores are counting the lugs when off loaded from the truck and annotated on the LCS. Where there are shortages annotated ensure that a call was logged with the DC. (Impacts on claims and that the incident number is recorded / available. )",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-75",
@@ -1465,7 +1465,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Waste - Designated waste area in the Cooler Room & must be clean/ tidy/ well maintained (Cooler Room)",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-76",
@@ -1474,7 +1474,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Waste - Indemnity Forms for waste removal of charities available and relevant",
     "weighting": 1,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-77",
@@ -1483,7 +1483,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Waste - No waste past its \"use by\" date in Fridge or Freezer & waste to be removed daily by local charity/staff",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-78",
@@ -1492,7 +1492,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Systems - R.T.V's recorded correctly on the system",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-79",
@@ -1501,16 +1501,16 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Systems - Previous Discussion sheet & RSD 26 Filed and Available",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-80",
     "category": "12.Operating Disciplines  Pest Control Admin",
     "referenceCode": "RSD26-M80",
-    "item": "Check that Ecolab file is updated on a monthly basis by the Ecolab technician and audited on a quarterly basis by the Ecolab regional manager.",
+    "item": "Check that Sanitation compliance file is updated on a monthly basis by the certified technician and audited on a quarterly basis by the regional manager.",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-81",
@@ -1519,7 +1519,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Weekly CPA document retention control sheet in place with the relevant reports filed.(LCS retention & any food destruction certificate in place and temperature checklists)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-82",
@@ -1528,7 +1528,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Adherence to the sale of food waste in respect of no waste past its \"use by\" date in Fridge or Freezer.(Check waste for that day to ensure compliance)",
     "weighting": 5,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-83",
@@ -1537,7 +1537,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "Price changes have been printed, actioned and new SELs updated and been placed on the shelves.  (check a sample of 10 lines to ensure price displayed is same price scanned)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-84",
@@ -1546,7 +1546,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "New promotions have been actioned and new SELs updated and been placed on the shelves. (Check a sample of 5 promotion and ensure that shelf price is the same as scanned price)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   },
   {
     "id": "MONTHLY-85",
@@ -1555,7 +1555,7 @@ export const monthlyChecklists: ChecklistItem[] = [
     "item": "For non-price marked products, the price on the SEL matches the price at the till (check a sample of 10 lines to ensure price displayed is same price scanned)",
     "weighting": 2,
     "frequency": "Monthly",
-    "guidance": "Verify full monthly SANS & Engen/WW RSD 26 compliance audit."
+    "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
   }
 ];
 

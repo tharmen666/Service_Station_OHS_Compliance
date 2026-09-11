@@ -16,7 +16,7 @@ export interface TenantBrandConfig {
   stationName: string;
   address: string;
   emergencyContactNumber: string;
-  fuelBrand: 'Shell' | 'Engen' | 'TotalEnergies' | 'Sasol' | 'BP' | 'Caltex' | 'FreshStop' | 'Custom';
+  fuelBrand: 'Standard' | 'Express' | 'Highway' | 'Urban' | 'Custom';
   customPoliciesEnabled: boolean;
   sans10089Compliant: boolean;
   popiaEncryptionActive: boolean;
@@ -25,89 +25,89 @@ export interface TenantBrandConfig {
 
 export const defaultTenants: Record<string, TenantBrandConfig> = {
   default: {
-    tenantId: 'ENG-JHB-042',
-    brandName: 'Engen Retail Service Station',
-    companyLegalName: 'Engen Petroleum Limited (Gauteng South)',
+    tenantId: 'STN-REG-042',
+    brandName: 'Forecourt Compliance Facility',
+    companyLegalName: 'National Service Station Operations',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
     primaryColor: '#005A9C',
     accentColor: '#ED1C24',
-    siteCode: 'ENG-JHB-042',
-    stationName: 'Gauteng South Forecourt Network',
-    address: 'Lenasia, Gauteng',
-    emergencyContactNumber: '+27 11 852 1000 / 10177',
-    fuelBrand: 'Engen',
+    siteCode: 'STN-REG-042',
+    stationName: 'Regional Service Station Forecourt',
+    address: 'Central Retail District, Metro Area',
+    emergencyContactNumber: '+27 11 800 1000 / 10177',
+    fuelBrand: 'Standard',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
     badgeSymbol: '⛽',
   },
-  engen: {
-    tenantId: 'ENG-JHB-042',
-    brandName: 'Engen QuickShop & Forecourt',
-    companyLegalName: 'Engen Petroleum Limited',
+  standard: {
+    tenantId: 'STN-REG-042',
+    brandName: 'Standard Forecourt & Convenience',
+    companyLegalName: 'Standard Retail Operations Ltd',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
     primaryColor: '#005A9C',
     accentColor: '#ED1C24',
-    siteCode: 'ENG-JHB-042',
-    stationName: 'Gauteng South Forecourt Network',
-    address: 'Lenasia, Gauteng',
-    emergencyContactNumber: '+27 11 852 1000 / 112',
-    fuelBrand: 'Engen',
+    siteCode: 'STN-REG-042',
+    stationName: 'Regional Service Station Forecourt',
+    address: 'Central Retail District, Metro Area',
+    emergencyContactNumber: '+27 11 800 1000 / 112',
+    fuelBrand: 'Standard',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
     badgeSymbol: '🔵',
   },
-  shell: {
-    tenantId: 'SHL-CPT-108',
-    brandName: 'Shell Select Forecourt & Express',
-    companyLegalName: 'Shell South Africa Marketing (Pty) Ltd',
+  express: {
+    tenantId: 'STN-EXP-108',
+    brandName: 'Express Retail & Petroleum Station',
+    companyLegalName: 'Express Petroleum Logistics',
     logoUrl: '/assets/posters/evacuation_poster.png',
     primaryColor: '#DD1D21',
     accentColor: '#FFD500',
-    siteCode: 'SHL-CPT-108',
-    stationName: 'Cape Peninsula Express Hub',
-    address: 'V&A Waterfront, Cape Town',
-    emergencyContactNumber: '+27 21 408 2000 / 10177',
-    fuelBrand: 'Shell',
+    siteCode: 'STN-EXP-108',
+    stationName: 'Express Transit Hub',
+    address: 'Waterfront Transit Plaza',
+    emergencyContactNumber: '+27 21 400 2000 / 10177',
+    fuelBrand: 'Express',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '🐚',
+    badgeSymbol: '⚡',
   },
-  caltex: {
-    tenantId: 'CTX-DBN-305',
-    brandName: 'Caltex Star Mart & Petroleum',
-    companyLegalName: 'Astron Energy / Caltex SA',
+  highway: {
+    tenantId: 'STN-HWY-305',
+    brandName: 'Highway Service Plaza & Forecourt',
+    companyLegalName: 'Highway Retail Operations',
     logoUrl: '/assets/posters/spill_response_poster.png',
     primaryColor: '#002B49',
     accentColor: '#00A3E0',
-    siteCode: 'CTX-DBN-305',
-    stationName: 'Durban Coastal Gateway Station',
-    address: 'Umhlanga Rocks, KwaZulu-Natal',
+    siteCode: 'STN-HWY-305',
+    stationName: 'Coastal Highway Service Plaza',
+    address: 'Coastal Highway Corridor',
     emergencyContactNumber: '+27 31 300 4000 / 10177',
-    fuelBrand: 'Caltex',
+    fuelBrand: 'Highway',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
     badgeSymbol: '⭐',
   },
-  freshstop: {
-    tenantId: 'FSH-JHB-901',
-    brandName: 'FreshStop Retail & Food Convenience',
-    companyLegalName: 'FreshStop SA / Food Retail Network',
+  urban: {
+    tenantId: 'STN-URB-901',
+    brandName: 'Urban Retail Convenience Hub',
+    companyLegalName: 'Urban Petroleum Networks',
     logoUrl: '/assets/posters/customer_service_poster.png',
     primaryColor: '#006837',
     accentColor: '#8DC63F',
-    siteCode: 'FSH-JHB-901',
-    stationName: 'Rosebank FreshStop Experience',
-    address: 'Rosebank, Johannesburg',
-    emergencyContactNumber: '+27 11 447 9000 / 10177',
-    fuelBrand: 'FreshStop',
+    siteCode: 'STN-URB-901',
+    stationName: 'Metropolitan Convenience Station',
+    address: 'Metropolitan Commercial Zone',
+    emergencyContactNumber: '+27 11 400 9000 / 10177',
+    fuelBrand: 'Urban',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '🍏',
+    badgeSymbol: '🏬',
   }
 };
 
@@ -152,8 +152,8 @@ export function setTenantState(config: Partial<TenantBrandConfig>): TenantBrandC
   return currentTenantState;
 }
 
-export function switchTenantBrand(brandKey: 'engen' | 'shell' | 'caltex' | 'freshstop'): TenantBrandConfig {
-  const selected = defaultTenants[brandKey] || defaultTenants.engen;
+export function switchTenantBrand(brandKey: 'standard' | 'express' | 'highway' | 'urban'): TenantBrandConfig {
+  const selected = defaultTenants[brandKey] || defaultTenants.default;
   return setTenantState(selected);
 }
 
@@ -163,6 +163,7 @@ export function getActiveTenant(): TenantBrandConfig {
 
 export function subscribeTenantChange(listener: (tenant: TenantBrandConfig) => void): () => void {
   tenantListeners.add(listener);
-  return () => tenantListeners.delete(listener);
+  return () => {
+    tenantListeners.delete(listener);
+  };
 }
-

@@ -87,7 +87,7 @@ export const RSDChecklistModule: React.FC<RSDChecklistModuleProps> = ({ lang = '
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-wider mb-2 border border-amber-500/30">
             <ClipboardCheck className="w-4 h-4 text-amber-400" />
-            Engen & Woolworths RSD 26 Compliance Audit Suite
+            Forecourt & Convenience Store RSD 26 Compliance Audit Suite
           </div>
           <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
             Daily, Weekly & Monthly Risk Assessments

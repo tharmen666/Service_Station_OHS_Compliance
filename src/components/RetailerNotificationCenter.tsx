@@ -39,11 +39,11 @@ export const RetailerNotificationCenter: React.FC<RetailerNotificationCenterProp
 
   const [alertSent, setAlertSent] = useState<boolean>(false);
   const [staffList, setStaffList] = useState<StaffMember[]>([
-    { id: 'STF-01', name: 'Nelly Tharmen', role: 'Forecourt Supervisor & Fire Warden', lastRefresher: '2026-08-01', status: 'COMPLIANT', scorePercent: 100 },
-    { id: 'STF-02', name: 'Sipho Ndlovu', role: 'Cashier Lead', lastRefresher: '2026-08-03', status: 'COMPLIANT', scorePercent: 95 },
-    { id: 'STF-03', name: 'Pieter van Zyl', role: 'Nightshift Attendant', lastRefresher: '2026-08-05', status: 'COMPLIANT', scorePercent: 90 },
-    { id: 'STF-04', name: 'Zanele Khumalo', role: 'Forecourt Attendant', lastRefresher: '2026-06-15', status: 'PENDING', scorePercent: 75 },
-    { id: 'STF-05', name: 'Kabo Mokoena', role: 'Assistant Cashier', lastRefresher: '2026-05-10', status: 'OVERDUE', scorePercent: 60 }
+    { id: 'STF-01', name: 'Forecourt Supervisor', role: 'Forecourt Supervisor & Fire Warden', lastRefresher: '2026-08-01', status: 'COMPLIANT', scorePercent: 100 },
+    { id: 'STF-02', name: 'Lead Cashier Officer', role: 'Cashier Lead', lastRefresher: '2026-08-03', status: 'COMPLIANT', scorePercent: 95 },
+    { id: 'STF-03', name: 'Nightshift First Responder', role: 'Nightshift Attendant', lastRefresher: '2026-08-05', status: 'COMPLIANT', scorePercent: 90 },
+    { id: 'STF-04', name: 'Forecourt Safety Attendant', role: 'Forecourt Attendant', lastRefresher: '2026-06-15', status: 'PENDING', scorePercent: 75 },
+    { id: 'STF-05', name: 'Assistant Cashier Lead', role: 'Assistant Cashier', lastRefresher: '2026-05-10', status: 'OVERDUE', scorePercent: 60 }
   ]);
 
   if (!isOpen) return null;
@@ -119,7 +119,7 @@ export const RetailerNotificationCenter: React.FC<RetailerNotificationCenterProp
               <span className="text-xs font-extrabold text-white flex items-center gap-2">
                 <Users className="w-4 h-4 text-amber-400" /> Station Staff Readiness Roster
               </span>
-              <span className="text-[11px] font-mono text-slate-400">Engen Site #904</span>
+              <span className="text-[11px] font-mono text-slate-400">Service Station Site #904</span>
             </div>
 
             <div className="overflow-x-auto">

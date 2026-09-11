@@ -20,7 +20,7 @@ interface NellyAIAgentWindowProps {
   isOpen: boolean;
   onClose: () => void;
   lang: Language;
-  onTriggerBrandSwitch?: (brand: 'engen' | 'shell' | 'caltex' | 'freshstop') => void;
+  onTriggerBrandSwitch?: (brand: 'standard' | 'express' | 'highway' | 'urban') => void;
   onOpenGearModal?: () => void;
 }
 
@@ -39,7 +39,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'nelly' | 'user'; text: string; time: string }>>([
     {
       sender: 'nelly',
-      text: "Hello! I am Nelly, your primary AI avatar guide for forecourt & retail compliance. Hard-locked to zero-temperature determinism (T=0.0) across OHS Act, R638, ISO 22000, and FDA standards. How can I assist your site today?",
+      text: "Hello! I am Nelly, your primary female AI avatar guide for forecourt & retail compliance. Hard-locked to zero-temperature determinism (T=0.0) across OHS Act, R638, ISO 22000, and FDA standards. How can I assist your site today?",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -54,23 +54,40 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
     scrollToBottom();
   }, [chatMessages]);
 
-  const speakText = (text: string) => {
+  const speakText = (text: string, langCode: string = 'en-US') => {
     if (!isVoiceActive || !('speechSynthesis' in window)) return;
 
+    // 1. Clear any stuck utterance queue in Chrome/Edge
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.95;
-    utterance.pitch = 1.05;
 
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    // 2. Select appropriate voice or fallback
     const voices = window.speechSynthesis.getVoices();
-    const langCode = lang === 'AF' ? 'af-ZA' : lang === 'ZU' ? 'zu-ZA' : lang === 'ST' ? 'st-ZA' : 'en-ZA';
-    const matchedVoice = voices.find(v => v.lang.startsWith(langCode) || v.lang.includes('en'));
+    let matchedVoice = voices.find(v => v.name.toLowerCase().includes('rachel'))
+                    || voices.find(v => v.lang.startsWith(langCode.toLowerCase()))
+                    || voices.find(v => 
+                         v.lang.startsWith('en') && 
+                         (v.name.toLowerCase().includes('female') || 
+                          v.name.toLowerCase().includes('zira') || 
+                          v.name.toLowerCase().includes('samantha') || 
+                          v.name.toLowerCase().includes('victoria') ||
+                          v.name.toLowerCase().includes('karen') ||
+                          v.name.toLowerCase().includes('google us english'))
+                       )
+                    || voices.find(v => v.lang.includes('en'))
+                    || voices[0];
+
     if (matchedVoice) utterance.voice = matchedVoice;
+    utterance.lang = matchedVoice ? matchedVoice.lang : 'en-US';
+    utterance.rate = 1.0;
+    utterance.pitch = 1.15; // Natural female voice timbre
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
     utterance.onerror = () => setIsSpeaking(false);
 
+    // 3. Resume queue and trigger
     window.speechSynthesis.speak(utterance);
   };
 
@@ -90,12 +107,12 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
       const lower = userMsg.toLowerCase();
       if (lower.includes('ccp') || lower.includes('thermal') || lower.includes('temperature') || lower.includes('food')) {
         replyText = `CCP Thermal Probe verified: Internal poultry temperature threshold strictly locked at ${ccpThermalTemp}°C (Min 73.9°C required under FDA Food Code 2022 & R638). Critical Control Point is COMPLIANT.`;
-      } else if (lower.includes('brand') || lower.includes('shell') || lower.includes('engen') || lower.includes('caltex') || lower.includes('freshstop')) {
+      } else if (lower.includes('brand') || lower.includes('express') || lower.includes('standard') || lower.includes('highway') || lower.includes('urban')) {
         replyText = "Switching multi-tenant white-label brand configuration while maintaining client-side POPIA AES-256 data encryption.";
-        if (lower.includes('shell')) onTriggerBrandSwitch?.('shell');
-        else if (lower.includes('caltex')) onTriggerBrandSwitch?.('caltex');
-        else if (lower.includes('freshstop')) onTriggerBrandSwitch?.('freshstop');
-        else onTriggerBrandSwitch?.('engen');
+        if (lower.includes('express')) onTriggerBrandSwitch?.('express');
+        else if (lower.includes('highway')) onTriggerBrandSwitch?.('highway');
+        else if (lower.includes('urban')) onTriggerBrandSwitch?.('urban');
+        else onTriggerBrandSwitch?.('standard');
       } else if (lower.includes('gear') || lower.includes('pillar') || lower.includes('calibrate')) {
         replyText = "Opening G.E.A.R. Pillar System Suite. Governance, Ergonomics, SLA Escalation, and Risk Reduction meters are ready for live threshold calibration.";
         onOpenGearModal?.();
@@ -127,14 +144,14 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
       speakText(text);
       if (onOpenGearModal) onOpenGearModal();
     } else if (actionType === 'brand') {
-      const text = "Cycling multi-tenant white-label tenant theme to Shell Select & FreshStop.";
+      const text = "Cycling multi-tenant white-label tenant theme to Express Retail Hub.";
       setChatMessages(prev => [
         ...prev,
         { sender: 'user', text: "Test Multi-Tenant White-Labeling Theme Engine", time: now },
         { sender: 'nelly', text, time: now }
       ]);
       speakText(text);
-      switchTenantBrand('shell');
+      switchTenantBrand('express');
     } else if (actionType === 'sla') {
       const text = "Audit Readiness SLA Matrix: 100% of high-severity hazard reports assigned mandatory supervisor owners with 4-hour escalation timers.";
       setChatMessages(prev => [
@@ -173,7 +190,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
             <div className="flex items-center gap-1.5">
               <h3 className="text-sm font-black text-white leading-none">Nelly AI</h3>
               <span className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 text-[9px] font-black uppercase border border-purple-500/30">
-                Avatar Guide
+                👩‍💼 Female Avatar Guide
               </span>
             </div>
             <p className="text-[10px] text-slate-400 mt-0.5 font-mono">T=0.0 Statutory Determinism</p>

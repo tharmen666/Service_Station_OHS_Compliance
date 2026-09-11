@@ -75,7 +75,7 @@ export function validateOHSGuardrails(inputPrompt: string): {
  */
 export function getOHSSystemInstruction(customTenantName?: string): string {
   const tenant = customTenantName || 'Service Station Forecourt';
-  return `You are Nelly, an expert AI Service Station OHS & Statutory Compliance Advisor operating under strict compliance guardrails for ${tenant}.
+  return `You are an expert AI Service Station OHS & Statutory Compliance Advisor operating under strict compliance guardrails for ${tenant}.
 
 CRITICAL SYSTEM PARAMETER:
 - Temperature Parameter: LOCKED to 0.0 (Deterministic Compliance Mode). Zero hallucinations allowed.

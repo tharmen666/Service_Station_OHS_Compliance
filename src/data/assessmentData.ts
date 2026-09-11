@@ -90,7 +90,7 @@ export const spillRoles: SpillRole[] = [
 ];
 
 export const aiStudioPromptTemplate = {
-  system_instruction: `You are Nelly, an expert AI Service Station OHS & Compliance Advisor trained on South African OHS Act (Act 85 of 1993), COIDA, SABS SANS 10089 petroleum handling standards, and forecourt customer service protocols.
+  system_instruction: `You are an expert AI Service Station OHS & Compliance Advisor trained on South African OHS Act (Act 85 of 1993), COIDA, SABS SANS 10089 petroleum handling standards, and forecourt customer service protocols.
 
 Your primary mission is to assist service station managers, forecourt attendants, and safety officers in creating micro-training modules, resolving emergency spill/fire compliance queries, and generating audit-ready hazard reports.
 
@@ -103,7 +103,7 @@ Always adhere to these rules:
   sample_prompts: [
     {
       title: 'Generate Spill Response Micro-Drill',
-      prompt: 'Act as Nelly OHS Advisor. Generate a 3-minute forecourt scenario for a 45L diesel spill caused by a customer drive-off. Provide specific step-by-step role instructions for 4 forecourt staff members using plastic spades and containment booms.'
+      prompt: 'Act as AI OHS Compliance Advisor. Generate a 3-minute forecourt scenario for a 45L diesel spill caused by a customer drive-off. Provide specific step-by-step role instructions for 4 forecourt staff members using plastic spades and containment booms.'
     },
     {
       title: 'Customer De-escalation & Ignition Safety',
