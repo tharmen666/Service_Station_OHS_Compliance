@@ -18,6 +18,7 @@ import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashbo
 import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
 
+import { EnterpriseFooter } from './components/EnterpriseFooter';
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
 import { RSDChecklistModule } from './components/RSDChecklistModule';
 import { Language, translations } from './data/translations';
@@ -298,16 +299,8 @@ export const App: React.FC = () => {
           {activeTab === 'rsdChecklists' && <RSDChecklistModule lang={lang} />}
         </main>
 
-        {/* CREATED BY FOOTER */}
-        <footer style={{ flexShrink: 0, borderTop: '1px solid #1e293b', padding: '10px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '11px', color: '#64748b', backgroundColor: '#070d1e' }}>
-          <div>Forecourt POS OHS Compliance System • SANS 10089 Hard-Locked</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span>Created by</span>
-            <span style={{ color: '#fbbf24', fontWeight: 'bold', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(245, 158, 11, 0.3)', backgroundColor: 'rgba(245, 158, 11, 0.1)' }}>
-              Desigan Tharmen
-            </span>
-          </div>
-        </footer>
+        {/* CREATED BY ENTERPRISE FOOTER */}
+        <EnterpriseFooter appName={activeTenant.brandName} />
 
       </div>
 

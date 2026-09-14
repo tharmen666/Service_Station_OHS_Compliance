@@ -78,7 +78,7 @@ class NumberedCanvas(canvas.Canvas):
         self.setFont("Helvetica", 8)
         self.setFillColor(colors.HexColor("#475569"))
         self.drawString(36, 28, f"{COMPANY_LEGAL_NAME} | OHS Act 85 & SANS 10089 ESD Enforced")
-        self.drawRightString(8.5 * inch - 36, 28, f"Page {self._pageNumber} of {page_count}")
+        self.drawRightString(8.5 * inch - 36, 28, f"Created by Desigan Tharmen | Page {self._pageNumber} of {page_count}")
         self.restoreState()
 
 
