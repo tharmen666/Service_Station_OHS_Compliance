@@ -108,12 +108,12 @@ function generateFallbackStatutoryDocument(taskType: string, siteContext: string
 **Site Context**: ${siteContext}  
 **Date of Audit & Issue**: ${currentDate}  
 **Status**: APPROVED & AUDIT-LOCKED (SANS 10089 / ISO 45001 Compliant)  
-**AI Statutory Engine Lock**: Temperature 0.0 (Zero-Hallucination Verified)  
+**AI Statutory Engine Lock**: Temperature 0.0 (Deterministic Compliance Mode)  
 
 ---
 
 ## 1. STATUTORY EXECUTIVE SUMMARY & SCOPE
-This statutory risk management document has been autonomously compiled in accordance with **OHS Act 85 of 1993 Section 8 (General duties of employers to their employees)** and **Section 9 (General duties of employers to persons other than employees)**.
+This statutory risk management document has been compiled using structured statutory templates in accordance with **OHS Act 85 of 1993 Section 8 (General duties of employers to their employees)** and **Section 9 (General duties of employers to persons other than employees)**.
 
 ### Target Hazard & Operational Scope:
 > **Target Scope**: ${hazards}  

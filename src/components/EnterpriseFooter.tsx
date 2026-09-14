@@ -12,7 +12,7 @@ export interface EnterpriseFooterProps {
 
 export const EnterpriseFooter: React.FC<EnterpriseFooterProps> = ({
   appName,
-  subtitle = 'AUTONOMOUS OHS COMPLIANCE ARCHITECTURE',
+  subtitle = 'STATUTORY OHS COMPLIANCE MANAGEMENT SYSTEM',
   creatorName = 'Desigan Tharmen',
   creatorEmail = 'tharmendesigan36@gmail.com',
   creatorPhone = '+27 622 655 708',

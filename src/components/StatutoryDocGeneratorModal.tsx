@@ -51,6 +51,8 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
     setExportedAudit(false);
     
     try {
+      // Model Configuration: temperature: 0.0 is selected for deterministic prompt hydration 
+      // and repeatable statutory outputs, requiring human-in-the-loop review by a designated competent person (Section 16.2 / SHE Rep).
       const response = await requestStatutoryComplianceDoc({
         taskType,
         siteContext,
@@ -74,7 +76,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const handleExportAuditLog = async () => {
     if (!docResponse?.document) return;
 
-    // Encrypt digital signature with POPIA AES-256 layer
+    // Encrypt digital signature with POPIA AES-256 layer (technical safeguard under POPIA Condition 7 / Section 19)
     const encryptedSignature = await encryptPIIWithAES256GCM(
       `STATUTORY_DOC_${taskType}_${siteContext}_${Date.now()}`
     );
@@ -124,10 +126,10 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
             <div>
               <div className="flex items-center gap-2">
                 <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30">
-                  Autonomous Statutory OHS Engine
+                  Statutory OHS Document Engine
                 </span>
                 <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-bold border border-cyan-500/30 flex items-center gap-1">
-                  <Lock className="w-3 h-3 text-cyan-400" /> Temp 0.0 Lock
+                  <Lock className="w-3 h-3 text-cyan-400" /> Temp 0.0 (Deterministic)
                 </span>
               </div>
               <h2 className="text-xl md:text-2xl font-black text-white leading-tight mt-0.5">
@@ -226,12 +228,12 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
             {loading ? (
               <>
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                <span>Engaging Statutory AI Engine (Temp 0.0 Lock)...</span>
+                <span>Hydrating Statutory Prompt (Temp 0.0)...</span>
               </>
             ) : (
               <>
                 <Sparkles className="w-5 h-5" />
-                <span>Execute Autonomous Statutory Engine</span>
+                <span>Compile Statutory Document Draft</span>
               </>
             )}
           </button>

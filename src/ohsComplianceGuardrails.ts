@@ -1,5 +1,5 @@
 /**
- * Service Station OHS Compliance Platform - Statutory Guardrails & AI Endpoint Temperature Controller
+ * Service Station OHS Compliance Platform - Statutory Guardrails & Deterministic Parameter Controller
  * 
  * Statutory References Enforced:
  * 1. South African Occupational Health and Safety (OHS) Act 85 of 1993 (Sections 8, 16.1, 16.2).
@@ -8,7 +8,7 @@
  */
 
 export interface OHSGuardrailConfig {
-  temperature: number; // LOCKED strictly to 0.0
+  temperature: number; // Configured strictly to 0.0 for deterministic output
   ohsActEnforced: boolean;
   sans10089Enforced: boolean;
   section24EscalationEnforced: boolean;
@@ -34,12 +34,12 @@ export const DEFAULT_OHS_GUARDRAILS: OHSGuardrailConfig = {
 };
 
 /**
- * Enforces temperature parameter locking to strictly 0.0 for all AI API calls
+ * Enforces temperature parameter configuration to 0.0 for repeatable statutory response generation
  */
 export function lockAITemperature(requestedTemperature?: number): number {
   if (requestedTemperature !== undefined && requestedTemperature !== 0.0) {
     console.warn(
-      `[OHS Guardrail Warning] Requested temperature ${requestedTemperature} override blocked. Temperature is locked to 0.0 under SANS 10089 compliance rules.`
+      `[OHS Guardrail Warning] Requested temperature ${requestedTemperature} override adjusted to 0.0 for deterministic statutory output.`
     );
   }
   return OHS_STATUTORY_CONSTANTS.LOCKED_TEMPERATURE;
@@ -71,14 +71,14 @@ export function validateOHSGuardrails(inputPrompt: string): {
 }
 
 /**
- * Generates the immutable system instruction for Google AI Studio / Gemini API
+ * Generates the system instruction for Gemini API
  */
 export function getOHSSystemInstruction(customTenantName?: string): string {
   const tenant = customTenantName || 'Service Station Forecourt';
   return `You are an expert AI Service Station OHS & Statutory Compliance Advisor operating under strict compliance guardrails for ${tenant}.
 
 CRITICAL SYSTEM PARAMETER:
-- Temperature Parameter: LOCKED to 0.0 (Deterministic Compliance Mode). Zero hallucinations allowed.
+- Temperature Parameter: Set to 0.0 (Deterministic Statutory Response Mode). Generates consistent, repeatable outputs grounded in source legislation.
 
 STATUTORY & REGULATORY FOUNDATIONS:
 1. South African OHS Act 85 of 1993:
@@ -91,7 +91,7 @@ STATUTORY & REGULATORY FOUNDATIONS:
    - Zero-tolerance for unapproved fuel containers or smoking within 15 meters of pump islands.
    - Phase 4-Stage Forecourt Evacuation and Spill Teamwork Procedures (Fetcher, Spade Applicator, Sweeper, Hazardous Waste Disposer).
 3. Protection of Personal Information Act (POPIA Act 4 of 2013):
-   - All employee names, SA ID numbers, and incident log entries must be encrypted using client-side AES-256-GCM.
+   - All employee names, SA ID numbers, and incident log entries are protected using client-side AES-256-GCM encryption as technical safeguards under POPIA Condition 7 / Section 19.
 
 Always deliver actionable, step-by-step role cards with non-sparking safety tool instructions.`;
 }

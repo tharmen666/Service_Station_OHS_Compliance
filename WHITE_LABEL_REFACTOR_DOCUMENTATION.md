@@ -1,7 +1,7 @@
 # Service Station OHS White-Label Refactor & Statutory Audit Documentation
 
 ## Executive Overview
-This document details the architecture, statutory compliance guardrails, client-side POPIA encryption layer, multi-tenant branding engine, and PDF generator suite for the **South African Service Station OHS Compliance Platform**.
+This document details the architecture, statutory compliance guardrails, client-side data protection safeguards supporting POPIA Condition 7 / Section 19, multi-tenant branding engine, and PDF generator suite for the **South African Service Station OHS Compliance Management System**.
 
 ---
 
@@ -13,8 +13,8 @@ The multi-tenant engine decouples station branding, colors, logos, and site meta
 
 ---
 
-## 2. Statutory Guardrails & Temperature Locking (`src/ohsComplianceGuardrails.ts`)
-To prevent hallucinations on legal safety mandates, all AI endpoint calls are strictly locked to **`temperature = 0.0`**.
+## 2. Deterministic Statutory Responses & Parameter Control (`src/ohsComplianceGuardrails.ts`)
+**Deterministic Statutory Responses**: All statutory query and compliance-reasoning endpoints run at `temperature: 0.0` to ensure repeatable, consistent output for a given input. This is paired with structured prompt templates grounded directly in source legislation (OHS Act 85 of 1993, SANS 10089). Every statutory response includes citations back to the specific Act section, statutory regulation, or SANS standard clause, allowing the appointed Section 16.2 or SHE Representative to verify drafts against the primary legal text prior to formal sign-off.
 
 ### Statutory References Enforced:
 1. **Occupational Health and Safety Act 85 of 1993**:
@@ -31,9 +31,9 @@ To prevent hallucinations on legal safety mandates, all AI endpoint calls are st
 
 ---
 
-## 3. Client-Side POPIA Privacy & Encryption (`src/popiActCompliance.ts`)
+## 3. Client-Side Data Protection Safeguards (Supporting POPIA Condition 7 / Section 19) (`src/popiActCompliance.ts`)
 Under Section 19 of the **Protection of Personal Information Act (Act 4 of 2013)**, sensitive employee data (SA ID numbers, phone numbers, audit log signatures) must be protected:
-- **AES-256-GCM Encryption**: Client-side encryption/decryption using Web Crypto API.
+- **Client-Side Data Protection Safeguards (Supporting POPIA Condition 7 / Section 19)**: Implements client-side AES-256-GCM encryption (via the browser Web Crypto API) for employee South African ID numbers and inspection signature payloads at rest and in transit, accompanied by automated PII masking in UI displays and PDF exports. These technical measures serve as digital safeguards supporting the facility’s broader POPIA Section 19 information security program, functioning alongside appointed Information Officer governance and ongoing organizational risk controls.
 - **PII Masking**: Automatic masking of 13-digit SA ID numbers (`880101****082`) and phone numbers (`+2782***4567`).
 - **Verification Routine**: `verifyPOPIAEncryption()` executes runtime integrity checks.
 

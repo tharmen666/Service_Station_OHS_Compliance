@@ -1,12 +1,13 @@
 /**
- * Service Station OHS Compliance Platform - Client-Side POPIA Compliance & Privacy Layer
- * Protection of Personal Information Act (Act 4 of 2013)
+ * Service Station OHS Compliance Platform - Client-Side POPIA Data Protection Safeguards
+ * Protection of Personal Information Act (Act 4 of 2013) - Condition 7 / Section 19
  * 
  * Features:
- * - Client-side AES-256-GCM PII Encryption & Decryption
- * - PII Masking & Redaction (SA ID Numbers, Phone Numbers, Medical Logs)
+ * - Client-side Data Protection Safeguards (Supporting POPIA Condition 7 / Section 19)
+ * - Web Crypto API AES-256-GCM PII Encryption & Decryption at rest and in transit
+ * - Automated PII Masking & Redaction (SA ID Numbers, Phone Numbers, Medical Logs)
  * - Audit Trail Signatures & DSAR (Data Subject Access Request) Handling
- * - Encryption Status Verification (`verifyPOPIAEncryption`)
+ * - Encryption Safeguard Verification (`verifyPOPIAEncryption`)
  */
 
 export interface POPIAEncryptionResult {

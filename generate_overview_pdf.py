@@ -164,8 +164,8 @@ def build_pdf(target_file=DESKTOP_PATH):
         ("🔥 PASS Firefighting & Fuel Safety:", 
          "Interactive training on using 9kg Dry Chemical Powder (DCP) extinguishers on Class B fuel fires using the PASS technique (Pull, Aim, Squeeze, Sweep)."),
         
-        ("📋 Autonomous Statutory Document Generator:", 
-         "Instantly generates audit-ready <b>HIRA</b> (Hazard Identification & Risk Assessment), <b>SWP</b> (Safe Work Procedures), and <b>Section 24 Incident Reports</b> grounded in SA OHS Act 85 of 1993."),
+        ("📋 Statutory Document Draft Generator:", 
+         "Instantly generates audit-ready draft <b>HIRA</b> (Hazard Identification & Risk Assessment), <b>SWP</b> (Safe Work Procedures), and <b>Section 24 Incident Reports</b> grounded in SA OHS Act 85 of 1993."),
         
         ("📝 RSD 26 Fuel Tanker Offloading Checklist:", 
          "Digital inspection checklist ensuring static bonding straps are attached, ullage levels verified, and emergency shut-offs tested before fuel offloading."),
@@ -211,11 +211,11 @@ def build_pdf(target_file=DESKTOP_PATH):
     story.append(Paragraph("Core Technical Highlights:", h2_style))
 
     tech_highlights = [
-        ("Client-Side POPIA AES-256-GCM Cryptography:", 
-         "Located in <code>src/popiActCompliance.ts</code>. Uses native <code>window.crypto.subtle</code> with AES-256-GCM encryption and 96-bit initialization vectors (IV) to encrypt employee SA ID numbers and audit log signatures before storage or export."),
+        ("Client-Side Data Protection Safeguards (POPIA Condition 7 / Section 19):", 
+         "Located in <code>src/popiActCompliance.ts</code>. Uses native <code>window.crypto.subtle</code> with AES-256-GCM encryption and 96-bit initialization vectors (IV) to protect employee SA ID numbers and audit log signatures at rest and in transit as technical safeguards under POPIA Condition 7 / Section 19."),
         
-        ("Autonomous Statutory AI Engine (Temp 0.0 Lock):", 
-         "Located in <code>src/components/StatutoryDocGeneratorModal.tsx</code>. Enforces a strict <code>temperature: 0.0</code> model configuration to eliminate AI hallucinations during legal OHS document generation."),
+        ("Deterministic Statutory Response Engine (Temp 0.0):", 
+         "Located in <code>src/components/StatutoryDocGeneratorModal.tsx</code>. Enforces a strict <code>temperature: 0.0</code> model configuration for repeatable prompt hydration and consistent statutory document generation grounded in OHS Act 85 of 1993."),
         
         ("Multi-Tenant Pub-Sub Architecture:", 
          "Located in <code>src/multiTenantConfig.ts</code>. Utilizes a lightweight pub-sub state listener (<code>subscribeTenantChange</code>) enabling instant white-label brand switching across the app without page reloads."),

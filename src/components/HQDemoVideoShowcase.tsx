@@ -48,8 +48,8 @@ export const demoSteps: DemoStep[] = [
     startSec: 0,
     endSec: 12,
     title: 'Multi-Tenant White-Labeling & Brand Switching',
-    subtitle: 'Dynamic branding engine for forecourt majors with client-side POPIA encryption',
-    script: 'Welcome to the future of forecourt and retail compliance. Our multi-tenant engine adapts in real time to global petroleum and food retail brands while keeping your sensitive data locked with POPIA-compliant client-side encryption.',
+    subtitle: 'Dynamic branding engine for forecourt majors with client-side POPIA data protection safeguards',
+    script: 'Welcome to forecourt and retail compliance. Our multi-tenant engine adapts in real time to petroleum and food retail brands while protecting sensitive data with client-side AES-256-GCM encryption as technical safeguards under POPIA Condition 7 / Section 19.',
     frameworks: ['POPIA AES-256', 'Multi-Tenant Engine', 'White-Label Branding']
   },
   {
@@ -58,8 +58,8 @@ export const demoSteps: DemoStep[] = [
     startSec: 12,
     endSec: 28,
     title: 'Statutory Guardrails & T=0.0 Determinism',
-    subtitle: 'Nelly AI zero-hallucination engine enforcing 5 regulatory standards & CCP thermal checks',
-    script: 'At the core is Nelly—hard-locked to zero-temperature determinism. Every recommendation strictly maps across 5 regulatory layers including OHS Act, R638, ISO 22000, and FDA standards, completely eliminating AI hallucinations.',
+    subtitle: 'Nelly AI deterministic response engine enforcing regulatory standards & thermal checks',
+    script: 'At the core is Nelly—configured for deterministic statutory response generation at temperature: 0.0. Every recommendation strictly maps across regulatory frameworks including OHS Act 85 of 1993, R638, ISO 22000, and FDA standards with direct citations.',
     frameworks: ['OHS Act 85', 'R638 Food Hygiene', 'ISO 22000', 'FDA Food Code 2022', 'Nevada SNHD']
   },
   {

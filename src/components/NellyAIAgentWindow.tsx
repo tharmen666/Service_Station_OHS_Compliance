@@ -39,7 +39,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'nelly' | 'user'; text: string; time: string }>>([
     {
       sender: 'nelly',
-      text: "Hello! I am Nelly, your primary female AI avatar guide for forecourt & retail compliance. Hard-locked to zero-temperature determinism (T=0.0) across OHS Act, R638, ISO 22000, and FDA standards. How can I assist your site today?",
+      text: "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. Operating at deterministic temperature: 0.0 with direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. How can I assist your site today?",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
