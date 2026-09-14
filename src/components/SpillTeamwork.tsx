@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { spillRoles } from '../data/assessmentData';
-import { AlertTriangle, ShieldCheck, Wrench, Sparkles, CheckSquare, Maximize2, Image as ImageIcon } from 'lucide-react';
+import { emergencyProtocols } from '../data/emergencyProtocols';
+import { 
+  AlertTriangle, 
+  ShieldCheck, 
+  Wrench, 
+  Sparkles, 
+  CheckSquare, 
+  Maximize2, 
+  Image as ImageIcon,
+  CheckCircle2
+} from 'lucide-react';
 import { PosterLightboxModal } from './PosterLightboxModal';
 
 export const SpillTeamwork: React.FC = () => {
@@ -11,25 +21,37 @@ export const SpillTeamwork: React.FC = () => {
     SP_04: false,
   });
 
+  const [completedSpillSteps, setCompletedSpillSteps] = useState<number[]>([]);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   const toggleRole = (id: string) => {
     setActiveRoles(prev => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const toggleSpillStep = (stepNum: number) => {
+    if (completedSpillSteps.includes(stepNum)) {
+      setCompletedSpillSteps(completedSpillSteps.filter(s => s !== stepNum));
+    } else {
+      setCompletedSpillSteps([...completedSpillSteps, stepNum]);
+    }
+  };
+
   const completedCount = Object.values(activeRoles).filter(Boolean).length;
+  const spillProtocol = emergencyProtocols.spillResponse;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Header Card */}
       <div className="pos-card pos-card-amber p-6 rounded-2xl border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-bold uppercase tracking-wider mb-2 border border-amber-500/30">
             <AlertTriangle className="w-3.5 h-3.5" />
-            Compulsory Teamwork SOP
+            {spillProtocol.motto}
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">Emergency Spill Response Teamwork Protocol</h2>
-          <p className="text-slate-300 text-sm mt-1">Four synchronized forecourt attendant role cards for containing fuel spills and preventing drain contamination.</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">{spillProtocol.title}</h2>
+          <p className="text-slate-300 text-sm mt-1">
+            Comprehensive 8-step response process and 4 synchronized forecourt attendant role cards for fuel spill containment.
+          </p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -52,6 +74,65 @@ export const SpillTeamwork: React.FC = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* 8-Step Emergency Spill Response Grid */}
+      <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl">
+        <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+          <div>
+            <h3 className="text-lg font-extrabold text-white">8-Step Sequential Spill Clean-Up Workflow</h3>
+            <p className="text-xs text-slate-400">Step-by-step spill containment, drain protection, and statutory hazardous waste handling.</p>
+          </div>
+          <span className="px-3 py-1 rounded-full bg-amber-500/10 text-amber-300 text-xs font-bold border border-amber-500/30">
+            {completedSpillSteps.length}/8 Completed
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {spillProtocol.steps.map((item) => {
+            const isDone = completedSpillSteps.includes(item.step);
+
+            return (
+              <div
+                key={item.step}
+                onClick={() => toggleSpillStep(item.step)}
+                className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between ${
+                  isDone
+                    ? 'bg-slate-950 border-emerald-500/60 ring-1 ring-emerald-500/30'
+                    : 'bg-slate-950/60 border-slate-800 hover:border-amber-500/50'
+                }`}
+              >
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className={`w-7 h-7 rounded-lg flex items-center justify-center font-extrabold text-xs ${
+                      isDone ? 'bg-emerald-500 text-slate-950' : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                    }`}>
+                      #{item.step}
+                    </span>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleSpillStep(item.step);
+                      }}
+                      className={`px-2 py-0.5 rounded text-[11px] font-bold flex items-center gap-1 transition ${
+                        isDone
+                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                          : 'bg-slate-800 text-slate-400 hover:text-white'
+                      }`}
+                    >
+                      <CheckCircle2 className="w-3 h-3" />
+                      {isDone ? 'Done' : 'Mark'}
+                    </button>
+                  </div>
+
+                  <h4 className="font-extrabold text-sm text-white">{item.title}</h4>
+                  <p className="text-xs text-slate-300 leading-normal">{item.detail}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -158,3 +239,4 @@ export const SpillTeamwork: React.FC = () => {
     </div>
   );
 };
+

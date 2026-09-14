@@ -1,6 +1,21 @@
 import React, { useState } from 'react';
-import { evacuationSteps } from '../data/assessmentData';
-import { AlertOctagon, ShieldAlert, PhoneCall, Flame, SearchCheck, Users, CheckCircle2, Volume2, ArrowRight, RefreshCw, Maximize2, Image as ImageIcon } from 'lucide-react';
+import { emergencyProtocols } from '../data/emergencyProtocols';
+import { 
+  AlertOctagon, 
+  ShieldAlert, 
+  PhoneCall, 
+  Flame, 
+  SearchCheck, 
+  Users, 
+  CheckCircle2, 
+  Volume2, 
+  Maximize2, 
+  Image as ImageIcon,
+  HeartPulse,
+  Power,
+  ClipboardCheck,
+  Search
+} from 'lucide-react';
 import { PosterLightboxModal } from './PosterLightboxModal';
 
 export const EvacuationFlow: React.FC = () => {
@@ -9,30 +24,30 @@ export const EvacuationFlow: React.FC = () => {
   const [isAudioSimulating, setIsAudioSimulating] = useState<boolean>(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
+  const protocol = emergencyProtocols.evacuation;
+
   const toggleStepComplete = (stepNum: number) => {
     if (completedSteps.includes(stepNum)) {
       setCompletedSteps(completedSteps.filter(s => s !== stepNum));
     } else {
       setCompletedSteps([...completedSteps, stepNum]);
-      if (stepNum < 6) {
+      if (stepNum < protocol.steps.length) {
         setActiveStep(stepNum + 1);
       }
     }
   };
 
-  const resetFlow = () => {
-    setCompletedSteps([]);
-    setActiveStep(1);
-  };
-
-  const getIcon = (name: string) => {
-    switch (name) {
-      case 'AlertOctagon': return <AlertOctagon className="w-6 h-6 text-red-400" />;
-      case 'ShieldAlert': return <ShieldAlert className="w-6 h-6 text-red-400" />;
-      case 'PhoneCall': return <PhoneCall className="w-6 h-6 text-red-400" />;
-      case 'Flame': return <Flame className="w-6 h-6 text-red-400" />;
-      case 'SearchCheck': return <SearchCheck className="w-6 h-6 text-red-400" />;
-      case 'Users': return <Users className="w-6 h-6 text-red-400" />;
+  const getIcon = (stepNum: number) => {
+    switch (stepNum) {
+      case 1: return <AlertOctagon className="w-6 h-6 text-red-400" />;
+      case 2: return <HeartPulse className="w-6 h-6 text-red-400" />;
+      case 3: return <Users className="w-6 h-6 text-red-400" />;
+      case 4: return <ClipboardCheck className="w-6 h-6 text-red-400" />;
+      case 5: return <Flame className="w-6 h-6 text-red-400" />;
+      case 6: return <ShieldAlert className="w-6 h-6 text-red-400" />;
+      case 7: return <Power className="w-6 h-6 text-red-400" />;
+      case 8: return <Search className="w-6 h-6 text-red-400" />;
+      case 9: return <PhoneCall className="w-6 h-6 text-red-400" />;
       default: return <AlertOctagon className="w-6 h-6 text-red-400" />;
     }
   };
@@ -43,16 +58,18 @@ export const EvacuationFlow: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Top Banner */}
       <div className="pos-card pos-card-red p-6 rounded-2xl border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider mb-2 border border-red-500/30">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            Mandatory Emergency Flow
+            {protocol.motto}
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">6-Step Forecourt Evacuation Protocol</h2>
-          <p className="text-slate-300 text-sm mt-1">Sequential role cards for forecourt emergency evacuation, pump shutoff, and assembly roll call.</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">{protocol.title}</h2>
+          <p className="text-slate-300 text-sm mt-1">
+            Sequential 9-step forecourt emergency response, panic prevention, engine shut-off, sweeps, and roll call.
+          </p>
         </div>
 
         <div className="flex items-center gap-3 w-full md:w-auto">
@@ -104,14 +121,14 @@ export const EvacuationFlow: React.FC = () => {
 
       {/* Interactive Step Timeline Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {evacuationSteps.map((step) => {
-          const isDone = completedSteps.includes(step.step_number);
-          const isCurrent = activeStep === step.step_number;
+        {protocol.steps.map((item) => {
+          const isDone = completedSteps.includes(item.step);
+          const isCurrent = activeStep === item.step;
 
           return (
             <div
-              key={step.step_number}
-              onClick={() => setActiveStep(step.step_number)}
+              key={item.step}
+              onClick={() => setActiveStep(item.step)}
               className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
                 isDone
                   ? 'bg-slate-900/90 border-emerald-500/60 ring-1 ring-emerald-500/30'
@@ -125,13 +142,13 @@ export const EvacuationFlow: React.FC = () => {
                   <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-extrabold text-sm ${
                     isDone ? 'bg-emerald-500 text-slate-950' : 'bg-red-500/20 text-red-400 border border-red-500/30'
                   }`}>
-                    #{step.step_number}
+                    #{item.step}
                   </span>
 
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      toggleStepComplete(step.step_number);
+                      toggleStepComplete(item.step);
                     }}
                     className={`px-3 py-1 rounded-lg text-xs font-bold transition flex items-center gap-1 ${
                       isDone
@@ -145,19 +162,15 @@ export const EvacuationFlow: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  {getIcon(step.icon_name)}
-                  <h3 className="font-extrabold text-base text-white">{step.title}</h3>
+                  {getIcon(item.step)}
+                  <h3 className="font-extrabold text-base text-white">{item.action}</h3>
                 </div>
 
-                <div className="text-xs font-semibold text-amber-400">
-                  Assigned: <strong>{step.role}</strong>
-                </div>
-
-                <p className="text-xs text-slate-300 leading-relaxed">{step.action}</p>
+                <p className="text-xs text-slate-300 leading-relaxed">{item.detail}</p>
               </div>
 
               <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-red-300/90 font-bold">
-                ⚠️ Warning: {step.critical_warning}
+                ⚠️ Step #{item.step} Mandatory Protocol Standard
               </div>
             </div>
           );
@@ -175,3 +188,4 @@ export const EvacuationFlow: React.FC = () => {
     </div>
   );
 };
+
