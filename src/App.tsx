@@ -98,31 +98,10 @@ export const App: React.FC = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', overflow: 'hidden', backgroundColor: '#070d1e' }} className="font-sans">
+    <div className="flex flex-col md:flex-row w-screen h-screen overflow-hidden bg-[#070d1e] font-sans">
       
-      {/* Floating GEAR Pillar Settings & AI Guide Buttons */}
-      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        <button
-          onClick={() => setIsGearModalOpen(true)}
-          className="p-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black shadow-2xl shadow-amber-950/80 border-2 border-amber-300 transition transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2"
-          title="Open G.E.A.R. Pillar Settings Suite"
-        >
-          <Sliders className="w-5 h-5 text-slate-950 animate-spin-slow" />
-          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">GEAR Pillars</span>
-        </button>
-
-        <button
-          onClick={() => setIsNellyOpen(!isNellyOpen)}
-          className="p-3 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-black shadow-2xl shadow-purple-950/80 border-2 border-purple-300 transition transform hover:scale-105 min-h-[44px] min-w-[44px] flex items-center justify-center gap-2"
-          title="Toggle AI Avatar Guide"
-        >
-          <Bot className="w-5 h-5 text-purple-100" />
-          <span className="hidden md:inline text-xs font-black uppercase tracking-wider">AI Advisor</span>
-        </button>
-      </div>
-
-      {/* PERSISTENT LEFT SIDEBAR */}
-      <aside style={{ width: '260px', minWidth: '260px', height: '100%', backgroundColor: '#0b1329', borderRight: '1px solid #1e293b', display: 'flex', flexDirection: 'column', flexShrink: 0, zIndex: 50 }}>
+      {/* PERSISTENT LEFT SIDEBAR (Hidden on mobile, visible on tablet/desktop) */}
+      <aside className="hidden md:flex flex-col flex-shrink-0 w-[260px] min-w-[260px] h-full bg-[#0b1329] border-r border-slate-800 z-40">
         
         {/* System Brand Header */}
         <div style={{ padding: '16px', borderBottom: '1px solid #1e293b' }}>
@@ -174,35 +153,77 @@ export const App: React.FC = () => {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, overflow: 'hidden', backgroundColor: '#070d1e' }}>
         
         {/* Top Header Bar */}
-        <header style={{ flexShrink: 0, borderBottom: '1px solid #1e293b', padding: '12px 24px', backgroundColor: '#070d1e' }}>
-          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <header className="flex-shrink-0 border-b border-slate-800 bg-[#070d1e] w-full overflow-x-hidden">
+          <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 w-full max-w-full overflow-x-hidden">
             
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
-                  {t.headerBadge} • {activeTenant.siteCode}
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
-                </span>
-                {popiaStatus.compliant && (
-                  <span className="hidden sm:flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1">
-                    <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256
+            {/* ROW 1 / LEFT: Brand & Essential Telemetry Status */}
+            <div className="flex items-center justify-between w-full md:w-auto gap-3">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
+                    {t.headerBadge} • {activeTenant.siteCode}
                   </span>
-                )}
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1 whitespace-nowrap">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
+                  </span>
+                  {popiaStatus.compliant && (
+                    <span className="hidden sm:flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
+                      <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256
+                    </span>
+                  )}
+                </div>
+                <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5 truncate max-w-[220px] sm:max-w-none">
+                  {activeTenant.brandName}
+                </h1>
               </div>
-              <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5">{activeTenant.brandName}</h1>
+
+              {/* Mobile Quick Action Badges (Row 1 right) */}
+              <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
+                <button
+                  onClick={() => setIsGearModalOpen(true)}
+                  className="h-9 w-9 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition flex items-center justify-center flex-shrink-0 shadow-sm"
+                  title="GEAR Pillars"
+                >
+                  <Sliders className="w-4 h-4 text-slate-950" />
+                </button>
+                <button
+                  onClick={() => setIsNellyOpen(!isNellyOpen)}
+                  className="h-9 w-9 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black border border-purple-300 transition flex items-center justify-center flex-shrink-0 shadow-sm"
+                  title="AI Advisor"
+                >
+                  <Bot className="w-4 h-4 text-purple-100" />
+                </button>
+              </div>
             </div>
 
-            {/* POS Status & Action Widgets */}
-            <div className="flex items-center gap-2.5 pr-32 lg:pr-36">
-              <div className="hidden xl:flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800">
-                <Globe className="w-4 h-4 text-amber-400 ml-1" />
+            {/* CENTER: Telemetry Chips (Desktop / Tablet wrapped row) */}
+            <div className="hidden md:flex items-center gap-2 flex-wrap text-xs">
+              <div className="hidden lg:flex px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-xs text-slate-300 whitespace-nowrap">
+                <HardDrive className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                <span>{t.usbStatus}</span>
+              </div>
+
+              <div className="hidden lg:flex px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-xs text-slate-300 whitespace-nowrap">
+                <Zap className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                <span>{t.esdStatus}</span>
+              </div>
+
+              <div className="px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-xs whitespace-nowrap">
+                🕒 {currentTime}
+              </div>
+            </div>
+
+            {/* RIGHT: Language Switcher & Action Buttons Wrapper */}
+            <div className="flex-shrink-0 flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 max-w-full">
+              
+              {/* Desktop Language Switcher */}
+              <div className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 flex-shrink-0">
+                <Globe className="w-4 h-4 text-amber-400 ml-1 flex-shrink-0" />
                 {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
                   <button
                     key={l}
                     onClick={() => setLang(l)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-extrabold transition-all min-h-[32px] ${
+                    className={`h-8 px-2.5 rounded-lg text-xs font-extrabold transition-all whitespace-nowrap ${
                       lang === l
                         ? 'bg-amber-500 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white hover:bg-slate-900'
@@ -213,56 +234,129 @@ export const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-[11px]">
-                <HardDrive className="w-3.5 h-3.5 text-amber-400" />
-                <span>{t.usbStatus}</span>
+              {/* Dedicated Flex Action Buttons Wrapper */}
+              <div className="flex-shrink-0 flex items-center gap-2">
+                <button
+                  onClick={() => setIsDemoModalOpen(true)}
+                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
+                  title="Multilingual Video Showcase"
+                >
+                  <Video className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <span className="hidden sm:inline">Live Demo</span>
+                </button>
+
+                <button
+                  onClick={() => setIsStatutoryModalOpen(true)}
+                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
+                  title="Autonomous Statutory OHS Doc Generator"
+                >
+                  <Scale className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span className="hidden sm:inline">Statutory Doc</span>
+                </button>
+
+                <button
+                  onClick={() => setIsNotificationCenterOpen(true)}
+                  className="h-9 md:h-10 w-9 md:w-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition flex items-center justify-center flex-shrink-0"
+                  title="Retailer Notification Center"
+                >
+                  <BellRing className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                </button>
+
+                <button
+                  onClick={() => setIsDossierOpen(true)}
+                  className="h-9 md:h-10 w-9 md:w-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center justify-center flex-shrink-0"
+                  title="Corporate Stewardship Dossier"
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                </button>
+
+                <button
+                  onClick={() => setIsAIStudioOpen(true)}
+                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
+                  title="Google AI Studio Integration & Guardrails"
+                >
+                  <Bot className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                  <span className="hidden sm:inline">AI Studio</span>
+                </button>
+
+                <button
+                  onClick={() => setIsGearModalOpen(true)}
+                  className="hidden md:flex h-9 md:h-10 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition items-center gap-1.5 text-xs whitespace-nowrap shadow-sm"
+                  title="Open G.E.A.R. Pillar Settings Suite"
+                >
+                  <Sliders className="w-4 h-4 text-slate-950 flex-shrink-0" />
+                  <span className="hidden lg:inline uppercase">GEAR Pillars</span>
+                </button>
+
+                <button
+                  onClick={() => setIsNellyOpen(!isNellyOpen)}
+                  className="hidden md:flex h-9 md:h-10 px-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black border border-purple-300 transition items-center gap-1.5 text-xs whitespace-nowrap shadow-sm"
+                  title="Toggle AI Avatar Guide"
+                >
+                  <Bot className="w-4 h-4 text-purple-100 flex-shrink-0" />
+                  <span className="hidden lg:inline uppercase">AI Advisor</span>
+                </button>
               </div>
 
-              <div className="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-[11px]">
-                <Zap className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{t.esdStatus}</span>
-              </div>
-
-              <div className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-xs">
-                🕒 {currentTime}
-              </div>
-
-              <button
-                onClick={() => setIsStatutoryModalOpen(true)}
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
-                title="Autonomous Statutory OHS Doc Generator"
-              >
-                <Scale className="w-4 h-4 text-emerald-400" />
-                <span className="hidden md:inline">Statutory Doc</span>
-              </button>
-
-              <button
-                onClick={() => setIsNotificationCenterOpen(true)}
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition"
-                title="Retailer Notification Center"
-              >
-                <BellRing className="w-4 h-4 text-amber-400" />
-              </button>
-
-              <button
-                onClick={() => setIsDossierOpen(true)}
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition"
-                title="Corporate Stewardship Dossier"
-              >
-                <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
-              </button>
-
-              <button
-                onClick={() => setIsAIStudioOpen(true)}
-                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold"
-                title="Google AI Studio Integration & Guardrails"
-              >
-                <Bot className="w-4 h-4 text-purple-400" />
-                <span>AI Studio</span>
-              </button>
             </div>
+
+            {/* ROW 2 (MOBILE ONLY): Language switcher + compact telemetry badges */}
+            <div className="flex md:hidden items-center justify-between gap-2 pt-2 border-t border-slate-800/60 w-full">
+              {/* Mobile Language Switcher */}
+              <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
+                <Globe className="w-3.5 h-3.5 text-amber-400 ml-1 flex-shrink-0" />
+                {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
+                  <button
+                    key={l}
+                    onClick={() => setLang(l)}
+                    className={`h-7 px-2 rounded-md text-[11px] font-extrabold transition-all whitespace-nowrap ${
+                      lang === l
+                        ? 'bg-amber-500 text-slate-950 shadow-sm'
+                        : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {l}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile Telemetry Status Badges */}
+              <div className="flex items-center gap-1.5 text-[10px]">
+                <div className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1 text-slate-300 whitespace-nowrap">
+                  <HardDrive className="w-3 h-3 text-amber-400" />
+                  <span className="hidden sm:inline">{t.usbStatus}</span>
+                </div>
+                <div className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono text-slate-200 text-[11px] whitespace-nowrap">
+                  🕒 {currentTime}
+                </div>
+              </div>
+            </div>
+
           </div>
         </header>
+
+        {/* Mobile Secondary Swipeable Tab Bar */}
+        <div className="flex md:hidden overflow-x-auto whitespace-nowrap scrollbar-none flex-nowrap gap-2 px-4 py-2 border-b border-slate-800 bg-slate-900/90 w-full text-xs">
+          {moduleTabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`h-9 px-3 rounded-lg font-extrabold flex items-center gap-1.5 flex-shrink-0 transition-all whitespace-nowrap ${
+                  isActive
+                    ? 'bg-amber-500 text-slate-950 shadow-sm'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white border border-slate-700/50'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-slate-950' : 'text-slate-400'}`} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+
 
         {/* Main Active Screen */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
