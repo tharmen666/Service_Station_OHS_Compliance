@@ -22,10 +22,10 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     await expect(headerTitle).toBeVisible();
 
     // Test switching tabs (Evacuation, Spill, Fire, Rights, Quiz, Refresher)
-    const spillTabButton = page.getByRole('button', { name: /Spill Response/i }).first();
+    const spillTabButton = page.getByRole('button', { name: /Fuel Spill Containment/i }).first();
     if (await spillTabButton.isVisible()) {
       await spillTabButton.click();
-      await expect(page.locator('text=Emergency Spill Response Teamwork Protocol')).toBeVisible();
+      await expect(page.locator('text=Emergency Spill Response Process & Steps')).toBeVisible();
     }
 
     const rightsTabButton = page.getByRole('button', { name: /Employee Rights/i }).first();
@@ -56,7 +56,7 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     await expect(textarea).toBeVisible();
     const systemPromptText = await textarea.inputValue();
     expect(systemPromptText).toContain('SANS 10089');
-    expect(systemPromptText).toContain('LOCKED to 0.0');
+    expect(systemPromptText).toContain('Set to 0.0');
 
     // Close drawer
     const closeBtn = page.getByRole('button', { name: /Close Drawer/i }).first();
