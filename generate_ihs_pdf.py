@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Service Station OHS Compliance Platform - Multi-Tenant Integrated Health & Safety (IHS) Manual Generator
+Service Station OHS Compliance Platform - Multi-Tenant Occupational Health & Safety (OHS) Manual Generator
 Refactored ReportLab script generating audit-ready PDF documentation with dynamic .env.local tenant settings.
 """
 
@@ -82,7 +82,7 @@ class NumberedCanvas(canvas.Canvas):
         self.restoreState()
 
 
-def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
+def build_ohs_pdf(filename="Service_Station_OHS_Manual.pdf"):
     doc = SimpleDocTemplate(
         filename,
         pagesize=letter,
@@ -146,7 +146,7 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
     story = []
 
     # Title Banner Block
-    story.append(Paragraph(f"INTEGRATED HEALTH & SAFETY (IHS) COMPLIANCE MANUAL", title_style))
+    story.append(Paragraph(f"OCCUPATIONAL HEALTH & SAFETY (OHS) COMPLIANCE MANUAL", title_style))
     story.append(Paragraph(f"Site: {STATION_NAME} | Code: {SITE_CODE} | Location: {LOCATION}", subtitle_style))
     story.append(HRFlowable(width="100%", thickness=1.5, color=colors.HexColor(SECONDARY_COLOR_HEX), spaceAfter=12))
 
@@ -224,5 +224,8 @@ def build_ihs_pdf(filename="Service_Station_IHS_Manual.pdf"):
     doc.build(story, canvasmaker=NumberedCanvas)
     print(f"Successfully generated {filename}")
 
+# Backward-compatibility alias
+build_ihs_pdf = build_ohs_pdf
+
 if __name__ == "__main__":
-    build_ihs_pdf()
+    build_ohs_pdf()

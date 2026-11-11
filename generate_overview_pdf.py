@@ -193,7 +193,7 @@ def build_pdf(target_file=DESKTOP_PATH):
         [Paragraph("<b>Styling & Design</b>", body_style), Paragraph("TailwindCSS 3 + CSS", body_style), Paragraph("Dark-mode forecourt UI with glassmorphic cards", body_style)],
         [Paragraph("<b>Icons</b>", body_style), Paragraph("Lucide React", body_style), Paragraph("Scalable SVG vector iconography", body_style)],
         [Paragraph("<b>Cryptography & Security</b>", body_style), Paragraph("Web Crypto API (AES-256-GCM)", body_style), Paragraph("Client-side POPIA encryption for SA ID & signatures", body_style)],
-        [Paragraph("<b>PDF Engine</b>", body_style), Paragraph("Python 3 + ReportLab", body_style), Paragraph("Dynamic PDF manual compilation (`generate_ihs_pdf.py`)", body_style)],
+        [Paragraph("<b>PDF Engine</b>", body_style), Paragraph("Python 3 + ReportLab", body_style), Paragraph("Dynamic PDF manual compilation (`generate_ohs_pdf.py`)", body_style)],
         [Paragraph("<b>Hosting & Deployment</b>", body_style), Paragraph("Vercel + GitHub Actions", body_style), Paragraph("Continuous integration & automated deployment", body_style)],
     ]
 
@@ -221,7 +221,7 @@ def build_pdf(target_file=DESKTOP_PATH):
          "Located in <code>src/multiTenantConfig.ts</code>. Utilizes a lightweight pub-sub state listener (<code>subscribeTenantChange</code>) enabling instant white-label brand switching across the app without page reloads."),
         
         ("Standalone Python ReportLab PDF Generator:", 
-         "Located in <code>generate_ihs_pdf.py</code>. Uses ReportLab's <code>SimpleDocTemplate</code> with custom <code>NumberedCanvas</code> header/footer callbacks to dynamically compile audit-ready PDF manuals based on <code>.env.local</code> tenant configuration.")
+         "Located in <code>generate_ohs_pdf.py</code>. Uses ReportLab's <code>SimpleDocTemplate</code> with custom <code>NumberedCanvas</code> header/footer callbacks to dynamically compile audit-ready PDF manuals based on <code>.env.local</code> tenant configuration.")
     ]
 
     for title, desc in tech_highlights:

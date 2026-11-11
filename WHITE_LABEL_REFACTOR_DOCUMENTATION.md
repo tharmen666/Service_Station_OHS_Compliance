@@ -41,7 +41,7 @@ Under Section 19 of the **Protection of Personal Information Act (Act 4 of 2013)
 
 ## 4. Multi-Tenant Python PDF Generator Suite
 
-### A. Integrated Health & Safety Manual (`generate_ihs_pdf.py`)
+### A. Occupational Health & Safety (OHS) Manual (`generate_ohs_pdf.py`)
 Generates an audit-ready, 5-page PDF document using ReportLab:
 - Dynamic multi-tenant header & footer with tenant brand name, site code, and page numbers.
 - Statutory OHS Act 85 & SANS 10089 compliance tables.
@@ -72,10 +72,10 @@ Confirms 0 TypeScript compilation errors (`tsc`) and generates optimized product
 
 ### Step 2: PDF Generator Execution
 ```bash
-python generate_ihs_pdf.py
+python generate_ohs_pdf.py
 python generate_policies_pdf.py
 ```
-Generates `Service_Station_IHS_Manual.pdf` and `Service_Station_OHS_Policies.pdf`.
+Generates `Service_Station_OHS_Manual.pdf` and `Service_Station_OHS_Policies.pdf`.
 
 ### Step 3: Git Commit & Tagging
 ```bash
