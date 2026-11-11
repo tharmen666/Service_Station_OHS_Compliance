@@ -18,6 +18,7 @@ import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashbo
 import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
 import { StatutoryTrainingModule } from './components/StatutoryTrainingModule';
+import { WetstockManagementModule } from './components/WetstockManagementModule';
 
 import { EnterpriseFooter } from './components/EnterpriseFooter';
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
@@ -46,12 +47,14 @@ import {
   Scale,
   Sliders,
   LayoutDashboard,
-  GraduationCap
+  GraduationCap,
+  Gauge,
+  Droplet
 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    'executiveDashboard' | 'training' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
+    'executiveDashboard' | 'training' | 'wetstock' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
   >('executiveDashboard');
   
   const [lang, setLang] = useState<Language>('EN');
@@ -87,22 +90,24 @@ export const App: React.FC = () => {
   // Primary Top Navigation Items Array for Layout & Header
   const topNavItems = [
     { id: 'training', label: 'Training', icon: GraduationCap, title: 'Statutory OHS Training & Certification' },
+    { id: 'wetstock', label: 'Wetstock', icon: Gauge, title: 'Wetstock Management & ATG Reconciliation' },
   ];
 
   const moduleTabs = [
     { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
     { id: 'training', label: '1. Statutory Training', icon: GraduationCap },
-    { id: 'evacuation', label: '2. ESD & Evacuation', icon: AlertOctagon },
-    { id: 'spill', label: '3. Fuel Spill Containment', icon: Shield },
-    { id: 'customer', label: '4. Customer Hazmat', icon: Building2 },
-    { id: 'fire', label: '5. PASS Firefighting', icon: Flame },
-    { id: 'quiz', label: '6. 60s Assessment (40 Qs)', icon: Award },
-    { id: 'curriculum', label: '7. Curriculum Bank', icon: BookOpen },
-    { id: 'demo', label: '8. Video Showcase', icon: Video },
-    { id: 'firstResponder', label: '9. First Responder', icon: HeartPulse },
-    { id: 'refresher', label: '10. Refresher Hub', icon: RotateCcw },
-    { id: 'rights', label: '11. Employee Rights', icon: Scale },
-    { id: 'rsdChecklists', label: '12. RSD 26 Checklists', icon: FileCheck },
+    { id: 'wetstock', label: '2. Wetstock & Reconciliation', icon: Gauge },
+    { id: 'evacuation', label: '3. ESD & Evacuation', icon: AlertOctagon },
+    { id: 'spill', label: '4. Fuel Spill Containment', icon: Shield },
+    { id: 'customer', label: '5. Customer Hazmat', icon: Building2 },
+    { id: 'fire', label: '6. PASS Firefighting', icon: Flame },
+    { id: 'quiz', label: '7. 60s Assessment (40 Qs)', icon: Award },
+    { id: 'curriculum', label: '8. Curriculum Bank', icon: BookOpen },
+    { id: 'demo', label: '9. Video Showcase', icon: Video },
+    { id: 'firstResponder', label: '10. First Responder', icon: HeartPulse },
+    { id: 'refresher', label: '11. Refresher Hub', icon: RotateCcw },
+    { id: 'rights', label: '12. Employee Rights', icon: Scale },
+    { id: 'rsdChecklists', label: '13. RSD 26 Checklists', icon: FileCheck },
   ];
 
   return (
@@ -423,6 +428,14 @@ export const App: React.FC = () => {
               onNavigateTab={(target) => setActiveTab(target as any)}
               onOpenCertModal={() => setIsCertModalOpen(true)}
               onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+            />
+          )}
+          {activeTab === 'wetstock' && (
+            <WetstockManagementModule
+              lang={lang}
+              onNavigateTab={(target) => setActiveTab(target as any)}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+              onOpenCertModal={() => setIsCertModalOpen(true)}
             />
           )}
           {activeTab === 'evacuation' && <EvacuationFlow />}

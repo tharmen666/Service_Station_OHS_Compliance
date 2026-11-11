@@ -42,6 +42,13 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
       await expect(page.getByRole('heading', { name: /Hazard Identification & Risk Assessment/i })).toBeVisible();
       await expect(page.getByRole('heading', { name: /Health & Safety Representative/i })).toBeVisible();
     }
+
+    const wetstockTabButton = page.getByRole('button', { name: /Wetstock/i }).first();
+    if (await wetstockTabButton.isVisible()) {
+      await wetstockTabButton.click();
+      await expect(page.getByRole('heading', { name: /Wetstock Accounting & Automatic Tank Gauge/i })).toBeVisible();
+      await expect(page.locator('text=Daily Tank Wetstock Reconciliation Ledger')).toBeVisible();
+    }
   });
 
   test('White-Label Tenant Rendering: Dynamic .env.local tenant site code & header reflect correctly', async ({ page }) => {
