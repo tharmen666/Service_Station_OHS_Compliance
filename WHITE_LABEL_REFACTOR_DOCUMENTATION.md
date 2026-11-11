@@ -58,7 +58,25 @@ Generates formal statutory policy documents:
 
 ---
 
-## 5. Build Verification & Deployment Instructions
+## 5. Statutory OHS Training & Certification Module (`src/components/StatutoryTrainingModule.tsx`)
+Provides mandatory occupational training tracking compliant with OHS Act 85 and SETA guidelines:
+- **Core Statutory Courses**: Basic First Aid Level 1 (GSR 3), Basic Firefighting & Equipment Handling (SANS 10105), Hazard Identification & Risk Assessment (HIRA / SANS 10089), and Health & Safety Representative Duties (Section 17/18).
+- **Compliance & Expiry Monitoring**: Automatic 24-month recertification tracking, days-until-expiry alerts, and visual Red/Amber/Green statutory status flags.
+- **Auditor Verification**: Direct linking to formal certificate generation and printable training packs for DoEL inspection audits.
+
+---
+
+## 6. Wetstock Management & ATG Reconciliation Module (`src/components/WetstockManagementModule.tsx` & `src/lib/wetstockEngine.ts`)
+Comprehensive forecourt fuel accounting aligned with SANS 10089 environmental protection standards:
+- **Daily Reconciliation Ledger**: Tracks Opening Stock, Deliveries (eBOL matched), Measured Physical Closing Stock (via ATG or dipstick), and Metered Sales to calculate variance in Litres and percentage.
+- **5 Mandatory Loss/Gain Triggers**: Real-time surveillance of daily volume breaches, 5-day cumulative trends, sudden drop / line ruptures, ATG sensor / water ingress anomalies, and delivery density variances.
+- **4-Tier Etwatwa Protocol**: Escalating statutory response from forecourt dip validation (Tier 1) through pump metering calibration (Tier 2) to VacuSonic NDT acoustic line testing and automatic submersible turbine pump hard-lock (Tier 4).
+- **eBOL & Bulk Transit Delivery Tracking**: Bill-of-lading manifest verification against forecourt offload, electronic seal serial validation, and 15°C temperature-compensated density tracking.
+- **Multi-Product Support**: Separate ledger tracking for Unleaded Petrol (ULP 95/93), Diesel (50ppm/10ppm), and Illuminating Paraffin (IP).
+
+---
+
+## 7. Build Verification & Deployment Instructions
 
 ### Prerequisites
 - Node.js v18+ & npm
@@ -70,15 +88,22 @@ npm run build
 ```
 Confirms 0 TypeScript compilation errors (`tsc`) and generates optimized production bundle via `vite build`.
 
-### Step 2: PDF Generator Execution
+### Step 2: Automated Playwright Test Verification
+```bash
+npx playwright test
+```
+Executes end-to-end tests across Chromium, Firefox, and Mobile Chrome profiles to confirm zero runtime regressions.
+
+### Step 3: PDF Generator Execution
 ```bash
 python generate_ohs_pdf.py
 python generate_policies_pdf.py
 ```
 Generates `Service_Station_OHS_Manual.pdf` and `Service_Station_OHS_Policies.pdf`.
 
-### Step 3: Git Commit & Tagging
+### Step 4: Git Commit & Production Sync
 ```bash
 git add .
-git commit -m "refactor(core): sync multi-tenant white-label engine, SANS 10089 guardrails, and POPIA privacy layer"
+git commit -m "feat(training-wetstock): ensure statutory training and wetstock management modules are fully integrated and synced to production"
+git push origin main
 ```
