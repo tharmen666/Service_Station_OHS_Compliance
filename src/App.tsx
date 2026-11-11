@@ -17,6 +17,7 @@ import { AuditCertificateModal } from './components/AuditCertificateModal';
 import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashboard';
 import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
+import { StatutoryTrainingModule } from './components/StatutoryTrainingModule';
 
 import { EnterpriseFooter } from './components/EnterpriseFooter';
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
@@ -44,12 +45,13 @@ import {
   FileSpreadsheet,
   Scale,
   Sliders,
-  LayoutDashboard
+  LayoutDashboard,
+  GraduationCap
 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    'executiveDashboard' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
+    'executiveDashboard' | 'training' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
   >('executiveDashboard');
   
   const [lang, setLang] = useState<Language>('EN');
@@ -82,19 +84,25 @@ export const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Primary Top Navigation Items Array for Layout & Header
+  const topNavItems = [
+    { id: 'training', label: 'Training', icon: GraduationCap, title: 'Statutory OHS Training & Certification' },
+  ];
+
   const moduleTabs = [
     { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
-    { id: 'evacuation', label: '1. ESD & Evacuation', icon: AlertOctagon },
-    { id: 'spill', label: '2. Fuel Spill Containment', icon: Shield },
-    { id: 'customer', label: '3. Customer Hazmat', icon: Building2 },
-    { id: 'fire', label: '4. PASS Firefighting', icon: Flame },
-    { id: 'quiz', label: '5. 60s Assessment (40 Qs)', icon: Award },
-    { id: 'curriculum', label: '6. Curriculum Bank', icon: BookOpen },
-    { id: 'demo', label: '7. Video Showcase', icon: Video },
-    { id: 'firstResponder', label: '8. First Responder', icon: HeartPulse },
-    { id: 'refresher', label: '9. Refresher Hub', icon: RotateCcw },
-    { id: 'rights', label: '10. Employee Rights', icon: Scale },
-    { id: 'rsdChecklists', label: '11. RSD 26 Checklists', icon: FileCheck },
+    { id: 'training', label: '1. Statutory Training', icon: GraduationCap },
+    { id: 'evacuation', label: '2. ESD & Evacuation', icon: AlertOctagon },
+    { id: 'spill', label: '3. Fuel Spill Containment', icon: Shield },
+    { id: 'customer', label: '4. Customer Hazmat', icon: Building2 },
+    { id: 'fire', label: '5. PASS Firefighting', icon: Flame },
+    { id: 'quiz', label: '6. 60s Assessment (40 Qs)', icon: Award },
+    { id: 'curriculum', label: '7. Curriculum Bank', icon: BookOpen },
+    { id: 'demo', label: '8. Video Showcase', icon: Video },
+    { id: 'firstResponder', label: '9. First Responder', icon: HeartPulse },
+    { id: 'refresher', label: '10. Refresher Hub', icon: RotateCcw },
+    { id: 'rights', label: '11. Employee Rights', icon: Scale },
+    { id: 'rsdChecklists', label: '12. RSD 26 Checklists', icon: FileCheck },
   ];
 
   return (
@@ -179,6 +187,25 @@ export const App: React.FC = () => {
 
               {/* Mobile Quick Action Badges (Row 1 right) */}
               <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
+                {topNavItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id as any)}
+                      className={`h-9 px-2.5 rounded-xl border transition flex items-center gap-1 text-xs font-black flex-shrink-0 shadow-sm ${
+                        isActive
+                          ? 'bg-amber-500 text-slate-950 border-amber-300'
+                          : 'bg-slate-800 text-amber-300 border-slate-700'
+                      }`}
+                      title={item.title}
+                    >
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
                 <button
                   onClick={() => setIsGearModalOpen(true)}
                   className="h-9 w-9 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition flex items-center justify-center flex-shrink-0 shadow-sm"
@@ -236,6 +263,27 @@ export const App: React.FC = () => {
 
               {/* Dedicated Flex Action Buttons Wrapper */}
               <div className="flex-shrink-0 flex items-center gap-2">
+                {/* Primary Top Navigation Items Array */}
+                {topNavItems.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => setActiveTab(item.id as any)}
+                      className={`h-9 md:h-10 px-3.5 rounded-xl border transition flex items-center gap-1.5 text-xs font-black whitespace-nowrap shadow-sm ${
+                        isActive
+                          ? 'bg-amber-500 text-slate-950 border-amber-300 shadow-amber-950/40'
+                          : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-slate-700 hover:text-white'
+                      }`}
+                      title={item.title}
+                    >
+                      <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
+                      <span>{item.label}</span>
+                    </button>
+                  );
+                })}
+
                 <button
                   onClick={() => setIsDemoModalOpen(true)}
                   className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
@@ -365,7 +413,15 @@ export const App: React.FC = () => {
               lang={lang}
               onOpenNelly={() => setIsNellyOpen(true)}
               onOpenGearModal={() => setIsGearModalOpen(true)}
-              onNavigateTab={(target) => setActiveTab(target)}
+              onNavigateTab={(target) => setActiveTab(target as any)}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+            />
+          )}
+          {activeTab === 'training' && (
+            <StatutoryTrainingModule
+              lang={lang}
+              onNavigateTab={(target) => setActiveTab(target as any)}
+              onOpenCertModal={() => setIsCertModalOpen(true)}
               onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
             />
           )}

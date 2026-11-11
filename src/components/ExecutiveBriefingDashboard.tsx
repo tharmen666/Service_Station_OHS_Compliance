@@ -29,7 +29,8 @@ import {
   ChevronRight,
   Flame,
   Award,
-  Scale
+  Scale,
+  GraduationCap
 } from 'lucide-react';
 
 
@@ -37,7 +38,7 @@ interface ExecutiveBriefingDashboardProps {
   lang: Language;
   onOpenNelly: () => void;
   onOpenGearModal: () => void;
-  onNavigateTab: (tab: 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights') => void;
+  onNavigateTab: (tab: 'training' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights') => void;
   onOpenStatutoryModal?: () => void;
 }
 
@@ -350,6 +351,22 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
+          <button
+            onClick={() => onNavigateTab('training')}
+            className="p-5 rounded-2xl bg-slate-900 border border-amber-500/50 hover:border-amber-400 hover:bg-slate-800 transition text-left space-y-2 group shadow-lg min-h-[120px] flex flex-col justify-between"
+          >
+            <div className="flex items-center justify-between">
+              <span className="p-2 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                <GraduationCap className="w-5 h-5" />
+              </span>
+              <ArrowUpRight className="w-4 h-4 text-slate-500 group-hover:text-amber-400 transition" />
+            </div>
+            <div>
+              <h3 className="text-sm font-extrabold text-white">Statutory OHS Training</h3>
+              <p className="text-xs text-slate-400 mt-0.5">First Aid, Firefighting, HIRA &amp; SHE Rep</p>
+            </div>
+          </button>
+
           <button
             onClick={() => onNavigateTab('evacuation')}
             className="p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-red-500/60 hover:bg-slate-800 transition text-left space-y-2 group shadow-lg min-h-[120px] flex flex-col justify-between"

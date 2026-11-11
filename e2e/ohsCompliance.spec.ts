@@ -33,6 +33,15 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
       await rightsTabButton.click();
       await expect(page.locator('text=BCEA Section 9')).toBeVisible();
     }
+
+    const trainingTabButton = page.getByRole('button', { name: /Training/i }).first();
+    if (await trainingTabButton.isVisible()) {
+      await trainingTabButton.click();
+      await expect(page.getByRole('heading', { name: /Basic First Aid Level 1/i })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Basic Firefighting & Equipment Handling/i })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Hazard Identification & Risk Assessment/i })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Health & Safety Representative/i })).toBeVisible();
+    }
   });
 
   test('White-Label Tenant Rendering: Dynamic .env.local tenant site code & header reflect correctly', async ({ page }) => {
