@@ -143,11 +143,11 @@ def build_pdf(target_file=DESKTOP_PATH):
     story.append(Paragraph("Part 1: Simple Overview (What This App Does)", h1_style))
     
     exec_summary_text = (
-        "The <b>Service Station OHS Compliance Platform</b> is an all-in-one digital safety and statutory "
-        "compliance system designed for South African retail fuel service stations (Engen, Shell, BP, TotalEnergies, "
-        "and Sasol). Built specifically for forecourt managers, cashiers, and attendants, it replaces paper safety manuals "
-        "with an interactive, audit-ready tablet platform enforcing real-time safety compliance, emergency readiness, "
-        "and statutory reporting."
+        "The <b>Service Station OHS Compliance Platform</b> is an all-in-one digital safety, bulk transit, and statutory "
+        "compliance system designed for South African retail fuel service stations and central petroleum logistics depots "
+        "(Brilliant Group One Network). Built specifically for forecourt managers, cashiers, attendants, and tanker drivers, "
+        "it replaces paper safety manuals with an interactive, audit-ready tablet platform enforcing real-time safety compliance, "
+        "emergency readiness, wetstock accounting, and statutory reporting."
     )
     story.append(Paragraph(exec_summary_text, body_style))
     story.append(Spacer(1, 6))
@@ -174,7 +174,7 @@ def build_pdf(target_file=DESKTOP_PATH):
          "40-question randomized safety quiz with instant video remediation pointers and POPIA-compliant digital certificate generation."),
         
         ("🏢 Multi-Tenant White-Label Branding:", 
-         "Instantly switches branding, color themes, and site codes between major fuel networks (Engen, Shell, BP, TotalEnergies, Sasol).")
+         "Features 100% white-label architecture modeling 1 Central Logistics Depot with 6 Heavy Tankers (32,000L full loads) supplying 5 Regional Retail Service Stations (Sites Alpha through Echo).")
     ]
 
     for title, desc in features:

@@ -7,7 +7,7 @@ This document details the architecture, statutory compliance guardrails, client-
 
 ## 1. Multi-Tenant White-Label Engine (`src/multiTenantConfig.ts`)
 The multi-tenant engine decouples station branding, colors, logos, and site metadata from core logic:
-- **Tenant Profiles**: Supports major petroleum franchises (Shell, Engen, TotalEnergies, Sasol, BP, Caltex/Astron, and Custom Franchises).
+- **Pure White-Label Topology (Brilliant Group One)**: 1 Central Logistics Depot (`DEPOT-BGO-01`), 6 Heavy Tanker Trucks (`TRK-01` to `TRK-06`) with 32,000L full loads, supplying 5 Regional Retail Service Stations (Site Alpha, Site Bravo, Site Charlie, Site Delta, Site Echo). Commercial brand names purged 100%.
 - **Environment Overrides**: Reads dynamic environment variables (`VITE_TENANT_ID`, `VITE_WHITE_LABEL_BRAND_NAME`, `VITE_STATION_SITE_CODE`, etc.) or falls back to pre-configured defaults.
 - **Runtime Switching**: Provides `getTenantConfig()`, `setTenantState()`, and `getActiveTenant()` for dynamic tenant switching.
 

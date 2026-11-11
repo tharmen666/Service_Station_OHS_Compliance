@@ -144,14 +144,14 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
       speakText(text);
       if (onOpenGearModal) onOpenGearModal();
     } else if (actionType === 'brand') {
-      const text = "Cycling multi-tenant white-label tenant theme to Express Retail Hub.";
+      const text = "Cycling multi-tenant white-label network to Retail Service Station Bravo (Site STN-BRAVO).";
       setChatMessages(prev => [
         ...prev,
-        { sender: 'user', text: "Test Multi-Tenant White-Labeling Theme Engine", time: now },
+        { sender: 'user', text: "Test Multi-Tenant White-Labeling Network Engine", time: now },
         { sender: 'nelly', text, time: now }
       ]);
       speakText(text);
-      switchTenantBrand('express');
+      switchTenantBrand('bravo');
     } else if (actionType === 'sla') {
       const text = "Audit Readiness SLA Matrix: 100% of high-severity hazard reports assigned mandatory supervisor owners with 4-hour escalation timers.";
       setChatMessages(prev => [

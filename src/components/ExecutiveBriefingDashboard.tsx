@@ -10,7 +10,10 @@ import {
   getActiveTenant, 
   subscribeTenantChange, 
   TenantBrandConfig, 
-  switchTenantBrand 
+  switchTenantBrand,
+  CENTRAL_DEPOT_CONFIG,
+  DEPOT_FLEET,
+  REGIONAL_STATIONS
 } from '../multiTenantConfig';
 import { 
   ShieldCheck, 
@@ -30,7 +33,10 @@ import {
   Flame,
   Award,
   Scale,
-  GraduationCap
+  GraduationCap,
+  Truck,
+  MapPin,
+  Gauge
 } from 'lucide-react';
 
 
@@ -128,31 +134,124 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
         </div>
 
 
-        {/* Brand Theme Quick Selector */}
+        {/* Regional Service Station Network Switcher */}
         <div className="mt-6 pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
-          <span className="text-slate-400 font-bold flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <Building2 className="w-4 h-4 text-amber-400" />
-            Multi-Tenant Brand Switcher:
-          </span>
+            <span className="text-white font-extrabold">Active Retail Forecourt:</span>
+            <span className="text-slate-400 font-medium">5 Regional Stations fed by Central Depot ({CENTRAL_DEPOT_CONFIG.depotId})</span>
+          </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            {(['standard', 'express', 'highway', 'urban'] as const).map((brandKey) => (
+            {[
+              { id: 'alpha', label: 'Site Alpha', code: 'STN-ALPHA', truck: 'TRK-01' },
+              { id: 'bravo', label: 'Site Bravo', code: 'STN-BRAVO', truck: 'TRK-02' },
+              { id: 'charlie', label: 'Site Charlie', code: 'STN-CHARLIE', truck: 'TRK-03' },
+              { id: 'delta', label: 'Site Delta', code: 'STN-DELTA', truck: 'TRK-04' },
+              { id: 'echo', label: 'Site Echo', code: 'STN-ECHO', truck: 'TRK-05' },
+            ].map((station) => (
               <button
-                key={brandKey}
-                onClick={() => switchTenantBrand(brandKey)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-black capitalize transition border min-h-[36px] ${
-                  activeTenant.fuelBrand.toLowerCase() === brandKey
+                key={station.id}
+                onClick={() => switchTenantBrand(station.id)}
+                className={`px-3 py-1.5 rounded-xl text-xs font-black transition border min-h-[36px] flex items-center gap-1.5 ${
+                  activeTenant.siteCode === station.code
                     ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 border-amber-400 shadow-md'
                     : 'bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800'
                 }`}
+                title={`Switch active view to ${station.label} (${station.code}) — Fed by ${station.truck}`}
               >
-                {brandKey} Profile
+                <span>{station.label}</span>
+                <span className="text-[10px] opacity-75 font-mono">({station.code})</span>
               </button>
             ))}
           </div>
         </div>
 
       </div>
+
+      {/* Fleet & Depot Topology: 1 Central Depot -> 6 Heavy Tankers (32,000L Loads) -> 5 Retail Service Stations */}
+      <section className="p-6 rounded-3xl border border-cyan-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-cyan-950/40 shadow-2xl space-y-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-black uppercase tracking-wider mb-1 border border-cyan-500/40">
+              <Truck className="w-3.5 h-3.5 text-cyan-400" />
+              Fleet &amp; Central Depot Supply Network
+            </div>
+            <h3 className="text-xl font-black text-white flex items-center gap-2">
+              <span>{CENTRAL_DEPOT_CONFIG.depotName}</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-lg bg-slate-950 border border-slate-800 font-mono text-amber-400">
+                {CENTRAL_DEPOT_CONFIG.depotId}
+              </span>
+            </h3>
+            <p className="text-slate-300 text-xs mt-0.5">
+              Operating <strong>6 Heavy Tanker Trucks</strong> delivering scheduled daily full loads of <strong>32,000 litres</strong> each 
+              (160,000L total daily forecourt throughput) to 5 Regional Retail Service Stations with electronic seal reconciliation.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 text-xs font-mono">
+            <span className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300">
+              Daily Throughput: <strong className="text-cyan-300">{CENTRAL_DEPOT_CONFIG.totalDailyThroughputLitres.toLocaleString()} L</strong>
+            </span>
+            <span className="px-3 py-1.5 rounded-xl bg-slate-950 border border-emerald-500/40 text-emerald-400 font-bold">
+              ✓ SANS 10089 Bonded
+            </span>
+          </div>
+        </div>
+
+        {/* 6 Heavy Tanker Fleet Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3">
+          {DEPOT_FLEET.map((truck) => {
+            const isAssignedToActiveStation = truck.assignedStationId === activeTenant.siteCode;
+            return (
+              <div 
+                key={truck.truckId}
+                className={`p-3.5 rounded-2xl border transition flex flex-col justify-between space-y-2 ${
+                  isAssignedToActiveStation
+                    ? 'bg-cyan-950/40 border-cyan-400 shadow-lg shadow-cyan-950/40 ring-1 ring-cyan-400'
+                    : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <Truck className={`w-4 h-4 ${isAssignedToActiveStation ? 'text-cyan-400' : 'text-slate-400'}`} />
+                    <span className="font-mono font-black text-white text-xs">{truck.truckId}</span>
+                  </div>
+                  <span className="text-[10px] px-1.5 py-0.5 rounded font-mono font-bold bg-slate-900 border border-slate-800 text-slate-300">
+                    {truck.registrationNumber}
+                  </span>
+                </div>
+
+                <div>
+                  <div className="text-[11px] font-extrabold text-amber-400 truncate">
+                    {truck.assignedStationName}
+                  </div>
+                  <div className="text-[10px] font-mono text-cyan-300 mt-0.5">
+                    32,000 L Full Load
+                  </div>
+                  <div className="text-[9px] text-slate-400 truncate mt-0.5">
+                    {truck.driverName}
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px]">
+                  <span className={`font-mono font-bold ${
+                    truck.dailyStatus === 'RECONCILED' ? 'text-emerald-400' :
+                    truck.dailyStatus === 'OFFLOADING' ? 'text-amber-400' :
+                    truck.dailyStatus === 'IN_TRANSIT' ? 'text-cyan-300' :
+                    truck.dailyStatus === 'DISPATCHED' ? 'text-purple-300' : 'text-slate-400'
+                  }`}>
+                    ● {truck.dailyStatus}
+                  </span>
+                  <span className="text-[9px] font-mono text-slate-500">
+                    {truck.scheduledDepartureTime}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* 2. 60-Second HQ Interactive Demo Video Showcase Component */}
       <section className="space-y-3">

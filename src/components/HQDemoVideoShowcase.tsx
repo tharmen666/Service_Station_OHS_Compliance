@@ -297,18 +297,18 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
                   </div>
 
                   <div className="flex items-center justify-center gap-2 pt-2">
-                    <span className="text-xs text-slate-400 font-bold">Switch Brand:</span>
-                    {(['standard', 'express', 'highway', 'urban'] as const).map((b) => (
+                    <span className="text-xs text-slate-400 font-bold">Switch Station:</span>
+                    {(['alpha', 'bravo', 'charlie', 'delta', 'echo'] as const).map((b) => (
                       <button
                         key={b}
                         onClick={() => switchTenantBrand(b)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-black capitalize transition border ${
-                          activeTenant.fuelBrand.toLowerCase() === b
+                        className={`px-3 py-1.5 rounded-lg text-xs font-black uppercase transition border ${
+                          activeTenant.siteCode.toLowerCase().includes(b)
                             ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md'
                             : 'bg-slate-900 text-slate-300 border-slate-800 hover:bg-slate-800'
                         }`}
                       >
-                        {b}
+                        Site {b}
                       </button>
                     ))}
                   </div>

@@ -34,12 +34,12 @@ from reportlab.platypus import (
 from reportlab.pdfgen import canvas
 
 # Multi-Tenant Site Configuration Parsed from Environment
-TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Engen Retail Service Station")
-SITE_CODE = os.getenv("VITE_TENANT_ID", os.getenv("VITE_STATION_SITE_CODE", "ENG-JHB-042"))
-STATION_NAME = os.getenv("VITE_TENANT_SITE_NAME", os.getenv("VITE_STATION_NAME", "Gauteng South Forecourt Network"))
-LOCATION = os.getenv("VITE_TENANT_LOCATION", "Lenasia, Gauteng")
+TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Brilliant Group One — Central Depot Fleet")
+SITE_CODE = os.getenv("VITE_TENANT_ID", os.getenv("VITE_STATION_SITE_CODE", "STN-ALPHA"))
+STATION_NAME = os.getenv("VITE_TENANT_SITE_NAME", os.getenv("VITE_STATION_NAME", "Retail Service Station Alpha"))
+LOCATION = os.getenv("VITE_TENANT_LOCATION", "Regional Logistics Corridor 1, Gauteng")
 COMPANY_LEGAL_NAME = os.getenv("VITE_WHITE_LABEL_COMPANY_LEGAL_NAME", f"{TENANT_NAME} ({LOCATION})")
-EMERGENCY_CONTACT = os.getenv("VITE_EMERGENCY_CONTACT", "+27 11 852 1000 / 10177")
+EMERGENCY_CONTACT = os.getenv("VITE_EMERGENCY_CONTACT", "+27 11 800 1000 / 10177")
 PRIMARY_COLOR_HEX = os.getenv("VITE_TENANT_PRIMARY_COLOR", "#005A9C")
 SECONDARY_COLOR_HEX = os.getenv("VITE_TENANT_SECONDARY_COLOR", "#ED1C24")
 

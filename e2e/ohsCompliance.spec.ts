@@ -52,9 +52,9 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
   });
 
   test('White-Label Tenant Rendering: Dynamic .env.local tenant site code & header reflect correctly', async ({ page }) => {
-    // Check that site code "ENG-JHB-042" is visible in top POS header badge
+    // Check that site code "STN-ALPHA" is visible in top POS header badge
     const headerBadge = page.locator('header');
-    await expect(headerBadge).toContainText('ENG-JHB-042');
+    await expect(headerBadge).toContainText('STN-ALPHA');
   });
 
   test('Statutory AI Studio Drawer: Verifies hard-locked temperature = 0.0 and SANS 10089 prompt', async ({ page }) => {

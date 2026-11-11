@@ -1,9 +1,34 @@
 /// <reference types="vite/client" />
 
 /**
- * Service Station OHS Compliance Platform - Multi-Tenant White-Label Engine
- * Configures tenant branding, station site metadata, color themes, and custom policies.
+ * Service Station OHS Compliance Platform - White-Label Multi-Tenant Engine
+ * Pure White-Label Topology: Brilliant Group One
+ * 1 Central Logistics Depot -> 6 Heavy Tanker Trucks (32,000L full loads) -> 5 Regional Retail Service Stations
  */
+
+export interface HeavyTankerTruck {
+  truckId: string;
+  registrationNumber: string;
+  capacityLitres: number; // 32,000L
+  compartmentBreakdown: string; // "8,000L x 4 compartments"
+  assignedStationId: string;
+  assignedStationName: string;
+  sealSerialPrefix: string;
+  driverName: string;
+  dailyStatus: 'DISPATCHED' | 'IN_TRANSIT' | 'OFFLOADING' | 'RECONCILED' | 'STANDBY';
+  scheduledDepartureTime: string;
+}
+
+export interface CentralDepotConfig {
+  depotId: string;
+  depotName: string;
+  location: string;
+  gantryBays: number;
+  totalDailyThroughputLitres: number; // 160,000L (5 stations x 32,000L)
+  activeFleetSize: number; // 6 Heavy Tankers
+  vaporRecoverySystem: string;
+  sans10089BondingVerified: boolean;
+}
 
 export interface TenantBrandConfig {
   tenantId: string;
@@ -16,100 +41,241 @@ export interface TenantBrandConfig {
   stationName: string;
   address: string;
   emergencyContactNumber: string;
-  fuelBrand: 'Standard' | 'Express' | 'Highway' | 'Urban' | 'Custom';
+  fuelBrand: string;
   customPoliciesEnabled: boolean;
   sans10089Compliant: boolean;
   popiaEncryptionActive: boolean;
   badgeSymbol: string;
+  dailyDeliveryVolumeLitres: number;
+  assignedTruckId: string;
+  depotOriginId: string;
 }
 
+// 1 Central Logistics Depot
+export const CENTRAL_DEPOT_CONFIG: CentralDepotConfig = {
+  depotId: 'DEPOT-BGO-01',
+  depotName: 'Brilliant Group One — Central Logistics Depot',
+  location: 'Inland Bulk Fuel Terminal & Logistics Hub, Bay 1-6',
+  gantryBays: 6,
+  totalDailyThroughputLitres: 160000, // 5 x 32,000L daily
+  activeFleetSize: 6,
+  vaporRecoverySystem: 'VRU-SANS-10089-Stage1B-Certified',
+  sans10089BondingVerified: true,
+};
+
+// 6 Heavy Tanker Trucks (32,000L full loads each)
+export const DEPOT_FLEET: HeavyTankerTruck[] = [
+  {
+    truckId: 'TRK-01',
+    registrationNumber: 'BG-01-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (ULP 95, ULP 93, Diesel 50ppm, Diesel 10ppm)',
+    assignedStationId: 'STN-ALPHA',
+    assignedStationName: 'Retail Service Station Alpha',
+    sealSerialPrefix: 'BGO-SEAL-01',
+    driverName: 'S. Dlamini (PDP Cert #88219)',
+    dailyStatus: 'RECONCILED',
+    scheduledDepartureTime: '05:30',
+  },
+  {
+    truckId: 'TRK-02',
+    registrationNumber: 'BG-02-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (Diesel 50ppm x 2, ULP 95 x 2)',
+    assignedStationId: 'STN-BRAVO',
+    assignedStationName: 'Retail Service Station Bravo',
+    sealSerialPrefix: 'BGO-SEAL-02',
+    driverName: 'K. Ndlovu (PDP Cert #89104)',
+    dailyStatus: 'OFFLOADING',
+    scheduledDepartureTime: '06:00',
+  },
+  {
+    truckId: 'TRK-03',
+    registrationNumber: 'BG-03-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (ULP 95 x 2, Diesel 50ppm, Paraffin)',
+    assignedStationId: 'STN-CHARLIE',
+    assignedStationName: 'Retail Service Station Charlie',
+    sealSerialPrefix: 'BGO-SEAL-03',
+    driverName: 'M. Van Der Merwe (PDP Cert #90211)',
+    dailyStatus: 'IN_TRANSIT',
+    scheduledDepartureTime: '06:30',
+  },
+  {
+    truckId: 'TRK-04',
+    registrationNumber: 'BG-04-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (Diesel 50ppm x 2, ULP 93 x 2)',
+    assignedStationId: 'STN-DELTA',
+    assignedStationName: 'Retail Service Station Delta',
+    sealSerialPrefix: 'BGO-SEAL-04',
+    driverName: 'T. Sithole (PDP Cert #91044)',
+    dailyStatus: 'DISPATCHED',
+    scheduledDepartureTime: '07:00',
+  },
+  {
+    truckId: 'TRK-05',
+    registrationNumber: 'BG-05-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (ULP 95, Diesel 50ppm x 2, Paraffin)',
+    assignedStationId: 'STN-ECHO',
+    assignedStationName: 'Retail Service Station Echo',
+    sealSerialPrefix: 'BGO-SEAL-05',
+    driverName: 'L. Mthembu (PDP Cert #92301)',
+    dailyStatus: 'DISPATCHED',
+    scheduledDepartureTime: '07:30',
+  },
+  {
+    truckId: 'TRK-06',
+    registrationNumber: 'BG-06-GP',
+    capacityLitres: 32000,
+    compartmentBreakdown: '8,000L x 4 (Multi-Product High-Throughput Buffer)',
+    assignedStationId: 'DEPOT-STANDBY',
+    assignedStationName: 'Central Depot Reserve / Rapid Response Buffer',
+    sealSerialPrefix: 'BGO-SEAL-06',
+    driverName: 'J. Naidoo (PDP Cert #93410)',
+    dailyStatus: 'STANDBY',
+    scheduledDepartureTime: '09:00',
+  },
+];
+
+// 5 Regional Retail Service Stations
 export const defaultTenants: Record<string, TenantBrandConfig> = {
   default: {
-    tenantId: 'STN-REG-042',
-    brandName: 'Forecourt Compliance Facility',
-    companyLegalName: 'National Service Station Operations',
+    tenantId: 'STN-ALPHA',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
     primaryColor: '#005A9C',
     accentColor: '#ED1C24',
-    siteCode: 'STN-REG-042',
-    stationName: 'Regional Service Station Forecourt',
-    address: 'Central Retail District, Metro Area',
+    siteCode: 'STN-ALPHA',
+    stationName: 'Retail Service Station Alpha',
+    address: 'Regional Logistics Corridor 1, Gauteng',
     emergencyContactNumber: '+27 11 800 1000 / 10177',
-    fuelBrand: 'Standard',
+    fuelBrand: 'Brilliant Group One',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
     badgeSymbol: '⛽',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-01',
+    depotOriginId: 'DEPOT-BGO-01',
   },
-  standard: {
-    tenantId: 'STN-REG-042',
-    brandName: 'Standard Forecourt & Convenience',
-    companyLegalName: 'Standard Retail Operations Ltd',
+  alpha: {
+    tenantId: 'STN-ALPHA',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
     logoUrl: '/assets/posters/statutory_rights_poster.png',
     primaryColor: '#005A9C',
     accentColor: '#ED1C24',
-    siteCode: 'STN-REG-042',
-    stationName: 'Regional Service Station Forecourt',
-    address: 'Central Retail District, Metro Area',
-    emergencyContactNumber: '+27 11 800 1000 / 112',
-    fuelBrand: 'Standard',
+    siteCode: 'STN-ALPHA',
+    stationName: 'Retail Service Station Alpha',
+    address: 'Regional Logistics Corridor 1, Gauteng',
+    emergencyContactNumber: '+27 11 800 1000 / 10177',
+    fuelBrand: 'Brilliant Group One',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '🔵',
+    badgeSymbol: '🅰️',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-01',
+    depotOriginId: 'DEPOT-BGO-01',
   },
-  express: {
-    tenantId: 'STN-EXP-108',
-    brandName: 'Express Retail & Petroleum Station',
-    companyLegalName: 'Express Petroleum Logistics',
+  bravo: {
+    tenantId: 'STN-BRAVO',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
     logoUrl: '/assets/posters/evacuation_poster.png',
     primaryColor: '#DD1D21',
     accentColor: '#FFD500',
-    siteCode: 'STN-EXP-108',
-    stationName: 'Express Transit Hub',
-    address: 'Waterfront Transit Plaza',
-    emergencyContactNumber: '+27 21 400 2000 / 10177',
-    fuelBrand: 'Express',
+    siteCode: 'STN-BRAVO',
+    stationName: 'Retail Service Station Bravo',
+    address: 'North Highway Corridor 2, Gauteng',
+    emergencyContactNumber: '+27 12 400 2000 / 10177',
+    fuelBrand: 'Brilliant Group One',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '⚡',
+    badgeSymbol: '🅱️',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-02',
+    depotOriginId: 'DEPOT-BGO-01',
   },
-  highway: {
-    tenantId: 'STN-HWY-305',
-    brandName: 'Highway Service Plaza & Forecourt',
-    companyLegalName: 'Highway Retail Operations',
+  charlie: {
+    tenantId: 'STN-CHARLIE',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
     logoUrl: '/assets/posters/spill_response_poster.png',
     primaryColor: '#002B49',
     accentColor: '#00A3E0',
-    siteCode: 'STN-HWY-305',
-    stationName: 'Coastal Highway Service Plaza',
-    address: 'Coastal Highway Corridor',
-    emergencyContactNumber: '+27 31 300 4000 / 10177',
-    fuelBrand: 'Highway',
+    siteCode: 'STN-CHARLIE',
+    stationName: 'Retail Service Station Charlie',
+    address: 'East Transit Highway Plaza, Gauteng',
+    emergencyContactNumber: '+27 11 300 4000 / 10177',
+    fuelBrand: 'Brilliant Group One',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '⭐',
+    badgeSymbol: '©️',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-03',
+    depotOriginId: 'DEPOT-BGO-01',
   },
-  urban: {
-    tenantId: 'STN-URB-901',
-    brandName: 'Urban Retail Convenience Hub',
-    companyLegalName: 'Urban Petroleum Networks',
+  delta: {
+    tenantId: 'STN-DELTA',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
     logoUrl: '/assets/posters/customer_service_poster.png',
     primaryColor: '#006837',
     accentColor: '#8DC63F',
-    siteCode: 'STN-URB-901',
-    stationName: 'Metropolitan Convenience Station',
-    address: 'Metropolitan Commercial Zone',
+    siteCode: 'STN-DELTA',
+    stationName: 'Retail Service Station Delta',
+    address: 'South Metro Commercial Hub, Gauteng',
     emergencyContactNumber: '+27 11 400 9000 / 10177',
-    fuelBrand: 'Urban',
+    fuelBrand: 'Brilliant Group One',
     customPoliciesEnabled: true,
     sans10089Compliant: true,
     popiaEncryptionActive: true,
-    badgeSymbol: '🏬',
-  }
+    badgeSymbol: '🅳',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-04',
+    depotOriginId: 'DEPOT-BGO-01',
+  },
+  echo: {
+    tenantId: 'STN-ECHO',
+    brandName: 'Brilliant Group One — Central Depot Fleet',
+    companyLegalName: 'Brilliant Group One Petroleum Logistics (Pty) Ltd',
+    logoUrl: '/assets/posters/statutory_rights_poster.png',
+    primaryColor: '#7C3AED',
+    accentColor: '#C084FC',
+    siteCode: 'STN-ECHO',
+    stationName: 'Retail Service Station Echo',
+    address: 'West Freight Rail Gateway, Gauteng',
+    emergencyContactNumber: '+27 11 500 8000 / 10177',
+    fuelBrand: 'Brilliant Group One',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🅴',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-05',
+    depotOriginId: 'DEPOT-BGO-01',
+  },
 };
+
+// Aliases for backward compatibility with previous tabs
+defaultTenants.standard = defaultTenants.alpha;
+defaultTenants.express = defaultTenants.bravo;
+defaultTenants.highway = defaultTenants.charlie;
+defaultTenants.urban = defaultTenants.delta;
+
+export const REGIONAL_STATIONS = [
+  defaultTenants.alpha,
+  defaultTenants.bravo,
+  defaultTenants.charlie,
+  defaultTenants.delta,
+  defaultTenants.echo,
+];
 
 /**
  * Loads current tenant configuration dynamically from environment variables or default tenant
@@ -152,8 +318,8 @@ export function setTenantState(config: Partial<TenantBrandConfig>): TenantBrandC
   return currentTenantState;
 }
 
-export function switchTenantBrand(brandKey: 'standard' | 'express' | 'highway' | 'urban'): TenantBrandConfig {
-  const selected = defaultTenants[brandKey] || defaultTenants.default;
+export function switchTenantBrand(brandKey: string): TenantBrandConfig {
+  const selected = defaultTenants[brandKey.toLowerCase()] || defaultTenants.default;
   return setTenantState(selected);
 }
 
