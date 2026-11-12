@@ -36,10 +36,15 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [inputQuery, setInputQuery] = useState<string>('');
   const [ccpThermalTemp] = useState<number>(73.9);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const initialGreeting = "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. Operating at deterministic temperature: 0.0 with direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. How can I assist your site today?";
+
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'nelly' | 'user'; text: string; time: string }>>([
     {
       sender: 'nelly',
-      text: "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. Operating at deterministic temperature: 0.0 with direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. How can I assist your site today?",
+      text: initialGreeting,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -54,41 +59,120 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
     scrollToBottom();
   }, [chatMessages]);
 
-  const speakText = (text: string, langCode: string = 'en-US') => {
-    if (!isVoiceActive || !('speechSynthesis' in window)) return;
+  // Load and cache browser voices (handles async loading in Chrome/Edge/Safari)
+  useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
 
-    // 1. Clear any stuck utterance queue in Chrome/Edge
+    const loadVoices = () => {
+      const avail = window.speechSynthesis.getVoices();
+      if (avail && avail.length > 0) {
+        setVoices(avail);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = null;
+      }
+    };
+  }, []);
+
+  const speakText = (text: string, langCode: string = 'en-US') => {
+    if (!('speechSynthesis' in window)) {
+      console.warn('Speech synthesis not supported in this browser environment.');
+      return;
+    }
+
+    // 1. Cancel previous speech
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // 2. Chromium requires a slight delay after cancel to prevent cancelling the next utterance
+    setTimeout(() => {
+      try {
+        if (!('speechSynthesis' in window)) return;
 
-    // 2. Select appropriate voice or fallback
-    const voices = window.speechSynthesis.getVoices();
-    let matchedVoice = voices.find(v => v.name.toLowerCase().includes('rachel'))
-                    || voices.find(v => v.lang.startsWith(langCode.toLowerCase()))
-                    || voices.find(v => 
-                         v.lang.startsWith('en') && 
-                         (v.name.toLowerCase().includes('female') || 
-                          v.name.toLowerCase().includes('zira') || 
-                          v.name.toLowerCase().includes('samantha') || 
-                          v.name.toLowerCase().includes('victoria') ||
-                          v.name.toLowerCase().includes('karen') ||
-                          v.name.toLowerCase().includes('google us english'))
-                       )
-                    || voices.find(v => v.lang.includes('en'))
-                    || voices[0];
+        // Unpause stuck queue if paused
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
 
-    if (matchedVoice) utterance.voice = matchedVoice;
-    utterance.lang = matchedVoice ? matchedVoice.lang : 'en-US';
-    utterance.rate = 1.0;
-    utterance.pitch = 1.15; // Natural female voice timbre
+        const utterance = new SpeechSynthesisUtterance(text);
+        activeUtteranceRef.current = utterance; // Keep reference to prevent GC in Chromium
 
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
+        const currentVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
+        
+        // Priority to natural English female voices
+        const matchedVoice = currentVoices.find(v => v.name.toLowerCase().includes('rachel'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('natural') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('jenny') || v.name.toLowerCase().includes('aria')))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('zira'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('aria'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('jenny'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('samantha'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('victoria'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('karen'))
+                          || currentVoices.find(v => v.name.toLowerCase().includes('female'))
+                          || currentVoices.find(v => v.lang.startsWith(langCode.toLowerCase()))
+                          || currentVoices.find(v => v.lang.startsWith('en'))
+                          || currentVoices[0];
 
-    // 3. Resume queue and trigger
-    window.speechSynthesis.speak(utterance);
+        if (matchedVoice) {
+          utterance.voice = matchedVoice;
+          utterance.lang = matchedVoice.lang;
+        } else {
+          utterance.lang = 'en-US';
+        }
+
+        utterance.rate = 1.0;
+        utterance.pitch = 1.15; // Natural female voice timbre
+
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          activeUtteranceRef.current = null;
+        };
+        utterance.onerror = (e) => {
+          console.warn('Nelly speech synthesis event:', e);
+          setIsSpeaking(false);
+          activeUtteranceRef.current = null;
+        };
+
+        window.speechSynthesis.speak(utterance);
+      } catch (err) {
+        console.error('Nelly speech synthesis error:', err);
+        setIsSpeaking(false);
+      }
+    }, 60);
+  };
+
+  // Auto-speak welcome greeting when Nelly window is opened
+  useEffect(() => {
+    if (isOpen && isVoiceActive) {
+      const timer = setTimeout(() => {
+        speakText(initialGreeting);
+      }, 350);
+      return () => clearTimeout(timer);
+    } else if (!isOpen) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsSpeaking(false);
+    }
+  }, [isOpen]);
+
+  const toggleVoice = () => {
+    if (isVoiceActive) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      setIsSpeaking(false);
+      setIsVoiceActive(false);
+    } else {
+      setIsVoiceActive(true);
+      speakText("Nelly voice activated. Statutory determinism online.");
+    }
   };
 
   const handleSendMessage = (e?: React.FormEvent) => {
@@ -200,11 +284,11 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
         {/* Action Controls */}
         <div className="flex items-center gap-1">
           <button
-            onClick={() => setIsVoiceActive(!isVoiceActive)}
-            className={`p-2 rounded-xl text-xs font-bold transition ${
+            onClick={toggleVoice}
+            className={`p-2 rounded-xl text-xs font-bold transition flex items-center gap-1 ${
               isVoiceActive ? 'bg-purple-600/30 text-purple-300 border border-purple-500/40' : 'bg-slate-800 text-slate-500'
             }`}
-            title="Toggle Voice Synthesis"
+            title={isVoiceActive ? "Voice is ON (Click to Mute)" : "Voice is MUTED (Click to Enable)"}
           >
             {isVoiceActive ? <Volume2 className="w-4 h-4 text-purple-300" /> : <VolumeX className="w-4 h-4 text-slate-500" />}
           </button>
@@ -262,6 +346,15 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
           {/* Preset Quick Actions */}
           <div className="px-4 py-2 bg-slate-950/60 border-b border-slate-800 flex items-center gap-1.5 overflow-x-auto">
             <button
+              onClick={() => speakText(initialGreeting)}
+              className="px-2.5 py-1 rounded-lg bg-purple-950/60 hover:bg-purple-900/60 text-purple-200 text-[10px] font-black flex items-center gap-1 border border-purple-500/40 whitespace-nowrap transition shadow-sm"
+              title="Play Nelly's Verbal Introduction"
+            >
+              <Volume2 className="w-3 h-3 text-purple-400" />
+              <span>🔊 Speak Intro</span>
+            </button>
+
+            <button
               onClick={() => runPresetAction('ccp')}
               className="px-2.5 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-amber-300 text-[10px] font-extrabold flex items-center gap-1 border border-slate-800 whitespace-nowrap transition"
             >
@@ -307,17 +400,32 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
                   </div>
                 )}
 
-                <div className={`max-w-[82%] p-3 rounded-2xl text-xs space-y-1 ${
+                <div className={`max-w-[82%] p-3 rounded-2xl text-xs space-y-1.5 ${
                   msg.sender === 'user'
                     ? 'bg-purple-600 text-white rounded-br-none shadow-md'
                     : 'bg-slate-950 border border-slate-800 text-slate-200 rounded-bl-none shadow-md'
                 }`}>
                   <p className="leading-relaxed font-semibold">{msg.text}</p>
-                  <span className={`text-[9px] block text-right font-mono ${
-                    msg.sender === 'user' ? 'text-purple-200' : 'text-slate-500'
-                  }`}>
-                    {msg.time}
-                  </span>
+                  
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/60 mt-1">
+                    {msg.sender === 'nelly' ? (
+                      <button
+                        type="button"
+                        onClick={() => speakText(msg.text)}
+                        className="inline-flex items-center gap-1 text-[10px] text-purple-400 hover:text-purple-300 font-bold px-1.5 py-0.5 rounded hover:bg-purple-900/40 transition"
+                        title="Play voice audio for this message"
+                      >
+                        <Volume2 className="w-3 h-3 text-purple-400" />
+                        <span>Speak</span>
+                      </button>
+                    ) : <span />}
+
+                    <span className={`text-[9px] font-mono ${
+                      msg.sender === 'user' ? 'text-purple-200' : 'text-slate-500'
+                    }`}>
+                      {msg.time}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}

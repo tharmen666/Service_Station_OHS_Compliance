@@ -97,6 +97,21 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
   const [gearState, setGearState] = useState<GearState>(getGearState());
   const [isPdfGenerating, setIsPdfGenerating] = useState<boolean>(false);
   const [pdfSuccessMessage, setPdfSuccessMessage] = useState<string>('');
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
+    const loadVoices = () => {
+      const v = window.speechSynthesis.getVoices();
+      if (v && v.length > 0) setAvailableVoices(v);
+    };
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+    return () => {
+      if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
 
   useEffect(() => {
     const unsubTenant = subscribeTenantChange((t) => setActiveTenant(t));
@@ -116,31 +131,55 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
     // 1. Clear any stuck utterance queue in Chrome/Edge
     window.speechSynthesis.cancel();
 
-    const utterance = new SpeechSynthesisUtterance(scriptText);
-    
-    // 2. Select appropriate voice or fallback
-    const voices = window.speechSynthesis.getVoices();
-    let matchedVoice = voices.find(v => v.name.toLowerCase().includes('rachel'))
-                    || voices.find(v => v.lang.startsWith(langCode.toLowerCase()))
-                    || voices.find(v => 
-                         v.lang.startsWith('en') && 
-                         (v.name.toLowerCase().includes('female') || 
-                          v.name.toLowerCase().includes('zira') || 
-                          v.name.toLowerCase().includes('samantha') || 
-                          v.name.toLowerCase().includes('victoria') ||
-                          v.name.toLowerCase().includes('karen') ||
-                          v.name.toLowerCase().includes('google us english'))
-                       )
-                    || voices.find(v => v.lang.includes('en'))
-                    || voices[0];
+    setTimeout(() => {
+      try {
+        if (!('speechSynthesis' in window) || isMuted) return;
 
-    if (matchedVoice) utterance.voice = matchedVoice;
-    utterance.lang = matchedVoice ? matchedVoice.lang : 'en-US';
-    utterance.rate = 1.0;
-    utterance.pitch = 1.15; // Natural female voice timbre
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+        }
 
-    // 3. Resume queue and trigger
-    window.speechSynthesis.speak(utterance);
+        const utterance = new SpeechSynthesisUtterance(scriptText);
+        activeUtteranceRef.current = utterance;
+        
+        // 2. Select appropriate voice or fallback
+        const voices = availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
+        let matchedVoice = voices.find(v => v.name.toLowerCase().includes('rachel'))
+                        || voices.find(v => v.name.toLowerCase().includes('natural') && (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('jenny') || v.name.toLowerCase().includes('aria')))
+                        || voices.find(v => v.name.toLowerCase().includes('zira'))
+                        || voices.find(v => v.name.toLowerCase().includes('aria'))
+                        || voices.find(v => v.name.toLowerCase().includes('jenny'))
+                        || voices.find(v => v.name.toLowerCase().includes('samantha'))
+                        || voices.find(v => v.name.toLowerCase().includes('victoria'))
+                        || voices.find(v => v.name.toLowerCase().includes('karen'))
+                        || voices.find(v => v.name.toLowerCase().includes('female'))
+                        || voices.find(v => v.lang.startsWith(langCode.toLowerCase()))
+                        || voices.find(v => v.lang.startsWith('en'))
+                        || voices[0];
+
+        if (matchedVoice) {
+          utterance.voice = matchedVoice;
+          utterance.lang = matchedVoice.lang;
+        } else {
+          utterance.lang = 'en-US';
+        }
+
+        utterance.rate = 1.0;
+        utterance.pitch = 1.15; // Natural female voice timbre
+
+        utterance.onend = () => {
+          activeUtteranceRef.current = null;
+        };
+        utterance.onerror = () => {
+          activeUtteranceRef.current = null;
+        };
+
+        // 3. Resume queue and trigger
+        window.speechSynthesis.speak(utterance);
+      } catch (err) {
+        console.warn('Speech synthesis error in demo:', err);
+      }
+    }, 60);
   };
 
   useEffect(() => {
