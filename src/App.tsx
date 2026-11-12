@@ -19,6 +19,8 @@ import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorMo
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
 import { StatutoryTrainingModule } from './components/StatutoryTrainingModule';
 import { WetstockManagementModule } from './components/WetstockManagementModule';
+import { WetstockOffloadBridge } from './components/WetstockOffloadBridge';
+import { JurisdictionCode, EAST_AFRICA_PRESETS } from './data/eastAfricaConfig';
 
 import { EnterpriseFooter } from './components/EnterpriseFooter';
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
@@ -49,15 +51,18 @@ import {
   LayoutDashboard,
   GraduationCap,
   Gauge,
-  Droplet
+  Droplet,
+  Truck
 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    'executiveDashboard' | 'training' | 'wetstock' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
+    'executiveDashboard' | 'training' | 'wetstock' | 'wetstockBridge' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
   >('executiveDashboard');
   
   const [lang, setLang] = useState<Language>('EN');
+  const [jurisdiction, setJurisdiction] = useState<JurisdictionCode>('ZA');
+  const [spillLitres, setSpillLitres] = useState<number>(0);
   const [isAIStudioOpen, setIsAIStudioOpen] = useState<boolean>(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
@@ -87,27 +92,31 @@ export const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const activeJurisdiction = EAST_AFRICA_PRESETS[jurisdiction] || EAST_AFRICA_PRESETS.ZA;
+
   // Primary Top Navigation Items Array for Layout & Header
   const topNavItems = [
     { id: 'training', label: 'Training', icon: GraduationCap, title: 'Statutory OHS Training & Certification' },
-    { id: 'wetstock', label: 'Wetstock', icon: Gauge, title: 'Wetstock Management & ATG Reconciliation' },
+    { id: 'wetstockBridge', label: 'Wetstock & Offload', icon: Truck, title: 'LogiGuard Sentinel Wetstock & RSD 26 Offload Bridge' },
+    { id: 'wetstock', label: 'Wetstock ATG', icon: Gauge, title: 'Forecourt Wetstock Accounting & Loss Forensics' },
   ];
 
   const moduleTabs = [
     { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
     { id: 'training', label: '1. Statutory Training', icon: GraduationCap },
-    { id: 'wetstock', label: '2. Wetstock & Reconciliation', icon: Gauge },
-    { id: 'evacuation', label: '3. ESD & Evacuation', icon: AlertOctagon },
-    { id: 'spill', label: '4. Fuel Spill Containment', icon: Shield },
-    { id: 'customer', label: '5. Customer Hazmat', icon: Building2 },
-    { id: 'fire', label: '6. PASS Firefighting', icon: Flame },
+    { id: 'evacuation', label: '2. ESD & Evacuation', icon: AlertOctagon },
+    { id: 'spill', label: '3. Fuel Spill Containment', icon: Shield },
+    { id: 'customer', label: '4. Customer Hazmat', icon: Building2 },
+    { id: 'fire', label: '5. PASS Firefighting', icon: Flame },
+    { id: 'wetstockBridge', label: '6. Wetstock & Offload', icon: Truck },
     { id: 'quiz', label: '7. 60s Assessment (40 Qs)', icon: Award },
-    { id: 'curriculum', label: '8. Curriculum Bank', icon: BookOpen },
-    { id: 'demo', label: '9. Video Showcase', icon: Video },
-    { id: 'firstResponder', label: '10. First Responder', icon: HeartPulse },
-    { id: 'refresher', label: '11. Refresher Hub', icon: RotateCcw },
-    { id: 'rights', label: '12. Employee Rights', icon: Scale },
-    { id: 'rsdChecklists', label: '13. RSD 26 Checklists', icon: FileCheck },
+    { id: 'wetstock', label: '8. Wetstock & Reconciliation', icon: Gauge },
+    { id: 'curriculum', label: '9. Curriculum Bank', icon: BookOpen },
+    { id: 'demo', label: '10. Video Showcase', icon: Video },
+    { id: 'firstResponder', label: '11. First Responder', icon: HeartPulse },
+    { id: 'refresher', label: '12. Refresher Hub', icon: RotateCcw },
+    { id: 'rights', label: '13. Employee Rights', icon: Scale },
+    { id: 'rsdChecklists', label: '14. RSD 26 Checklists', icon: FileCheck },
   ];
 
   return (
@@ -118,9 +127,9 @@ export const App: React.FC = () => {
         
         {/* System Brand Header */}
         <div style={{ padding: '16px', borderBottom: '1px solid #1e293b' }}>
-          <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#38bdf8', letterSpacing: '0.05em' }}>FORECOURT POS OHS</div>
+          <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#38bdf8', letterSpacing: '0.05em' }}>FORECOURT SENTINEL</div>
           <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#ffffff' }}>Service Station Compliance Tablet</div>
-          <div style={{ fontSize: '10px', color: '#94a3b8' }}>SANS 10089 • Act 85 of 1993</div>
+          <div style={{ fontSize: '10px', color: '#94a3b8' }}>{activeJurisdiction.statutoryReference} • {activeJurisdiction.siteCode}</div>
         </div>
 
         {/* Vertical Module Navigation */}
@@ -174,19 +183,19 @@ export const App: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
-                    {t.headerBadge} • {activeTenant.siteCode}
+                    {activeJurisdiction.statutoryReference} • {activeJurisdiction.siteCode} • {activeTenant.siteCode}
                   </span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1 whitespace-nowrap">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
                   </span>
                   {popiaStatus.compliant && (
                     <span className="hidden sm:flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
-                      <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256
+                      <Lock className="w-3 h-3 text-cyan-400" /> {activeJurisdiction.fiscalSystem.split(' ')[0]} AES-256
                     </span>
                   )}
                 </div>
                 <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5 truncate max-w-[220px] sm:max-w-none">
-                  {activeTenant.brandName}
+                  Forecourt Sentinel
                 </h1>
               </div>
 
@@ -245,13 +254,36 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* RIGHT: Language Switcher & Action Buttons Wrapper */}
+            {/* RIGHT: Jurisdiction Switcher + Language Switcher & Action Buttons */}
             <div className="flex-shrink-0 flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 max-w-full">
               
-              {/* Desktop Language Switcher */}
+              {/* Regional Jurisdiction Switcher (ZA | KE | TZ | UG) */}
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-cyan-500/30 flex-shrink-0">
+                {(['ZA', 'KE', 'TZ', 'UG'] as const).map((code) => {
+                  const preset = EAST_AFRICA_PRESETS[code];
+                  const isSelected = jurisdiction === code;
+                  return (
+                    <button
+                      key={code}
+                      onClick={() => setJurisdiction(code)}
+                      className={`h-8 px-2 rounded-lg text-xs font-black transition-all whitespace-nowrap flex items-center gap-1 ${
+                        isSelected
+                          ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-950/50'
+                          : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                      }`}
+                      title={`${preset.country} — ${preset.regulators} (${preset.statutoryReference})`}
+                    >
+                      <span className="text-xs">{preset.flag}</span>
+                      <span>{code}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Desktop Language Switcher (EN | SW | ZU | AF | ST) */}
               <div className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 flex-shrink-0">
                 <Globe className="w-4 h-4 text-amber-400 ml-1 flex-shrink-0" />
-                {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
+                {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => (
                   <button
                     key={l}
                     onClick={() => setLang(l)}
@@ -358,7 +390,7 @@ export const App: React.FC = () => {
               {/* Mobile Language Switcher */}
               <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
                 <Globe className="w-3.5 h-3.5 text-amber-400 ml-1 flex-shrink-0" />
-                {(['EN', 'ZU', 'AF', 'ST'] as const).map((l) => (
+                {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => (
                   <button
                     key={l}
                     onClick={() => setLang(l)}
@@ -438,8 +470,24 @@ export const App: React.FC = () => {
               onOpenCertModal={() => setIsCertModalOpen(true)}
             />
           )}
+          {activeTab === 'wetstockBridge' && (
+            <WetstockOffloadBridge
+              lang={lang}
+              jurisdiction={jurisdiction}
+              spillLitres={spillLitres}
+              onNavigateTab={(target) => setActiveTab(target as any)}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+            />
+          )}
           {activeTab === 'evacuation' && <EvacuationFlow />}
-          {activeTab === 'spill' && <SpillTeamwork />}
+          {activeTab === 'spill' && (
+            <SpillTeamwork
+              spillLitres={spillLitres}
+              onSpillLitresChange={setSpillLitres}
+              lang={lang}
+              onNavigateTab={(target) => setActiveTab(target as any)}
+            />
+          )}
           {activeTab === 'customer' && <CustomerServiceModule />}
           {activeTab === 'fire' && <PASSFirefighting />}
           {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}

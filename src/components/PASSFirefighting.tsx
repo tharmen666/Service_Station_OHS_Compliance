@@ -1,32 +1,39 @@
 import React, { useState } from 'react';
 import { Flame, ShieldCheck, HeartPulse, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Language } from '../data/translations';
+import { KISWAHILI_REGIONAL_TRANSLATIONS } from '../data/eastAfricaConfig';
 
-export const PASSFirefighting: React.FC = () => {
+interface PASSFirefightingProps {
+  lang?: Language;
+}
+
+export const PASSFirefighting: React.FC<PASSFirefightingProps> = ({ lang = 'EN' }) => {
   const [activeStep, setActiveStep] = useState<number>(0);
+  const swTranslations = KISWAHILI_REGIONAL_TRANSLATIONS.firefighting;
 
   const passSteps = [
     {
       letter: 'P',
-      title: 'PULL THE PIN',
-      action: 'Pull the safety pin located at the top of the extinguisher handle to break the tamper seal.',
+      title: lang === 'SW' ? 'VUTA PINI YA USALAMA (PULL)' : 'PULL THE PIN',
+      action: lang === 'SW' ? swTranslations.passSteps.pull : 'Pull the safety pin located at the top of the extinguisher handle to break the tamper seal.',
       tip: 'Do not squeeze the handle while pulling the pin, as pressure locks it in place.'
     },
     {
       letter: 'A',
-      title: 'AIM LOW AT BASE',
-      action: 'Aim the extinguisher nozzle or hose directly at the base of the fuel fire, NOT at the flames.',
+      title: lang === 'SW' ? 'LENGA KWENYE MZIZI (AIM)' : 'AIM LOW AT BASE',
+      action: lang === 'SW' ? swTranslations.passSteps.aim : 'Aim the extinguisher nozzle or hose directly at the base of the fuel fire, NOT at the flames.',
       tip: 'Fuel fires burn on liquid surface vapors. Hitting the base starves fuel source.'
     },
     {
       letter: 'S',
-      title: 'SQUEEZE THE HANDLE',
-      action: 'Squeeze the operating lever firmly to discharge the 9kg Dry Chemical Powder (DCP) agent.',
+      title: lang === 'SW' ? 'FINYA KISHIKIO (SQUEEZE)' : 'SQUEEZE THE HANDLE',
+      action: lang === 'SW' ? swTranslations.passSteps.squeeze : 'Squeeze the operating lever firmly to discharge the 9kg Dry Chemical Powder (DCP) agent.',
       tip: 'Releasing the lever stops the chemical discharge instantly.'
     },
     {
       letter: 'S',
-      title: 'SWEEP SIDE TO SIDE',
-      action: 'Sweep the nozzle from side to side across the base of the fire until completely extinguished.',
+      title: lang === 'SW' ? 'TIKISA KUSHOTO NA KULIA (SWEEP)' : 'SWEEP SIDE TO SIDE',
+      action: lang === 'SW' ? swTranslations.passSteps.sweep : 'Sweep the nozzle from side to side across the base of the fire until completely extinguished.',
       tip: 'Keep 2-3 meters back and advance slowly as flames recede.'
     }
   ];
@@ -38,10 +45,14 @@ export const PASSFirefighting: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-2 border border-emerald-500/30">
             <Flame className="w-3.5 h-3.5 text-emerald-400" />
-            Fire & First Aid Module
+            {lang === 'SW' ? swTranslations.badge : 'Fire & First Aid Module'}
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">PASS Firefighting Technique & First Aid</h2>
-          <p className="text-slate-300 text-sm mt-1">Standard Operating Procedure for operating 9kg Dry Chemical Powder (DCP) extinguishers on Class B fuel fires.</p>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+            {lang === 'SW' ? swTranslations.title : 'PASS Firefighting Technique & First Aid'}
+          </h2>
+          <p className="text-slate-300 text-sm mt-1">
+            {lang === 'SW' ? swTranslations.subtitle : 'Standard Operating Procedure for operating 9kg Dry Chemical Powder (DCP) extinguishers on Class B fuel fires.'}
+          </p>
         </div>
 
         <div className="px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold">

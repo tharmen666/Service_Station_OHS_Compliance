@@ -17,14 +17,21 @@ import {
   Search
 } from 'lucide-react';
 import { PosterLightboxModal } from './PosterLightboxModal';
+import { Language } from '../data/translations';
+import { KISWAHILI_REGIONAL_TRANSLATIONS } from '../data/eastAfricaConfig';
 
-export const EvacuationFlow: React.FC = () => {
+interface EvacuationFlowProps {
+  lang?: Language;
+}
+
+export const EvacuationFlow: React.FC<EvacuationFlowProps> = ({ lang = 'EN' }) => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [activeStep, setActiveStep] = useState<number>(1);
   const [isAudioSimulating, setIsAudioSimulating] = useState<boolean>(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   const protocol = emergencyProtocols.evacuation;
+  const swTranslations = KISWAHILI_REGIONAL_TRANSLATIONS.evacuation;
 
   const toggleStepComplete = (stepNum: number) => {
     if (completedSteps.includes(stepNum)) {
@@ -64,11 +71,13 @@ export const EvacuationFlow: React.FC = () => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold uppercase tracking-wider mb-2 border border-red-500/30">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-            {protocol.motto}
+            {lang === 'SW' ? swTranslations.badge : protocol.motto}
           </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white">{protocol.title}</h2>
+          <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+            {lang === 'SW' ? swTranslations.title : protocol.title}
+          </h2>
           <p className="text-slate-300 text-sm mt-1">
-            Sequential 9-step forecourt emergency response, panic prevention, engine shut-off, sweeps, and roll call.
+            {lang === 'SW' ? swTranslations.subtitle : 'Sequential 9-step forecourt emergency response, panic prevention, engine shut-off, sweeps, and roll call.'}
           </p>
         </div>
 

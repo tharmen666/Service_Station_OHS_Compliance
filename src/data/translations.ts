@@ -1,4 +1,4 @@
-export type Language = 'EN' | 'ZU' | 'AF' | 'ST';
+export type Language = 'EN' | 'SW' | 'ZU' | 'AF' | 'ST';
 
 export interface DemoChapter {
   id: number;
@@ -205,6 +205,125 @@ export const translations: Record<Language, Translations> = {
     remediationAvailable: 'Video Remediation Clip Available',
     correctAnswer: '✓ Correct Answer',
     incorrectAnswer: '❌ Incorrect Answer'
+  },
+  SW: {
+    headerBadge: 'Usalama wa Forecourt POS • SANS/OSHA',
+    headerTitle: 'Kompyuta Mpakato ya Uzingatiaji wa Kituo cha Mafuta',
+    usbStatus: 'Hifadhi ya USB: D:\\ Inafanya Kazi',
+    esdStatus: 'Mfumo wa ESD: TAYARI',
+    aiPromptBtn: 'Google AI Studio',
+    sansCompliance: 'SANS 10089 / OSHA 2007',
+    hitlSignoffBtn: 'Cheti cha Uidhinishaji cha OHS (HITL)',
+
+    tabEvacuation: '1. ESD na Uokoaji wa Dharura',
+    tabSpill: '2. Udhibiti wa Uvujaji wa Mafuta',
+    tabCustomer: '3. Huduma ya Wateja na Hazmat',
+    tabFire: '4. Kuzima Moto kwa PASS',
+    tabQuiz: '5. Tathmini ya Sekunde 60 (Maswali 40)',
+    tabCurriculum: '6. Orodha ya Kanuni za Usalama',
+    tabDemoVideo: '7. 🎥 Video ya Maonyesho',
+    tabFirstResponder: '8. 🚑 Msaada wa Kwanza Usiku',
+
+    evacuationTitle: 'Itifaki ya Kuzima ya Dharura (ESD) na Uokoaji wa Forecourt',
+    evacuationSubtitle: 'Miongozo ya SANS 10089-3 na OSHA kwa Wasimamizi na Wahudumu wa Mafuta',
+    spillTitle: 'Udhibiti wa Uvujaji wa Mafuta na Kazi ya Pamoja ya Majukumu 4',
+    spillSubtitle: 'Mbinu za Kuzuia Mafuta Kuingia Mitaroni na Kusafisha kwa Vifaa visivyotoa Cheche',
+    customerTitle: 'Huduma kwa Wateja na Uzingatiaji wa Usalama wa Mafuta',
+    customerSubtitle: 'Kuzuia vyanzo vya moto, marufuku ya simu za mkononi, na usalama wa nozeli',
+    fireTitle: 'Mbinu ya Kuzima Moto ya PASS na Msaada wa Kwanza',
+    fireSubtitle: 'Taratibu Sanifu za Uendeshaji za Vizima Moto vya 9kg DCP',
+    quizTitle: 'Mtihani wa Umahiri wa OHS wa Forecourt (Maswali 40)',
+    quizSubtitle: 'Tathmini ya haraka ya sekunde 60 yenye marekebisho ya kiotomatiki ya video',
+    curriculumTitle: 'Mtaala na Nyaraka za Kisheria za Usalama',
+    curriculumSubtitle: 'Viwango vilivyokaguliwa na maktaba ya video za marekebisho ya mafunzo',
+    demoVideoTitle: 'Video ya Maonyesho ya Uendeshaji na Studio ya Sauti',
+    demoVideoSubtitle: 'Mwongozo wa mwingiliano wa dakika 2 wa usalama wa kituo cha mafuta.',
+    firstResponderTitle: 'Mtoa Huduma wa Kwanza wa Forecourt na Itifaki ya Matibabu ya Usiku',
+    firstResponderSubtitle: 'Itifaki ya hatua 4 ya dharura na mawasiliano ya intercom ya kaunta.',
+
+    playDemoBtn: '▶ Cheza Sura ya Uwasilishaji',
+    pauseDemoBtn: '⏸ Sitisha Sauti na Maandishi',
+    nextChapterBtn: 'Sura Inayofuata →',
+    prevChapterBtn: '← Sura Iliyotangulia',
+    recordGuideBtn: '🎬 Njia ya Mkato ya Kurekodi Skrini: Win + Shift + R',
+    voiceLanguageLabel: 'Lugha ya Sauti ya Maonyesho:',
+    accentNoteLabel: 'Lafudhi ya Kiswahili Sanifu (Wazi, Thabiti, Ya Kuaminika)',
+    whatToClickLabel: 'Kile cha Kubonyeza kwenye Skrini:',
+    scriptToReadLabel: 'Maandishi ya Kusoma kwa Sauti:',
+    screenRecordingShortcut: 'Kurekodi Skrini: Bonyeza Win + Shift + R kuanza.',
+    chaptersList: [
+      {
+        id: 1,
+        timeRange: '0:00 - 0:20',
+        title: '1. Hatari za Kituo cha Mafuta na Ukaguzi wa Sheria',
+        visualCue: 'Onyesha dashibodi kuu ya Forecourt POS inayoonyesha viashiria vya hatari.',
+        script: '"Vituo vya mafuta ni mazingira yenye hatari kubwa ya moto na milipuko. Wakaguzi wa serikali wanapofanya ukaguzi, uvujaji mmoja wa mafuta au mfanyakazi asiye na mafunzo anaweza kusababisha kituo kufungwa mara moja. Mifumo ya karatasi haifanyi kazi kwa wafanyakazi wa vituo."',
+        accentGuidance: 'Kiswahili cha Afrika Mashariki: Kwa sauti thabiti ya kiusalama.'
+      },
+      {
+        id: 2,
+        timeRange: '0:20 - 0:40',
+        title: '2. POS ya Lugha Nyingi kwa Wafanyakazi',
+        visualCue: 'Bonyeza kibadilisha lugha hapo juu (badilisha kati ya Kiingereza, Kiswahili, isiZulu, Afrikaans, Sesotho).',
+        script: '"Programu ya Uzingatiaji wa OHS inageuza skrini yoyote ya POS au kompyuta mpakato kuwa kituo cha mafunzo ya haraka. Imejengwa kwa lugha nyingi ili kuwawezesha wahudumu, watoza fedha na wasimamizi kujifunza kwa lugha wanayoielewa vyema."',
+        accentGuidance: 'Kwa sauti ya kutia moyo na kuhamasisha.'
+      },
+      {
+        id: 3,
+        timeRange: '0:40 - 1:00',
+        title: '3. Mbinu ya PASS na Udhibiti wa Uvujaji wa Mafuta',
+        visualCue: 'Bonyeza moduli ya PASS Firefighting, sikiliza swali, na ufungue Video ya Marekebisho.',
+        script: '"Kutoka kwa mafunzo ya mbinu ya PASS ya kuzima moto hadi udhibiti wa uvujaji wa mafuta kwa majukumu 4 ya wafanyakazi, wahudumu hushiriki katika tathmini ya sekunde 60 yenye maswali 40."',
+        accentGuidance: 'Kwa msisitizo wa usalama na kasi ya kuchukua hatua.'
+      },
+      {
+        id: 4,
+        timeRange: '1:00 - 1:20',
+        title: '4. Msaada wa Kwanza Wakati wa Usiku (First Responder)',
+        visualCue: 'Bonyeza "8. 🚑 Msaada wa Kwanza", onyesha hatua 4 za kusaidia majeruhi na kuita gari la wagonjwa.',
+        script: '"Dharura inapotokea wakati wa usiku, itifaki yetu ya Msaada wa Kwanza inawaongoza wafanyakazi kutoa msaada wa haraka na kuratibu na mhudumu wa kaunta kuita gari la wagonjwa."',
+        accentGuidance: 'Sauti tulivu lakini ya tahadhari kubwa.'
+      },
+      {
+        id: 5,
+        timeRange: '1:20 - 1:40',
+        title: '5. Mafunzo ya Kila Mwezi na Usimamizi wa Kituo',
+        visualCue: 'Bonyeza "Refresher Hub" na ufungue Kituo cha Taarifa cha Mmiliki wa Kituo.',
+        script: '"Usalama ni mchakato endelevu wa kila siku. Kituo chetu cha kurudia mafunzo kinatoa mazoezi ya kila mwezi na kuwawezesha wasimamizi kuona maendeleo ya kila mfanyakazi."',
+        accentGuidance: 'Sauti ya kiuongozi na usimamizi bora.'
+      },
+      {
+        id: 6,
+        timeRange: '1:40 - 2:00',
+        title: '6. Vyeti vya Uidhinishaji wa Msimamizi (HITL) na Ripoti za Ukaguzi',
+        visualCue: 'Fungua Audit Certificate Generator inayoonyesha saini ya msimamizi na faili ya ukaguzi wa chapa ya mafuta.',
+        script: '"Mara tu mafunzo yanapokamilika, vyeti rasmi vya usalama vinavyoidhinishwa na binadamu (HITL) vinatolewa kwa ajili ya wakaguzi wa serikali. Hakuna fomu za karatasi, ni usalama kamili."',
+        accentGuidance: 'Sauti ya kumalizia yenye ujasiri na uhakika.'
+      }
+    ],
+
+    certModalTitle: 'Cheti Kilichoidhinishwa cha Msimamizi wa OHS',
+    certModalSubtitle: 'Cheti cha usalama kinachotambuliwa kisheria chini ya OSHA na SANS 10089',
+    candidateName: 'Jina la Mfanyakazi',
+    employeeId: 'Nambari ya Kitambulisho / Mfanyakazi',
+    stationLocation: 'Eneo la Kituo cha Mafuta',
+    roleTitle: 'Wadhifa / Jukumu',
+    managerName: 'Jina la Msimamizi wa OHS',
+    managerRegNo: 'Nambari ya Usajili ya OHS',
+    issueDate: 'Tarehe ya Kutolewa',
+    auditHash: 'Msimbo wa Ukaguzi wa Kielektroniki',
+    sansSeal: 'IMETHIBITISHWA CHINI YA KANUNI ZA SANS 10089 / OSHA',
+    printCertBtn: 'Chapisha / Hifadhi Cheti',
+    closeBtn: 'Funga',
+    signoffApproved: 'IMEIDHINISHWA NA MSIMAMIZI (HITL APPROVED)',
+
+    nextQuestion: 'Swali Linalofuata →',
+    prevQuestion: '← Swali Lililopita',
+    resetQuiz: 'Anzisha Upya Tathmini',
+    launchVideo: 'Fungua Video ya Mafunzo',
+    remediationAvailable: 'Video ya Marekebisho Ipo Tayari',
+    correctAnswer: '✓ Jibu Sahihi',
+    incorrectAnswer: '❌ Jibu Lisilo Sahihi'
   },
   ZU: {
     headerBadge: 'I-Forecourt POS OHS • SANS 10089',
