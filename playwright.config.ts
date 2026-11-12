@@ -2,10 +2,10 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './e2e',
-  fullyParallel: true,
+  fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   reporter: [['html', { open: 'never' }], ['list']],
   use: {
     baseURL: 'http://localhost:5188',
@@ -26,9 +26,9 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npx vite --port 5188',
+    command: 'cmd.exe /c npx vite preview --port 5188 --host',
     url: 'http://localhost:5188',
     reuseExistingServer: false,
-    timeout: 120000,
+    timeout: 60000,
   },
 });

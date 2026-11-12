@@ -1,7 +1,7 @@
 # Service Station OHS White-Label Refactor & Statutory Audit Documentation
 
 ## Executive Overview
-This document details the architecture, statutory compliance guardrails, client-side data protection safeguards supporting POPIA Condition 7 / Section 19, multi-tenant branding engine, and PDF generator suite for the **South African Service Station OHS Compliance Management System**.
+This document details the architecture, statutory compliance guardrails, client-side data protection safeguards supporting POPIA Condition 7 / Section 19, multi-country East African regulatory presets, multi-tenant branding engine, Nelly AI speech synthesis advisor, and PDF generator suite for **Forecourt Sentinel — Service Station OHS Compliance Management System**.
 
 ---
 
@@ -107,7 +107,35 @@ Expands the compliance matrix across Southern and Eastern Africa with country-sp
 
 ---
 
-## 9. Build Verification & Deployment Instructions
+## 9. Nelly AI Advisor & Browser Speech Synthesis Engine (`src/components/NellyAIAgentWindow.tsx`)
+Provides deterministic statutory advisory and auditory guidance across all operational forecourt standards:
+- **Deterministic T=0.0 Statutory Persona**: Nelly operates with `temperature: 0.0` to eliminate hallucinations, grounding every recommendation in direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards.
+- **Asynchronous Voice Cache & Browser Audio Lifecycle**:
+  - Registers `window.speechSynthesis.onvoiceschanged` listeners to eliminate zero-voice empty arrays in Chromium/Safari.
+  - Implements a 60ms delay post-`cancel()` and unpauses stuck queues via `window.speechSynthesis.resume()`.
+  - Maintains `activeUtteranceRef` to prevent premature JavaScript garbage collection during active audio streaming.
+  - Automatic female voice cascade priority: Rachel -> Microsoft Jenny -> Microsoft Zira -> Microsoft Aria -> Samantha -> Victoria -> Karen -> Google UK English Female.
+- **User Audio Controls**:
+  - Auto-speech trigger upon opening the modal.
+  - Inline `🔊 Speak` button on every message bubble for on-demand replay.
+  - Header volume toggle and top Quick Action `🔊 Speak Intro` button.
+
+---
+
+## 10. G.E.A.R. Pillar System Suite & Rapid Daily Assessment (`src/gearStore.ts` & `src/components/RapidDailyAssessment.tsx`)
+Real-time operational readiness calibration and daily statutory inspection workflow:
+- **4 Core G.E.A.R. Metric Pillars**:
+  1. *Governance*: Policy adherence, statutory appointment records (Section 16.2), and regulatory sign-offs.
+  2. *Ergonomics*: Forecourt physical safety, cashier fatigue rotation, and workstation safety thresholds.
+  3. *Action & SLA Escalation*: Mandatory supervisor ownership and 4-hour countdown escalation on high-severity hazards.
+  4. *Risk Reduction*: Quantified percentage reduction in baseline fire and spill hazard vulnerabilities.
+- **60-Second Daily Statutory Assessment (40 Questions)**:
+  - Covers 8 critical inspection pillars: PPE Compliance, Fire Extinguishers & Suppression, Spill Kits & Booms, Tanker Offload Protocols, Electrical & ESD Status, Housekeeping & Walkways, First Aid Readiness, and Food Safety (R638/CCP).
+  - Instant scoring with visual Red/Amber/Green statutory readiness ratings and immediate gap escalation.
+
+---
+
+## 11. Build Verification & Deployment Instructions
 
 ### Prerequisites
 - Node.js v18+ & npm

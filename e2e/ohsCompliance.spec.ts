@@ -10,7 +10,7 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
       }
     });
 
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
   });
 
   test('Navigation & Routing: Core tabs mount without 404s or console errors', async ({ page }) => {
@@ -43,7 +43,13 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
       await expect(page.getByRole('heading', { name: /Health & Safety Representative/i })).toBeVisible();
     }
 
-    const wetstockTabButton = page.getByRole('button', { name: /Wetstock/i }).first();
+    const wetstockBridgeTabButton = page.getByRole('button', { name: /Wetstock & Offload/i }).first();
+    if (await wetstockBridgeTabButton.isVisible()) {
+      await wetstockBridgeTabButton.click();
+      await expect(page.locator('text=RSD 26 Safety').first()).toBeVisible();
+    }
+
+    const wetstockTabButton = page.getByRole('button', { name: /Wetstock ATG|Wetstock & Reconciliation|8\. Wetstock/i }).first();
     if (await wetstockTabButton.isVisible()) {
       await wetstockTabButton.click();
       await expect(page.getByRole('heading', { name: /Wetstock Accounting & Automatic Tank Gauge/i })).toBeVisible();

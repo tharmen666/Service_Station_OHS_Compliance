@@ -189,8 +189,8 @@ export const App: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
                   </span>
                   {popiaStatus.compliant && (
-                    <span className="hidden sm:flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
-                      <Lock className="w-3 h-3 text-cyan-400" /> {activeJurisdiction.fiscalSystem.split(' ')[0]} AES-256
+                    <span className="flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
+                      <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256{jurisdiction !== 'ZA' ? ` • ${activeJurisdiction.fiscalSystem.split(' ')[0]}` : ''}
                     </span>
                   )}
                 </div>

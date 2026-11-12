@@ -273,7 +273,7 @@ export const WetstockOffloadBridge: React.FC<WetstockOffloadBridgeProps> = ({
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <span className="text-[11px] font-mono text-cyan-400 font-bold uppercase tracking-wider">
-                  Step 1: Safety Interlock Gate
+                  Step 1: Forecourt RSD 26 Safety Interlock Gate
                 </span>
                 <h3 className="text-lg font-black text-white flex items-center gap-2">
                   {lang === 'SW' ? swTranslations.interlockTitle : 'RSD 26 Safety Verification'}
