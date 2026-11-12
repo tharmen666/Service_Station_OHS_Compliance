@@ -76,7 +76,38 @@ Comprehensive forecourt fuel accounting aligned with SANS 10089 environmental pr
 
 ---
 
-## 7. Build Verification & Deployment Instructions
+## 7. Forecourt Sentinel Safety Interlock Gate & Wetstock Offload Bridge (`src/components/WetstockOffloadBridge.tsx`)
+Integrates the LogiGuard Sentinel offload safety gate and physical-to-fiscal reconciliation:
+- **RSD 26 Safety Interlock Gate (5 Mandatory Physical Checks)**:
+  1. Tanker Static Earthing Strap securely clamped to earth point (<10 ohms).
+  2. Two certified 9kg Dry Chemical Powder (DCP) extinguishers placed upwind within 3m.
+  3. Stormwater catchment and oil-water separator isolation valves shut/plugged.
+  4. Underground tank ullage confirmed via physical dip/ATG (safe receipt capacity).
+  5. Tanker Emergency Stop Device (ESD) primed and dual wheel chocks positioned.
+  - *Hard-Lock Mechanism*: Offload submission and fiscal drop commit remain strictly disabled until all 5 interlock gates are verified.
+- **LogiGuard Wetstock & Fiscal Reconciliation Engine**:
+  - Formulas:
+    $$\text{Actual Delivery (L)} = \text{Closing Dip} - \text{Opening Dip} + \text{Pump Sales During Drop} + \text{Spill Litres}$$
+    $$\text{Variance (L)} = \text{Actual Delivery} - \text{Waybill Volume}$$
+  - **Dynamic Spill Loss Deduction**: Automatically links to Tab 2 (Forecourt Spill Teamwork) to capture any active spill volume and deduct it as accounted loss.
+  - **Critical Shrinkage Warning**: Triggers immediate statutory alerts when fuel shrinkage exceeds `> 0.35%` or `> 50 Litres`.
+  - **HITL Audit Ledger**: Immutable Human-in-the-Loop audit record capturing station code, timestamp, seal reference, variance, and supervisor sign-off.
+
+---
+
+## 8. East Africa Multi-Country Statutory Architecture (`src/data/eastAfricaConfig.ts`)
+Expands the compliance matrix across Southern and Eastern Africa with country-specific regulatory bodies, standards, and fiscal frameworks:
+- **South Africa (ZA)**: DMRE / DoEL | SANS 10089-3 & OHSA 85 | Reference Site `ENG-JHB-042`.
+- **Kenya (KE)**: EPRA | KRA eTIMS Live & OSHA 2007 | Reference Site `NBO-MSA-018`.
+- **Tanzania (TZ)**: EWURA | TRA EFD / VFD & OSHA 2003 | Reference Site `DAR-KIG-009`.
+- **Uganda (UG)**: PAU / MEMD | URA EFRIS Live & OSH Act 2006 | Reference Site `KLA-ENT-014`.
+- **Swahili (SW) Regional Localization**:
+  - Full translations for Evacuation flows, PASS Firefighting instructions, Spill containment roles, and Wetstock offload interlock checkpoints.
+  - Seamless switching across `EN` (English), `SW` (Kiswahili), `ZU` (isiZulu), `AF` (Afrikaans), and `ST` (Sesotho).
+
+---
+
+## 9. Build Verification & Deployment Instructions
 
 ### Prerequisites
 - Node.js v18+ & npm
@@ -104,6 +135,6 @@ Generates `Service_Station_OHS_Manual.pdf` and `Service_Station_OHS_Policies.pdf
 ### Step 4: Git Commit & Production Sync
 ```bash
 git add .
-git commit -m "feat(training-wetstock): ensure statutory training and wetstock management modules are fully integrated and synced to production"
+git commit -m "feat: integrate Forecourt Sentinel safety gate, wetstock reconciliation, and East Africa presets"
 git push origin main
 ```
