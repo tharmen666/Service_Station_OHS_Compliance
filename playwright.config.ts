@@ -26,9 +26,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'cmd.exe /c npx vite preview --port 5188 --host',
+    command: process.platform === 'win32'
+      ? 'cmd.exe /c npm run build && cmd.exe /c npx vite preview --port 5188 --host'
+      : 'npm run build && npx vite preview --port 5188 --host',
     url: 'http://localhost:5188',
-    reuseExistingServer: false,
-    timeout: 60000,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000,
   },
 });

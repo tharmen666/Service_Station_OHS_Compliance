@@ -479,7 +479,7 @@ export const App: React.FC = () => {
               onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
             />
           )}
-          {activeTab === 'evacuation' && <EvacuationFlow />}
+          {activeTab === 'evacuation' && <EvacuationFlow lang={lang} />}
           {activeTab === 'spill' && (
             <SpillTeamwork
               spillLitres={spillLitres}
@@ -489,7 +489,7 @@ export const App: React.FC = () => {
             />
           )}
           {activeTab === 'customer' && <CustomerServiceModule />}
-          {activeTab === 'fire' && <PASSFirefighting />}
+          {activeTab === 'fire' && <PASSFirefighting lang={lang} />}
           {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
           {activeTab === 'curriculum' && <CurriculumBrowser />}
           {activeTab === 'demo' && (
