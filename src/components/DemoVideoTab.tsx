@@ -25,7 +25,7 @@ import {
 
 interface DemoVideoTabProps {
   lang: Language;
-  onNavigateTab?: (tab: 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'firstResponder' | 'refresher') => void;
+  onNavigateTab?: (tab: 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'firstResponder' | 'refresher') => void;
   onOpenCertModal?: () => void;
 }
 

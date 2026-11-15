@@ -39,23 +39,3 @@ export interface SpillRole {
   badge_color: string;
 }
 
-export interface CurriculumFile {
-  id: string;
-  title: string;
-  file_name: string;
-  file_path: string;
-  file_type: string;
-  file_size_human: string;
-  drive_source: string;
-  description: string;
-  target_audience: string;
-}
-
-export interface ModuleSummary {
-  module_id: string;
-  module_code: string;
-  title: string;
-  description: string;
-  target_audience: string;
-  total_resources: number;
-}

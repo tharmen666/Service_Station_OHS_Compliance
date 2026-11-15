@@ -4,7 +4,6 @@ import { SpillTeamwork } from './components/SpillTeamwork';
 import { PASSFirefighting } from './components/PASSFirefighting';
 import { CustomerServiceModule } from './components/CustomerServiceModule';
 import { AssessmentQuiz } from './components/AssessmentQuiz';
-import { CurriculumBrowser } from './components/CurriculumBrowser';
 import { DemoVideoTab } from './components/DemoVideoTab';
 import { DemoVideoModal } from './components/DemoVideoModal';
 import { NightshiftFirstResponder } from './components/NightshiftFirstResponder';
@@ -33,7 +32,6 @@ import {
   Shield, 
   Flame, 
   Award, 
-  BookOpen, 
   Bot, 
   HardDrive, 
   Zap, 
@@ -57,7 +55,7 @@ import {
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
-    'executiveDashboard' | 'training' | 'wetstock' | 'wetstockBridge' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
+    'executiveDashboard' | 'training' | 'wetstock' | 'wetstockBridge' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'demo' | 'firstResponder' | 'refresher' | 'rights' | 'rsdChecklists'
   >('executiveDashboard');
   
   const [lang, setLang] = useState<Language>('EN');
@@ -94,13 +92,6 @@ export const App: React.FC = () => {
 
   const activeJurisdiction = EAST_AFRICA_PRESETS[jurisdiction] || EAST_AFRICA_PRESETS.ZA;
 
-  // Primary Top Navigation Items Array for Layout & Header
-  const topNavItems = [
-    { id: 'training', label: 'Training', icon: GraduationCap, title: 'Statutory OHS Training & Certification' },
-    { id: 'wetstockBridge', label: 'Wetstock & Offload', icon: Truck, title: 'LogiGuard Sentinel Wetstock & RSD 26 Offload Bridge' },
-    { id: 'wetstock', label: 'Wetstock ATG', icon: Gauge, title: 'Forecourt Wetstock Accounting & Loss Forensics' },
-  ];
-
   const moduleTabs = [
     { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
     { id: 'training', label: '1. Statutory Training', icon: GraduationCap },
@@ -111,12 +102,11 @@ export const App: React.FC = () => {
     { id: 'wetstockBridge', label: '6. Wetstock & Offload', icon: Truck },
     { id: 'quiz', label: '7. 60s Assessment (40 Qs)', icon: Award },
     { id: 'wetstock', label: '8. Wetstock & Reconciliation', icon: Gauge },
-    { id: 'curriculum', label: '9. Curriculum Bank', icon: BookOpen },
-    { id: 'demo', label: '10. Video Showcase', icon: Video },
-    { id: 'firstResponder', label: '11. First Responder', icon: HeartPulse },
-    { id: 'refresher', label: '12. Refresher Hub', icon: RotateCcw },
-    { id: 'rights', label: '13. Employee Rights', icon: Scale },
-    { id: 'rsdChecklists', label: '14. RSD 26 Checklists', icon: FileCheck },
+    { id: 'demo', label: '9. Video Showcase', icon: Video },
+    { id: 'firstResponder', label: '10. First Responder', icon: HeartPulse },
+    { id: 'refresher', label: '11. Refresher Hub', icon: RotateCcw },
+    { id: 'rights', label: '12. Employee Rights', icon: Scale },
+    { id: 'rsdChecklists', label: '13. RSD 26 Checklists', icon: FileCheck },
   ];
 
   return (
@@ -174,88 +164,51 @@ export const App: React.FC = () => {
       {/* RIGHT MAIN VIEWPORT */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', minWidth: 0, overflow: 'hidden', backgroundColor: '#070d1e' }}>
         
-        {/* Top Header Bar */}
-        <header className="flex-shrink-0 border-b border-slate-800 bg-[#070d1e] w-full overflow-x-hidden">
-          <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2 w-full max-w-full overflow-x-hidden">
+        {/* Top Header Bar: Telemetry, Ticker & Controls */}
+        <header className="flex-shrink-0 border-b border-slate-800 bg-[#070d1e] w-full">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 px-4 py-2.5 w-full">
             
-            {/* ROW 1 / LEFT: Brand & Essential Telemetry Status */}
-            <div className="flex items-center justify-between w-full md:w-auto gap-3">
+            {/* LEFT: System Brand & Telemetry Status Ticker */}
+            <div className="flex items-center justify-between w-full lg:w-auto gap-4 flex-wrap">
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-400">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-amber-400 font-mono">
                     {activeJurisdiction.statutoryReference} • {activeJurisdiction.siteCode} • {activeTenant.siteCode}
                   </span>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-extrabold border border-emerald-500/30 flex items-center gap-1 whitespace-nowrap">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-black border border-emerald-500/30 flex items-center gap-1 whitespace-nowrap">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> ONLINE
                   </span>
                   {popiaStatus.compliant && (
-                    <span className="flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
+                    <span className="flex px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-black border border-cyan-500/30 items-center gap-1 whitespace-nowrap">
                       <Lock className="w-3 h-3 text-cyan-400" /> POPIA AES-256{jurisdiction !== 'ZA' ? ` • ${activeJurisdiction.fiscalSystem.split(' ')[0]}` : ''}
                     </span>
                   )}
                 </div>
-                <h1 className="text-base md:text-lg font-black text-white leading-none mt-0.5 truncate max-w-[220px] sm:max-w-none">
+                <h1 className="text-base md:text-lg font-black text-white leading-none mt-1">
                   Forecourt Sentinel
                 </h1>
               </div>
 
-              {/* Mobile Quick Action Badges (Row 1 right) */}
-              <div className="flex md:hidden items-center gap-1.5 flex-shrink-0">
-                {topNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id as any)}
-                      className={`h-9 px-2.5 rounded-xl border transition flex items-center gap-1 text-xs font-black flex-shrink-0 shadow-sm ${
-                        isActive
-                          ? 'bg-amber-500 text-slate-950 border-amber-300'
-                          : 'bg-slate-800 text-amber-300 border-slate-700'
-                      }`}
-                      title={item.title}
-                    >
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-                <button
-                  onClick={() => setIsGearModalOpen(true)}
-                  className="h-9 w-9 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition flex items-center justify-center flex-shrink-0 shadow-sm"
-                  title="GEAR Pillars"
-                >
-                  <Sliders className="w-4 h-4 text-slate-950" />
-                </button>
-                <button
-                  onClick={() => setIsNellyOpen(!isNellyOpen)}
-                  className="h-9 w-9 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black border border-purple-300 transition flex items-center justify-center flex-shrink-0 shadow-sm"
-                  title="AI Advisor"
-                >
-                  <Bot className="w-4 h-4 text-purple-100" />
-                </button>
+              {/* Status Ticker Badges */}
+              <div className="hidden sm:flex items-center gap-2 text-xs">
+                <div className="px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-1.5 text-slate-300 text-[11px] whitespace-nowrap font-mono">
+                  <HardDrive className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
+                  <span>{t.usbStatus}</span>
+                </div>
+
+                <div className="px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-1.5 text-slate-300 text-[11px] whitespace-nowrap font-mono">
+                  <Zap className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                  <span>{t.esdStatus}</span>
+                </div>
+
+                <div className="px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-[11px] whitespace-nowrap">
+                  🕒 {currentTime}
+                </div>
               </div>
             </div>
 
-            {/* CENTER: Telemetry Chips (Desktop / Tablet wrapped row) */}
-            <div className="hidden md:flex items-center gap-2 flex-wrap text-xs">
-              <div className="hidden lg:flex px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-xs text-slate-300 whitespace-nowrap">
-                <HardDrive className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                <span>{t.usbStatus}</span>
-              </div>
-
-              <div className="hidden lg:flex px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 items-center gap-2 text-xs text-slate-300 whitespace-nowrap">
-                <Zap className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                <span>{t.esdStatus}</span>
-              </div>
-
-              <div className="px-2.5 py-1 rounded-xl bg-slate-950 border border-slate-800 font-mono text-slate-200 text-xs whitespace-nowrap">
-                🕒 {currentTime}
-              </div>
-            </div>
-
-            {/* RIGHT: Jurisdiction Switcher + Language Switcher & Action Buttons */}
-            <div className="flex-shrink-0 flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5 max-w-full">
+            {/* RIGHT: Selectors & Utility Controls (De-duplicated; no sidebar module buttons) */}
+            <div className="flex items-center gap-2 flex-wrap justify-between lg:justify-end">
               
               {/* Regional Jurisdiction Switcher (ZA | KE | TZ | UG) */}
               <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-cyan-500/30 flex-shrink-0">
@@ -280,14 +233,14 @@ export const App: React.FC = () => {
                 })}
               </div>
 
-              {/* Desktop Language Switcher (EN | SW | ZU | AF | ST) */}
-              <div className="hidden lg:flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 flex-shrink-0">
-                <Globe className="w-4 h-4 text-amber-400 ml-1 flex-shrink-0" />
+              {/* Language Switcher (EN | SW | ZU | AF | ST) */}
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-950 border border-slate-800 flex-shrink-0">
+                <Globe className="w-3.5 h-3.5 text-amber-400 ml-1 flex-shrink-0" />
                 {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => (
                   <button
                     key={l}
                     onClick={() => setLang(l)}
-                    className={`h-8 px-2.5 rounded-lg text-xs font-extrabold transition-all whitespace-nowrap ${
+                    className={`h-8 px-2 rounded-lg text-xs font-extrabold transition-all whitespace-nowrap ${
                       lang === l
                         ? 'bg-amber-500 text-slate-950 shadow-md'
                         : 'text-slate-400 hover:text-white hover:bg-slate-900'
@@ -298,129 +251,67 @@ export const App: React.FC = () => {
                 ))}
               </div>
 
-              {/* Dedicated Flex Action Buttons Wrapper */}
-              <div className="flex-shrink-0 flex items-center gap-2">
-                {/* Primary Top Navigation Items Array */}
-                {topNavItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setActiveTab(item.id as any)}
-                      className={`h-9 md:h-10 px-3.5 rounded-xl border transition flex items-center gap-1.5 text-xs font-black whitespace-nowrap shadow-sm ${
-                        isActive
-                          ? 'bg-amber-500 text-slate-950 border-amber-300 shadow-amber-950/40'
-                          : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-slate-700 hover:text-white'
-                      }`}
-                      title={item.title}
-                    >
-                      <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
-                      <span>{item.label}</span>
-                    </button>
-                  );
-                })}
-
-                <button
-                  onClick={() => setIsDemoModalOpen(true)}
-                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
-                  title="Multilingual Video Showcase"
-                >
-                  <Video className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                  <span className="hidden sm:inline">Live Demo</span>
-                </button>
-
+              {/* Utility & Tool Controls */}
+              <div className="flex items-center gap-1.5 flex-shrink-0">
                 <button
                   onClick={() => setIsStatutoryModalOpen(true)}
-                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
+                  className="h-8 md:h-9 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
                   title="Autonomous Statutory OHS Doc Generator"
                 >
-                  <Scale className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <Scale className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                   <span className="hidden sm:inline">Statutory Doc</span>
                 </button>
 
                 <button
                   onClick={() => setIsNotificationCenterOpen(true)}
-                  className="h-9 md:h-10 w-9 md:w-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 transition flex items-center justify-center flex-shrink-0"
+                  className="h-8 md:h-9 w-8 md:w-9 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 border border-slate-800 transition flex items-center justify-center flex-shrink-0"
                   title="Retailer Notification Center"
                 >
-                  <BellRing className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <BellRing className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
                 </button>
 
                 <button
                   onClick={() => setIsDossierOpen(true)}
-                  className="h-9 md:h-10 w-9 md:w-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-slate-700 transition flex items-center justify-center flex-shrink-0"
+                  className="h-8 md:h-9 w-8 md:w-9 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-slate-800 transition flex items-center justify-center flex-shrink-0"
                   title="Corporate Stewardship Dossier"
                 >
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 </button>
 
                 <button
                   onClick={() => setIsAIStudioOpen(true)}
-                  className="h-9 md:h-10 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-purple-300 border border-slate-700 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
+                  className="h-8 md:h-9 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-purple-300 border border-purple-500/30 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
                   title="Google AI Studio Integration & Guardrails"
                 >
-                  <Bot className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                  <Bot className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
                   <span className="hidden sm:inline">AI Studio</span>
                 </button>
 
                 <button
                   onClick={() => setIsGearModalOpen(true)}
-                  className="hidden md:flex h-9 md:h-10 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition items-center gap-1.5 text-xs whitespace-nowrap shadow-sm"
+                  className="h-8 md:h-9 px-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black border border-amber-300 transition flex items-center gap-1 text-xs whitespace-nowrap shadow-sm"
                   title="Open G.E.A.R. Pillar Settings Suite"
                 >
-                  <Sliders className="w-4 h-4 text-slate-950 flex-shrink-0" />
-                  <span className="hidden lg:inline uppercase">GEAR Pillars</span>
+                  <Sliders className="w-3.5 h-3.5 text-slate-950 flex-shrink-0" />
+                  <span className="hidden sm:inline uppercase">GEAR</span>
                 </button>
 
                 <button
                   onClick={() => setIsNellyOpen(!isNellyOpen)}
-                  className="hidden md:flex h-9 md:h-10 px-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black border border-purple-300 transition items-center gap-1.5 text-xs whitespace-nowrap shadow-sm"
+                  className="h-8 md:h-9 px-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black border border-purple-300 transition flex items-center gap-1.5 text-xs whitespace-nowrap shadow-sm"
                   title="Toggle AI Avatar Guide"
                 >
-                  <Bot className="w-4 h-4 text-purple-100 flex-shrink-0" />
-                  <span className="hidden lg:inline uppercase">AI Advisor</span>
+                  <Bot className="w-3.5 h-3.5 text-purple-100 flex-shrink-0" />
+                  <span>Nelly AI</span>
                 </button>
               </div>
 
-            </div>
-
-            {/* ROW 2 (MOBILE ONLY): Language switcher + compact telemetry badges */}
-            <div className="flex md:hidden items-center justify-between gap-2 pt-2 border-t border-slate-800/60 w-full">
-              {/* Mobile Language Switcher */}
-              <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-950 border border-slate-800">
-                <Globe className="w-3.5 h-3.5 text-amber-400 ml-1 flex-shrink-0" />
-                {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => (
-                  <button
-                    key={l}
-                    onClick={() => setLang(l)}
-                    className={`h-7 px-2 rounded-md text-[11px] font-extrabold transition-all whitespace-nowrap ${
-                      lang === l
-                        ? 'bg-amber-500 text-slate-950 shadow-sm'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {l}
-                  </button>
-                ))}
-              </div>
-
-              {/* Mobile Telemetry Status Badges */}
-              <div className="flex items-center gap-1.5 text-[10px]">
-                <div className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1 text-slate-300 whitespace-nowrap">
-                  <HardDrive className="w-3 h-3 text-amber-400" />
-                  <span className="hidden sm:inline">{t.usbStatus}</span>
-                </div>
-                <div className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono text-slate-200 text-[11px] whitespace-nowrap">
-                  🕒 {currentTime}
-                </div>
-              </div>
             </div>
 
           </div>
         </header>
 
-        {/* Mobile Secondary Swipeable Tab Bar */}
+        {/* Mobile Swipeable Module Navigation Bar */}
         <div className="flex md:hidden overflow-x-auto whitespace-nowrap scrollbar-none flex-nowrap gap-2 px-4 py-2 border-b border-slate-800 bg-slate-900/90 w-full text-xs">
           {moduleTabs.map((tab) => {
             const Icon = tab.icon;
@@ -441,7 +332,6 @@ export const App: React.FC = () => {
             );
           })}
         </div>
-
 
         {/* Main Active Screen */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '24px' }}>
@@ -491,7 +381,6 @@ export const App: React.FC = () => {
           {activeTab === 'customer' && <CustomerServiceModule />}
           {activeTab === 'fire' && <PASSFirefighting lang={lang} />}
           {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
-          {activeTab === 'curriculum' && <CurriculumBrowser />}
           {activeTab === 'demo' && (
             <DemoVideoTab 
               lang={lang} 

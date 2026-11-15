@@ -132,14 +132,13 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-2 pt-1">
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-300 text-xs font-semibold">Created by</span>
+                  <span className="text-slate-300 text-xs font-semibold">Audit Authority</span>
                   <span className="bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2.5 py-0.5 rounded font-black text-xs">
-                    Desigan Tharmen
+                    Forecourt Sentinel Compliance Bureau
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
-                  <span>• tharmendesigan36@gmail.com</span>
-                  <span>• +27 622 655 708</span>
+                  <span>• compliance@forecourtsentinel.io</span>
                 </div>
               </div>
             </div>

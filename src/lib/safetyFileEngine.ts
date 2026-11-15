@@ -1,7 +1,7 @@
 // lib/safetyFileEngine.ts
 /**
  * LogiGuard Sentinel & OHS Forecourt Haven - Generic OHS Safety File & Risk Assessment Generator
- * Author: Desigan Tharmen / Forecourt Sentinel
+ * Specification: Forecourt Sentinel Statutory Compliance Engine
  * Purpose: Generates brand-neutral, customizable OHS Safety Files, Risk Assessment templates,
  *          and statutory site checklists ready for site-specific input and printing.
  */

@@ -44,7 +44,7 @@ interface ExecutiveBriefingDashboardProps {
   lang: Language;
   onOpenNelly: () => void;
   onOpenGearModal: () => void;
-  onNavigateTab: (tab: 'training' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'curriculum' | 'demo' | 'firstResponder' | 'refresher' | 'rights') => void;
+  onNavigateTab: (tab: 'training' | 'evacuation' | 'spill' | 'customer' | 'fire' | 'quiz' | 'demo' | 'firstResponder' | 'refresher' | 'rights') => void;
   onOpenStatutoryModal?: () => void;
 }
 

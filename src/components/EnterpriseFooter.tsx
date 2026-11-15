@@ -13,9 +13,9 @@ export interface EnterpriseFooterProps {
 export const EnterpriseFooter: React.FC<EnterpriseFooterProps> = ({
   appName,
   subtitle = 'STATUTORY OHS COMPLIANCE MANAGEMENT SYSTEM',
-  creatorName = 'Desigan Tharmen',
-  creatorEmail = 'tharmendesigan36@gmail.com',
-  creatorPhone = '+27 622 655 708',
+  creatorName = 'Forecourt Sentinel Enterprise',
+  creatorEmail = 'compliance@forecourtsentinel.io',
+  creatorPhone,
   className = '',
 }) => {
   const [activeTenant, setActiveTenant] = useState(getActiveTenant());
@@ -44,10 +44,10 @@ export const EnterpriseFooter: React.FC<EnterpriseFooterProps> = ({
         </div>
       </div>
 
-      {/* Right Section: Created by Badge & Contact Info */}
+      {/* Right Section: System Engine Badge & Contact Info */}
       <div className="flex flex-col items-start md:items-end gap-1">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-200">Created by</span>
+          <span className="text-xs font-semibold text-slate-200">Maintained by</span>
           <span className="bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2.5 py-0.5 rounded font-black text-xs shadow-sm">
             {creatorName}
           </span>
@@ -57,10 +57,12 @@ export const EnterpriseFooter: React.FC<EnterpriseFooterProps> = ({
             <span className="text-amber-500 font-bold">•</span>
             {creatorEmail}
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="text-amber-500 font-bold">•</span>
-            {creatorPhone}
-          </span>
+          {creatorPhone && (
+            <span className="flex items-center gap-1.5">
+              <span className="text-amber-500 font-bold">•</span>
+              {creatorPhone}
+            </span>
+          )}
         </div>
       </div>
     </footer>

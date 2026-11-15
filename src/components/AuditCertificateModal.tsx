@@ -84,9 +84,9 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
         <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-2">
           <span>Statutory Compliance Matrix • SANS 10089</span>
           <div className="flex items-center gap-2">
-            <span className="text-slate-400 font-semibold">Created by</span>
+            <span className="text-slate-400 font-semibold">Verified by</span>
             <span className="bg-amber-500/20 text-amber-400 border border-amber-500/40 px-2 py-0.5 rounded font-black text-xs">
-              Desigan Tharmen
+              Forecourt Sentinel Audit Authority
             </span>
           </div>
         </div>
