@@ -145,7 +145,7 @@ def build_pdf(target_file=DESKTOP_PATH):
     exec_summary_text = (
         "The <b>Service Station OHS Compliance Platform</b> is an all-in-one digital safety, bulk transit, and statutory "
         "compliance system designed for South African retail fuel service stations and central petroleum logistics depots "
-        "(Brilliant Group One Network). Built specifically for forecourt managers, cashiers, attendants, and tanker drivers, "
+        "(Central Depot Network). Built specifically for forecourt managers, cashiers, attendants, and tanker drivers, "
         "it replaces paper safety manuals with an interactive, audit-ready tablet platform enforcing real-time safety compliance, "
         "emergency readiness, wetstock accounting, and statutory reporting."
     )

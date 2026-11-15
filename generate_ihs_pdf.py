@@ -34,7 +34,7 @@ from reportlab.platypus import (
 from reportlab.pdfgen import canvas
 
 # Multi-Tenant Site Configuration Parsed from Environment
-TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Brilliant Group One — Central Depot Fleet")
+TENANT_NAME = os.getenv("VITE_WHITE_LABEL_BRAND_NAME", "Central Depot Fleet")
 SITE_CODE = os.getenv("VITE_TENANT_ID", os.getenv("VITE_STATION_SITE_CODE", "STN-ALPHA"))
 STATION_NAME = os.getenv("VITE_TENANT_SITE_NAME", os.getenv("VITE_STATION_NAME", "Retail Service Station Alpha"))
 LOCATION = os.getenv("VITE_TENANT_LOCATION", "Regional Logistics Corridor 1, Gauteng")

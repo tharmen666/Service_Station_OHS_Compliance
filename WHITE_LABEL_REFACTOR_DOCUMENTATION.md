@@ -7,7 +7,7 @@ This document details the architecture, statutory compliance guardrails, client-
 
 ## 1. Multi-Tenant White-Label Engine (`src/multiTenantConfig.ts`)
 The multi-tenant engine decouples station branding, colors, logos, and site metadata from core logic:
-- **Pure White-Label Topology (Brilliant Group One)**: 1 Central Logistics Depot (`DEPOT-BGO-01`), 6 Heavy Tanker Trucks (`TRK-01` to `TRK-06`) with 32,000L full loads, supplying 5 Regional Retail Service Stations (Site Alpha, Site Bravo, Site Charlie, Site Delta, Site Echo). Commercial brand names purged 100%.
+- **Pure White-Label Topology (Central Depot Logistics Fleet)**: 1 Central Logistics Depot (`DEPOT-CD-01`), 6 Heavy Tanker Trucks (`TRK-01` to `TRK-06`) with 32,000L full loads, supplying 5 Regional Retail Service Stations (Site Alpha, Site Bravo, Site Charlie, Site Delta, Site Echo). Commercial brand names purged 100%.
 - **Environment Overrides**: Reads dynamic environment variables (`VITE_TENANT_ID`, `VITE_WHITE_LABEL_BRAND_NAME`, `VITE_STATION_SITE_CODE`, etc.) or falls back to pre-configured defaults.
 - **Runtime Switching**: Provides `getTenantConfig()`, `setTenantState()`, and `getActiveTenant()` for dynamic tenant switching.
 
@@ -134,7 +134,7 @@ Real-time operational readiness calibration and daily statutory inspection workf
   - Backed by `src/data/assessmentData.ts` and `assessment_bank.json`.
   - Covers 8 critical inspection pillars: PPE Compliance, Fire Extinguishers & Suppression, Spill Kits & Booms, Tanker Offload Protocols, Electrical & ESD Status, Housekeeping & Walkways, First Aid Readiness, and Food Safety (R638/CCP).
   - Instant scoring with visual Red/Amber/Green statutory readiness ratings, 60-second timer countdown, and automated remediation video triggers (`src/components/VideoRemediationModal.tsx`).
-  - **White-Label Remediation Scrubbing**: All 42 assessment questions and video remediation metadata have been 100% white-labeled to Brilliant Group One and aligned with Nelly AI guidelines, purging all legacy petroleum brand names and outdated directory paths.
+  - **White-Label Remediation Scrubbing**: All 42 assessment questions and video remediation metadata have been 100% white-labeled to Central Depot Logistics Fleet and aligned with Nelly AI guidelines, purging all legacy petroleum brand names and outdated directory paths.
 
 ---
 

@@ -1,7 +1,7 @@
 // lib/safetyFileEngine.ts
 /**
  * LogiGuard Sentinel & OHS Forecourt Haven - Generic OHS Safety File & Risk Assessment Generator
- * Author: Desigan Tharmen / Brilliant Group One
+ * Author: Desigan Tharmen / Forecourt Sentinel
  * Purpose: Generates brand-neutral, customizable OHS Safety Files, Risk Assessment templates,
  *          and statutory site checklists ready for site-specific input and printing.
  */
@@ -45,8 +45,8 @@ export interface MasterSafetyFile {
 function normalizeGovernanceText(value: string): string {
   if (!value) return '';
   return value
-    .replace(/\bRoof\s*King(?:\s*\(Pty\)\s*Ltd)?\b/gi, 'BRILLIANT GROUP ONE')
-    .replace(/\bVEDAN\b/gi, 'VESHAN')
+    .replace(/\bRoof\s*King(?:\s*\(Pty\)\s*Ltd)?\b/gi, 'CENTRAL DEPOT FLEET')
+    .replace(/\bVEDAN\b/gi, 'OPERATOR')
     .trim();
 }
 

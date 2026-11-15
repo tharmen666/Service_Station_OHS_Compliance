@@ -4,8 +4,7 @@
  * Uganda, Ethiopia, and ISO standards), emergency & forecourt safety protocols
  * (9-step evacuation, 8-step spill response, P.A.S.S. firefighting, hydrocarbon
  * first aid, armed robbery security, and the 4+1 Spare Wheel Permeation check
- * grounded in Pascal's Law), plus mandatory corporate/personnel governance
- * normalization (Roof King -> BRILLIANT GROUP ONE, VEDAN -> VESHAN).
+ * grounded in Pascal's Law), plus mandatory white-label entity governance.
  */
 
 import type { JurisdictionCode } from './wetstockEngine';
@@ -381,16 +380,14 @@ export function evaluate4Plus1SpareWheelCheck(input: {
 }
 
 /**
- * Enforces mandatory corporate entity and personnel spelling governance across
- * all policy documents, certificates, and statutory training registers:
- * - "Roof King" -> "BRILLIANT GROUP ONE"
- * - "VEDAN" -> "VESHAN"
+ * Enforces mandatory white-label entity and personnel governance across
+ * all policy documents, certificates, and statutory training registers.
  */
 export function enforceEntityAndPersonnelGovernance(text: string): string {
   if (!text) return '';
   return text
-    .replace(/\bRoof\s*King(?:\s*\(Pty\)\s*Ltd)?\b/gi, 'BRILLIANT GROUP ONE')
-    .replace(/\bVEDAN\b/gi, 'VESHAN');
+    .replace(/\bRoof\s*King(?:\s*\(Pty\)\s*Ltd)?\b/gi, 'CENTRAL DEPOT FLEET')
+    .replace(/\bVEDAN\b/gi, 'OPERATOR');
 }
 
 /**

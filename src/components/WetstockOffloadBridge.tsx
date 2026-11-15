@@ -93,7 +93,7 @@ export const WetstockOffloadBridge: React.FC<WetstockOffloadBridgeProps> = ({
   // Step 2: LogiGuard Wetstock & Fiscal Reconciliation Inputs
   const [selectedTank, setSelectedTank] = useState<'TK-01' | 'TK-02' | 'TK-03' | 'TK-04' | 'TK-05'>('TK-03');
   const [waybillRef, setWaybillRef] = useState<string>('WB-2026-99042');
-  const [sealRef, setSealRef] = useState<string>('SEAL-BGO-8841');
+  const [sealRef, setSealRef] = useState<string>('SEAL-CD-8841');
   const [openingDip, setOpeningDip] = useState<number>(4500);
   const [waybillLitres, setWaybillLitres] = useState<number>(32000); // 32k full load standard
   const [pumpSalesDuringDrop, setPumpSalesDuringDrop] = useState<number>(380);
@@ -102,12 +102,12 @@ export const WetstockOffloadBridge: React.FC<WetstockOffloadBridgeProps> = ({
   // Committed Audits Ledger (HITL)
   const [committedAudits, setCommittedAudits] = useState<CommittedOffloadAudit[]>([
     {
-      id: 'AUD-BGO-881',
+      id: 'AUD-CD-881',
       timestamp: 'Today, 06:45:10',
       tankId: 'TK-01',
       fuelGrade: 'ULP 95 (Premium)',
       waybillRef: 'WB-2026-98910',
-      sealRef: 'SEAL-BGO-7730',
+      sealRef: 'SEAL-CD-7730',
       openingDip: 3200,
       waybillLitres: 32000,
       pumpSalesDuringDrop: 420,
