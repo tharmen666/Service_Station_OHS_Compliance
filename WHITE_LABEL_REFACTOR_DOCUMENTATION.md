@@ -134,6 +134,7 @@ Real-time operational readiness calibration and daily statutory inspection workf
   - Backed by `src/data/assessmentData.ts` and `assessment_bank.json`.
   - Covers 8 critical inspection pillars: PPE Compliance, Fire Extinguishers & Suppression, Spill Kits & Booms, Tanker Offload Protocols, Electrical & ESD Status, Housekeeping & Walkways, First Aid Readiness, and Food Safety (R638/CCP).
   - Instant scoring with visual Red/Amber/Green statutory readiness ratings, 60-second timer countdown, and automated remediation video triggers (`src/components/VideoRemediationModal.tsx`).
+  - **White-Label Remediation Scrubbing**: All 42 assessment questions and video remediation metadata have been 100% white-labeled to Brilliant Group One and aligned with Nelly AI guidelines, purging all legacy petroleum brand names and outdated directory paths.
 
 ---
 
