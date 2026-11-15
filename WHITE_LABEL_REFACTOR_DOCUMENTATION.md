@@ -122,16 +122,18 @@ Provides deterministic statutory advisory and auditory guidance across all opera
 
 ---
 
-## 10. G.E.A.R. Pillar System Suite & Rapid Daily Assessment (`src/gearStore.ts` & `src/components/RapidDailyAssessment.tsx`)
+## 10. G.E.A.R. Pillar System Suite & Rapid Daily Assessment (`src/gearStore.ts`, `src/components/AssessmentQuiz.tsx` & `src/data/assessmentData.ts`)
 Real-time operational readiness calibration and daily statutory inspection workflow:
-- **4 Core G.E.A.R. Metric Pillars**:
+- **4 Core G.E.A.R. Metric Pillars (`src/gearStore.ts` & `src/components/GearPillarSettingsModal.tsx`)**:
   1. *Governance*: Policy adherence, statutory appointment records (Section 16.2), and regulatory sign-offs.
   2. *Ergonomics*: Forecourt physical safety, cashier fatigue rotation, and workstation safety thresholds.
   3. *Action & SLA Escalation*: Mandatory supervisor ownership and 4-hour countdown escalation on high-severity hazards.
   4. *Risk Reduction*: Quantified percentage reduction in baseline fire and spill hazard vulnerabilities.
-- **60-Second Daily Statutory Assessment (40 Questions)**:
+  - Implements an observable state store with `subscribeGearChange()` for reactive telemetry across components.
+- **60-Second Daily Statutory Assessment (42 Questions across 8 Pillars)**:
+  - Backed by `src/data/assessmentData.ts` and `assessment_bank.json`.
   - Covers 8 critical inspection pillars: PPE Compliance, Fire Extinguishers & Suppression, Spill Kits & Booms, Tanker Offload Protocols, Electrical & ESD Status, Housekeeping & Walkways, First Aid Readiness, and Food Safety (R638/CCP).
-  - Instant scoring with visual Red/Amber/Green statutory readiness ratings and immediate gap escalation.
+  - Instant scoring with visual Red/Amber/Green statutory readiness ratings, 60-second timer countdown, and automated remediation video triggers (`src/components/VideoRemediationModal.tsx`).
 
 ---
 
