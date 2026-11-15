@@ -27,8 +27,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Naked flames on the forecourt pose an immediate fire hazard due to volatile fuel vapors. Staff must politely demand immediate extinguishment before fuel flow.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '00:12',
             'timestamp_end': '00:35',
             'remediation_guidance': 'Review forecourt customer safety standards and immediate hazard intervention protocols.'
@@ -47,8 +47,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Unapproved containers can accumulate static electricity or chemically degrade, creating explosive hazards. Only certified anti-static containers may be filled.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '00:20',
             'timestamp_end': '00:48',
             'remediation_guidance': 'Review fuel dispensing regulations and approved container safety compliance.'
@@ -67,8 +67,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Running engines create hot exhaust surfaces and electrical spark potential. Staff must firmly and professionally explain the legal safety requirement.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:10',
             'timestamp_end': '00:30',
             'remediation_guidance': 'Watch customer interaction guidelines for enforcing vehicle ignition shutoff.'
@@ -87,8 +87,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Forecourt staff operate in high-traffic zones with flammable liquid risk. High-vis anti-static clothing and non-slip safety boots are mandatory.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '00:40',
             'timestamp_end': '01:05',
             'remediation_guidance': 'Review required PPE standards for forecourt customer service personnel.'
@@ -107,8 +107,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Electronic devices can emit RF energy or drop-battery sparks. Courteous redirection to a safe zone ensures customer cooperation and compliance.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '00:50',
             'timestamp_end': '01:15',
             'remediation_guidance': 'Review mobile device hazard warnings and customer communication techniques.'
@@ -127,8 +127,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Fuel contact can cause severe chemical burns and dermatitis. Immediate copious water flushing at the emergency station is required.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:35',
             'timestamp_end': '00:55',
             'remediation_guidance': 'Review customer first-aid procedure for fuel skin contact.'
@@ -147,8 +147,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Drive-offs cause mechanical stress and potential fuel line rupture. Emergency shutoff stops fuel pressurization while magnetic breakaways isolate the pump.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:10',
             'timestamp_end': '01:35',
             'remediation_guidance': 'Watch emergency pump shutoff procedure for drive-off incidents.'
@@ -167,8 +167,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Customer conflict on forecourts elevates distraction risks near hazardous equipment. Calm de-escalation prevents unsafe operational shortcuts.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:20',
             'timestamp_end': '01:45',
             'remediation_guidance': 'Review conflict de-escalation and safety boundary preservation.'
@@ -187,8 +187,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Hot engine parts and moving belts pose severe burn/pinch risks. Turning off engine and securing vehicle is mandatory prior to under-hood service.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:25',
             'timestamp_end': '00:50',
             'remediation_guidance': 'Review vehicle under-hood service safety steps for forecourt attendants.'
@@ -207,8 +207,8 @@ cs_questions = [
         'correct_answer': 'B',
         'explanation': 'Slip and fall injuries are primary forecourt liabilities. Instant spill absorption and hazard signage protect customers and staff.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:40',
             'timestamp_end': '02:00',
             'remediation_guidance': 'Review forecourt surface housekeeping and slip/trip prevention.'
@@ -231,8 +231,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Stopping active fuel pressurization via ESD eliminates ongoing flow and minimizes vapor cloud expansion.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:05',
             'timestamp_end': '00:25',
             'remediation_guidance': 'Watch initial spill response protocols and emergency shut-off activation.'
@@ -251,8 +251,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Containment booms and drain covers seal off drainage inlets, preventing hazardous hydrocarbons from polluting municipal water systems.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '00:30',
             'timestamp_end': '00:55',
             'remediation_guidance': 'Review spill kit contents and drain isolation techniques.'
@@ -271,8 +271,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Gasoline is lighter than water and insoluble. Adding water floats the fuel, expanding the fire hazard zone.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:00',
             'timestamp_end': '01:25',
             'remediation_guidance': 'Review liquid hydrocarbon physics and prohibited spill practices.'
@@ -291,8 +291,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Certified absorbent granules encapsulate fuel without creating secondary combustible dust hazards like sawdust.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:30',
             'timestamp_end': '00:50',
             'remediation_guidance': 'Review approved spill absorbent materials and application steps.'
@@ -311,8 +311,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Fuel-contaminated absorbent is classified as hazardous waste under environmental laws and requires specialized disposal.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:00',
             'timestamp_end': '01:25',
             'remediation_guidance': 'Review hazardous waste containment and disposal regulations.'
@@ -331,8 +331,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Solvent-resistant gloves and eye protection prevent chemical absorption and splash injuries during spill recovery.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:30',
             'timestamp_end': '01:55',
             'remediation_guidance': 'Review mandatory PPE for chemical spill response personnel.'
@@ -352,7 +352,7 @@ sr_questions = [
         'explanation': 'Environmental statutory law mandates formal reporting for uncontained spills to mitigate ground water contamination.',
         'remediation': {
             'video_reference': 'Global Breaking News.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\Global Breaking News.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\Global Breaking News.mp4',
             'timestamp_start': '00:15',
             'timestamp_end': '00:40',
             'remediation_guidance': 'Review environmental incident compliance reporting duties.'
@@ -371,8 +371,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Oil/water separators utilize specific gravity differences to trap petroleum product before drainage exit.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:30',
             'timestamp_end': '01:55',
             'remediation_guidance': 'Watch separator pit operational mechanics and maintenance.'
@@ -391,8 +391,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Once ignited, spill response transitions into active firefighting and life safety evacuation.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:40',
             'timestamp_end': '00:58',
             'remediation_guidance': 'Review transition from spill response to active fire emergency response.'
@@ -411,8 +411,8 @@ sr_questions = [
         'correct_answer': 'B',
         'explanation': 'Regular monthly audits ensure absorbent pads, seals, and PPE remain fully stocked and functional for sudden emergencies.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '02:00',
             'timestamp_end': '02:20',
             'remediation_guidance': 'Review spill kit inspection schedules and readiness checklists.'
@@ -435,8 +435,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'DCP extinguishers smother Class B liquid fuel fires and Class C electrical fires without spreading liquid fuel.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:15',
             'timestamp_end': '00:35',
             'remediation_guidance': 'Watch extinguisher selection and fire classification overview.'
@@ -455,8 +455,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'PASS is the universal standard technique for safe and effective portable fire extinguisher operation.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '00:45',
             'timestamp_end': '01:10',
             'remediation_guidance': 'Review PASS technique step-by-step video demonstration.'
@@ -475,8 +475,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'ESD buttons must be readily accessible across key operational zones so any staff member can cut fuel flow instantly.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '00:40',
             'timestamp_end': '01:05',
             'remediation_guidance': 'Review ESD placement standards and emergency activation.'
@@ -495,8 +495,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Automatic canopy suppression systems provide rapid thermal response to suppress high-intensity pump fires instantly.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:35',
             'timestamp_end': '00:55',
             'remediation_guidance': 'Watch canopy fire suppression systems and automated safety features.'
@@ -515,8 +515,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Under international standards (SANS 1910 / BS EN3), CO2 extinguishers feature a black color band.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:15',
             'timestamp_end': '01:35',
             'remediation_guidance': 'Review fire extinguisher color coding standards.'
@@ -535,8 +535,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Statutory OHS law mandates annual certified servicing and monthly internal visual checks of pressure gauges and seals.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:10',
             'timestamp_end': '01:30',
             'remediation_guidance': 'Review compliance inspection intervals for fire fighting equipment.'
@@ -556,7 +556,7 @@ fs_questions = [
         'explanation': 'The 4-to-1 ladder rule ensures maximum stability and prevents slip-out or tipping accidents.',
         'remediation': {
             'video_reference': 'OHS_Haven_Ladder_Safety_OnePager.pdf',
-            'video_path': r'D:\new info for melly Dec 2025\OHS_Haven_Ladder_Safety_OnePager.pdf',
+            'video_path': r'D:\new info for nelly Dec 2025\OHS_Haven_Ladder_Safety_OnePager.pdf',
             'timestamp_start': '00:00',
             'timestamp_end': '00:30',
             'remediation_guidance': 'Review portable ladder angle safety standards and three-point contact rule.'
@@ -575,8 +575,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Petroleum vapor is heavier than air and collects around fill points. Non-explosion-proof electrical equipment can ignite vapors.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:40',
             'timestamp_end': '02:05',
             'remediation_guidance': 'Watch hazardous area zoning (Zone 0/1/2) and ignition source controls.'
@@ -595,8 +595,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Water conducts electricity and creates severe electrocution risk. CO2 or DCP starves fire without electrical conductivity.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:45',
             'timestamp_end': '01:05',
             'remediation_guidance': 'Review electrical fire suppression and power isolation steps.'
@@ -615,8 +615,8 @@ fs_questions = [
         'correct_answer': 'B',
         'explanation': 'Firefighting equipment must be accessible without delay. Storing merchandise or boxes in front of extinguishers is an OHS breach.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:40',
             'timestamp_end': '02:00',
             'remediation_guidance': 'Review fire equipment accessibility and housekeeping rules.'
@@ -640,7 +640,7 @@ ev_questions = [
         'explanation': 'Assembly points must be upwind and outside danger zones (dispensers, LPG, underground tanks) to prevent secondary risk exposure.',
         'remediation': {
             'video_reference': 'Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
-            'video_path': r'D:\new info for melly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
+            'video_path': r'D:\new info for nelly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
             'timestamp_start': '00:10',
             'timestamp_end': '00:35',
             'remediation_guidance': 'Review emergency assembly point selection criteria and site evacuation maps.'
@@ -659,8 +659,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'The designated Evacuation Marshal uses official shift registers to account for all staff and visitors.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:15',
             'timestamp_end': '01:40',
             'remediation_guidance': 'Review Evacuation Marshal duties and head count verification.'
@@ -679,8 +679,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'Securing fuel nozzles and activating ESD cuts off fuel flow and eliminates unmonitored dispensing hazards.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:20',
             'timestamp_end': '01:45',
             'remediation_guidance': 'Watch forecourt evacuation action plan and pump isolation steps.'
@@ -699,8 +699,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'Power outages and thermal elevator shaft convection pose severe entrapment and asphyxiation risks.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:25',
             'timestamp_end': '00:45',
             'remediation_guidance': 'Review emergency exit selection and stairwell evacuation safety.'
@@ -720,7 +720,7 @@ ev_questions = [
         'explanation': 'Bi-annual drills satisfy statutory OHS regulations and ensure muscle memory for all rotating shift staff.',
         'remediation': {
             'video_reference': 'Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
-            'video_path': r'D:\new info for melly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
+            'video_path': r'D:\new info for nelly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
             'timestamp_start': '00:40',
             'timestamp_end': '01:00',
             'remediation_guidance': 'Review evacuation drill requirements and documentation registers.'
@@ -739,8 +739,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'Superheated toxic smoke rises to the ceiling. Cleaner air and lower temperatures remain near floor level.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Safety Made Simple_ Melly in 60 Seconds 2025-10-11.mp4',
+            'video_reference': 'invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds 2025-10-11.mp4',
             'timestamp_start': '00:40',
             'timestamp_end': '01:00',
             'remediation_guidance': 'Watch smoke inhalation protection and low-crawl evacuation technique.'
@@ -759,8 +759,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'Attendance and visitor records enable accurate accounting of every person present on site during the incident.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 Meet Melly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_reference': 'invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 Meet Nelly_ Safety Automation, Done Righ 2025-11-28.mp4',
             'timestamp_start': '01:45',
             'timestamp_end': '02:05',
             'remediation_guidance': 'Review essential emergency register documentation duties.'
@@ -780,7 +780,7 @@ ev_questions = [
         'explanation': 'Invisible toxic gases or structural instabilities can persist after flames are out. Re-entry requires certified clearance.',
         'remediation': {
             'video_reference': 'Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
-            'video_path': r'D:\new info for melly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
+            'video_path': r'D:\new info for nelly Dec 2025\Emergency Response and Evacuation Steps service stations Oct 2023.pdf',
             'timestamp_start': '01:10',
             'timestamp_end': '01:30',
             'remediation_guidance': 'Review post-incident evaluation and formal All-Clear procedures.'
@@ -799,8 +799,8 @@ ev_questions = [
         'correct_answer': 'B',
         'explanation': 'Pre-assigned buddy systems ensure vulnerable individuals receive prompt assistance without delaying overall evacuation.',
         'remediation': {
-            'video_reference': 'invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
-            'video_path': r'D:\new info for melly Dec 2025\invideo-ai-1080 How Melly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_reference': 'invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
+            'video_path': r'D:\new info for nelly Dec 2025\invideo-ai-1080 How Nelly Makes Workplace Safety Effortl 2025-08-05.mp4',
             'timestamp_start': '01:50',
             'timestamp_end': '02:15',
             'remediation_guidance': 'Watch assisted evacuation protocols and buddy system assignment.'
