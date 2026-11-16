@@ -12,6 +12,8 @@ import { RetailerNotificationCenter } from './components/RetailerNotificationCen
 import { CorporateStewardshipExporter } from './components/CorporateStewardshipExporter';
 import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
+import { SHOW_DEV_TOOLS } from './lib/devTools';
+import { navLabels } from './data/navLabels';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
 import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashboard';
 import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
@@ -72,6 +74,14 @@ export const App: React.FC = () => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [activeTenant, setActiveTenantState] = useState(getActiveTenant());
 
+  // Below 1280px the module sidebar is a drawer: opened from the header, closed after a choice.
+  const [navOpen, setNavOpen] = useState<boolean>(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setNavOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   const t = translations[lang];
   const popiaStatus = verifyPOPIAEncryption();
 
@@ -92,34 +102,48 @@ export const App: React.FC = () => {
 
   const activeJurisdiction = EAST_AFRICA_PRESETS[jurisdiction] || EAST_AFRICA_PRESETS.ZA;
 
+  const navT = navLabels[lang];
   const moduleTabs = [
-    { id: 'executiveDashboard', label: '0. Executive Briefing', icon: LayoutDashboard },
-    { id: 'training', label: '1. Statutory Training', icon: GraduationCap },
-    { id: 'evacuation', label: '2. ESD & Evacuation', icon: AlertOctagon },
-    { id: 'spill', label: '3. Fuel Spill Containment', icon: Shield },
-    { id: 'customer', label: '4. Customer Hazmat', icon: Building2 },
-    { id: 'fire', label: '5. PASS Firefighting', icon: Flame },
-    { id: 'wetstockBridge', label: '6. Wetstock & Offload', icon: Truck },
-    { id: 'quiz', label: '7. 60s Assessment (40 Qs)', icon: Award },
-    { id: 'wetstock', label: '8. Wetstock & Reconciliation', icon: Gauge },
-    { id: 'demo', label: '9. Video Showcase', icon: Video },
-    { id: 'firstResponder', label: '10. First Responder', icon: HeartPulse },
-    { id: 'refresher', label: '11. Refresher Hub', icon: RotateCcw },
-    { id: 'rights', label: '12. Employee Rights', icon: Scale },
-    { id: 'rsdChecklists', label: '13. RSD 26 Checklists', icon: FileCheck },
+    { id: 'executiveDashboard', label: navT[0], icon: LayoutDashboard },
+    { id: 'training', label: navT[1], icon: GraduationCap },
+    { id: 'evacuation', label: navT[2], icon: AlertOctagon },
+    { id: 'spill', label: navT[3], icon: Shield },
+    { id: 'customer', label: navT[4], icon: Building2 },
+    { id: 'fire', label: navT[5], icon: Flame },
+    { id: 'wetstockBridge', label: navT[6], icon: Truck },
+    { id: 'quiz', label: navT[7], icon: Award },
+    { id: 'wetstock', label: navT[8], icon: Gauge },
+    { id: 'demo', label: navT[9], icon: Video },
+    { id: 'firstResponder', label: navT[10], icon: HeartPulse },
+    { id: 'refresher', label: navT[11], icon: RotateCcw },
+    { id: 'rights', label: navT[12], icon: Scale },
+    { id: 'rsdChecklists', label: navT[13], icon: FileCheck },
   ];
 
   return (
     <div className="flex flex-col md:flex-row w-screen h-screen overflow-hidden bg-[#070d1e] font-sans">
       
-      {/* PERSISTENT LEFT SIDEBAR (Hidden on mobile, visible on tablet/desktop) */}
-      <aside className="hidden md:flex flex-col flex-shrink-0 w-[260px] min-w-[260px] h-full bg-[#0b1329] border-r border-slate-800 z-40">
+      {/* Backdrop for the drawer (below 1280px only) */}
+      {navOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 xl:hidden"
+          onClick={() => setNavOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* MODULE SIDEBAR: fixed column on wide screens (1280px+), slide-in drawer below that */}
+      <aside
+        className={`${navOpen ? 'fixed inset-y-0 left-0 flex shadow-2xl' : 'hidden'} xl:static xl:flex flex-col flex-shrink-0 w-[260px] min-w-[260px] h-full bg-[#0b1329] border-r border-slate-800 z-50 xl:z-40`}
+        aria-label="Module navigation"
+      >
         
         {/* System Brand Header */}
         <div style={{ padding: '16px', borderBottom: '1px solid #1e293b' }}>
           <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#38bdf8', letterSpacing: '0.05em' }}>FORECOURT SENTINEL</div>
           <div style={{ fontSize: '13px', fontWeight: 'bold', color: '#ffffff' }}>Service Station Compliance Tablet</div>
           <div style={{ fontSize: '10px', color: '#94a3b8' }}>{activeJurisdiction.statutoryReference} • {activeJurisdiction.siteCode}</div>
+          <div style={{ fontSize: '9px', color: '#64748b', marginTop: '4px', lineHeight: 1.35 }}>{activeJurisdiction.regulatoryNotice}</div>
         </div>
 
         {/* Vertical Module Navigation */}
@@ -130,7 +154,12 @@ export const App: React.FC = () => {
             return (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
+                onClick={() => {
+                  setActiveTab(tab.id as any);
+                  setNavOpen(false);
+                }}
+                aria-label={tab.label}
+                aria-current={isActive ? 'page' : undefined}
                 style={{
                   width: '100%',
                   textAlign: 'left',
@@ -170,6 +199,15 @@ export const App: React.FC = () => {
             
             {/* LEFT: System Brand & Telemetry Status Ticker */}
             <div className="flex items-center justify-between w-full lg:w-auto gap-4 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setNavOpen((o) => !o)}
+                aria-label={navOpen ? 'Close module menu' : 'Open module menu'}
+                aria-expanded={navOpen}
+                className="xl:hidden flex-shrink-0 w-11 h-11 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 flex items-center justify-center hover:bg-slate-800"
+              >
+                <span aria-hidden="true" className="text-lg leading-none">{navOpen ? '✕' : '☰'}</span>
+              </button>
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[11px] font-black uppercase tracking-wider text-amber-400 font-mono">
@@ -278,6 +316,7 @@ export const App: React.FC = () => {
                   <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 </button>
 
+                {SHOW_DEV_TOOLS && (
                 <button
                   onClick={() => setIsAIStudioOpen(true)}
                   className="h-8 md:h-9 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-purple-300 border border-purple-500/30 transition flex items-center gap-1.5 text-xs font-bold whitespace-nowrap"
@@ -286,6 +325,7 @@ export const App: React.FC = () => {
                   <Bot className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
                   <span className="hidden sm:inline">AI Studio</span>
                 </button>
+                )}
 
                 <button
                   onClick={() => setIsGearModalOpen(true)}
@@ -426,15 +466,21 @@ export const App: React.FC = () => {
       />
 
       {/* Google AI Studio Drawer */}
-      <AIStudioDrawer
-        isOpen={isAIStudioOpen}
-        onClose={() => setIsAIStudioOpen(false)}
-      />
+      {SHOW_DEV_TOOLS && (
+        <AIStudioDrawer
+          isOpen={isAIStudioOpen}
+          onClose={() => setIsAIStudioOpen(false)}
+        />
+      )}
 
       {/* HITL Audit Certificate Modal */}
+      {/* No assessment score is passed here, so this only shows "not yet certified".
+          Certificates come from the 60-second assessment (module 7). */}
       <AuditCertificateModal
         isOpen={isCertModalOpen}
         onClose={() => setIsCertModalOpen(false)}
+        score={0}
+        totalQuestions={0}
         lang={lang}
       />
 

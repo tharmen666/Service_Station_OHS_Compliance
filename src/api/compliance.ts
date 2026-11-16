@@ -91,7 +91,7 @@ Ensure full statutory grounding, exact South African section citations, and stri
       statutoryFrameworks: ['OHS Act 85 of 1993', 'Driven Machinery Regs', 'General Machinery Regs', 'Ergonomics Regs 2019', 'COIDA Act 130 of 1993', 'ISO 45001:2018'],
       hierarchyOfControlsApplied: true,
       zeroHallucinationLock: true,
-      engineVersion: 'ErgoSafe Statutory Embedded Engine v3.4 (Zero-Hallucination Lock)',
+      engineVersion: 'ErgoSafe Statutory Embedded Engine',
     },
   };
 }

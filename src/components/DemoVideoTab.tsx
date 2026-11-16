@@ -1,3 +1,4 @@
+import { SHOW_DEV_TOOLS } from '../lib/devTools';
 import React, { useState, useEffect } from 'react';
 import { Language, translations, DemoChapter } from '../data/translations';
 import { 
@@ -266,8 +267,8 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
           </div>
         </div>
 
-        {/* Teleprompter Script */}
-        <div className="lg:col-span-5 space-y-4">
+        {/* Teleprompter Script (developer only) */}
+        <div className={`lg:col-span-5 space-y-4 ${SHOW_DEV_TOOLS ? "" : "hidden"}`}>
           <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl flex flex-col justify-between min-h-[380px]">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-2 text-xs font-black text-purple-300 uppercase tracking-wider">

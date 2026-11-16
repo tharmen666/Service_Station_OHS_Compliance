@@ -106,9 +106,6 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
             <div>
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <span>Active Spill Incident Volume Logger</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                  Tab 6 Bridge Sync Active
-                </span>
               </h3>
               <p className="text-xs text-slate-400">
                 Log spilled litres below to automatically deduct from <strong>Tab 6 Wetstock Offload &amp; Reconciliation</strong> variance.

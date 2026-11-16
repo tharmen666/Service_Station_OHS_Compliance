@@ -325,7 +325,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
               Wetstock Accounting &amp; Automatic Tank Gauge (ATG) Reconciliation
             </h2>
             <p className="text-slate-300 text-sm mt-1 max-w-3xl leading-relaxed">
-              Standardized daily reconciliation under South African SANS 10089, eBOL seal verification, 
+              Standardized daily reconciliation under South African SANS 10089, tanker seal verification, 
               temperature-compensated density tracking (15°C), and 4-tier Etwatwa loss forensics with VacuSonic NDT hard-lock containment.
             </p>
           </div>
@@ -460,7 +460,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
             }`}
           >
             <Truck className="w-4 h-4" />
-            <span>eBOL Tanker Seal Tracking</span>
+            <span>Tanker Seal Log (sample data)</span>
           </button>
 
           <button
@@ -996,7 +996,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
         </div>
       )}
 
-      {/* VIEW C: eBOL TANKER SEAL & BULK TRANSIT TRACKING */}
+      {/* VIEW C: TANKER SEAL & BULK TRANSIT TRACKING */}
       {activeTabSubView === 'ebol' && (
         <div className="space-y-6">
           <div className="pos-card p-6 rounded-3xl border border-purple-500/40 bg-gradient-to-r from-purple-950/30 via-slate-900 to-slate-900 shadow-2xl space-y-4">
@@ -1004,7 +1004,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-black uppercase tracking-wider mb-1 border border-purple-500/30">
                   <Truck className="w-3.5 h-3.5 text-purple-400" />
-                  eBOL Seal &amp; Delivery Reconciliation
+                  Seal &amp; Delivery Reconciliation (sample data)
                 </div>
                 <h3 className="text-xl font-black text-white">
                   Bulk Tanker Offloading, Electronic Seal Verification &amp; Density (15°C)
@@ -1025,7 +1025,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-slate-800 text-[11px] font-black uppercase text-slate-400 tracking-wider bg-slate-950/70">
-                    <th className="py-3 px-3">eBOL Manifest #</th>
+                    <th className="py-3 px-3">Manifest #</th>
                     <th className="py-3 px-3">Target Tank</th>
                     <th className="py-3 px-3">Carrier / Truck Reg</th>
                     <th className="py-3 px-3">Terminal Temp &amp; Density</th>
@@ -1039,7 +1039,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                 <tbody className="divide-y divide-slate-800/60 font-medium">
                   {[
                     {
-                      bol: 'eBOL-CD-01-ALPHA',
+                      bol: 'SEAL-CD-01-ALPHA',
                       tank: 'Station Alpha (32k Delivery)',
                       carrier: 'Heavy Tanker TRK-01 (CD-01-GP)',
                       tempDensity: '19.4°C • 0.742 kg/L',
@@ -1051,7 +1051,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       status: 'PASS'
                     },
                     {
-                      bol: 'eBOL-CD-02-BRAVO',
+                      bol: 'SEAL-CD-02-BRAVO',
                       tank: 'Station Bravo (32k Delivery)',
                       carrier: 'Heavy Tanker TRK-02 (CD-02-GP)',
                       tempDensity: '20.1°C • 0.835 kg/L',
@@ -1063,7 +1063,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       status: 'PASS'
                     },
                     {
-                      bol: 'eBOL-CD-03-CHARLIE',
+                      bol: 'SEAL-CD-03-CHARLIE',
                       tank: 'Station Charlie (32k Delivery)',
                       carrier: 'Heavy Tanker TRK-03 (CD-03-GP)',
                       tempDensity: '21.5°C • 0.745 kg/L',
@@ -1075,7 +1075,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       status: 'PASS'
                     },
                     {
-                      bol: 'eBOL-CD-04-DELTA',
+                      bol: 'SEAL-CD-04-DELTA',
                       tank: 'Station Delta (32k Delivery)',
                       carrier: 'Heavy Tanker TRK-04 (CD-04-GP)',
                       tempDensity: '22.0°C • 0.836 kg/L',
@@ -1087,7 +1087,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       status: 'PASS'
                     },
                     {
-                      bol: 'eBOL-CD-05-ECHO',
+                      bol: 'SEAL-CD-05-ECHO',
                       tank: 'Station Echo (32k Delivery)',
                       carrier: 'Heavy Tanker TRK-05 (CD-05-GP)',
                       tempDensity: '20.8°C • 0.834 kg/L',
@@ -1099,7 +1099,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       status: 'PASS'
                     },
                     {
-                      bol: 'eBOL-CD-06-RESERVE',
+                      bol: 'SEAL-CD-06-RESERVE',
                       tank: 'Central Depot Reserve (Buffer)',
                       carrier: 'Heavy Tanker TRK-06 (CD-06-GP)',
                       tempDensity: '20.0°C • 0.835 kg/L',

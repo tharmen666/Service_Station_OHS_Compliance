@@ -91,7 +91,7 @@ export const MULTI_COUNTRY_STATUTORY_MAP: Record<JurisdictionCode, StatutoryFram
       'TBS Petroleum Storage & Dispensing Standards',
     ],
     fiscalAndTelemetryMandate:
-      'Mandatory Electronic Fiscal Devices (EFD) at pump (July 2017) & EWURA Real-Time ATG Tank Telemetry (December 2024)',
+      'TRA EFD / VFD fiscal devices. Pump-integration requirement and EWURA ATG telemetry: to be confirmed with TRA and EWURA',
     regulatoryAuthorities: ['EWURA', 'OSHA Tanzania', 'TRA (Tanzania Revenue Authority)', 'NEMC'],
   },
   KE: {
@@ -104,7 +104,7 @@ export const MULTI_COUNTRY_STATUTORY_MAP: Record<JurisdictionCode, StatutoryFram
       'KEBS KS 2504 / ISO Forecourt Underground Storage & Dispensing Standards',
     ],
     fiscalAndTelemetryMandate:
-      'KRA eTIMS Fuel System Real-Time Pump-to-Tax Integration Mandate (30 June / 31 December 2025 deadlines)',
+      'KRA eTIMS fuel-station integration (reported deadlines 30 June 2025, enforcement from 31 December 2025): current status to be confirmed with KRA',
     regulatoryAuthorities: ['EPRA (Energy and Petroleum Regulatory Authority)', 'KRA', 'DOSH', 'NEMA Kenya'],
   },
   UG: {
@@ -117,7 +117,7 @@ export const MULTI_COUNTRY_STATUTORY_MAP: Record<JurisdictionCode, StatutoryFram
       'UNBS US 945: Petroleum Retail Service Station Design & Safety Code',
     ],
     fiscalAndTelemetryMandate:
-      'URA EFRIS (Electronic Fiscal Receipting and Invoicing Solution) Fuel Retail Mandate (effective 1 July 2025; min UGX 6,000,000 penalty per missed invoice)',
+      'URA EFRIS fuel-retail invoicing (reported from 1 July 2025; penalty reported as UGX 6,000,000 or tax due, whichever is higher): confirm with URA',
     regulatoryAuthorities: ['Ministry of Energy and Mineral Development (MEMD)', 'URA', 'UNBS', 'NEMA Uganda'],
   },
   ET: {

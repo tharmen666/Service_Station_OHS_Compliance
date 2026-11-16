@@ -228,7 +228,7 @@ export const GearPillarSettingsModal: React.FC<GearPillarSettingsModalProps> = (
                   Live Threshold Recalibration Controls
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Adjusting these parameters dynamically recalculates risk thresholds and auto-updates dashboard metrics in real time.
+                  Adjusting these targets changes only the status labels (Compliant or Below target). Pillar readings come from recorded data and are not changed by targets.
                 </p>
               </div>
             </div>
@@ -315,7 +315,7 @@ export const GearPillarSettingsModal: React.FC<GearPillarSettingsModalProps> = (
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between">
           <span className="text-xs text-slate-400">
-            Changes apply instantly to live UI meters across all connected POS terminals.
+            Target changes apply to the status labels on this device.
           </span>
           <button
             onClick={onClose}

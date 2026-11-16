@@ -475,7 +475,7 @@ export function evaluateRegulatoryTelemetry(
         estimatedStatutoryPenaltyLocalCurrency =
           unvalidatedTransactionsCount * URA_EFRIS_MIN_PENALTY_UGX;
         findings.push(
-          `${unvalidatedTransactionsCount} fuel retail sale(s) lacked a URA EFRIS validated electronic receipt (mandatory since 1 July 2025).`,
+          `${unvalidatedTransactionsCount} fuel retail sale(s) lacked a URA EFRIS validated electronic receipt (reported as mandatory from 1 July 2025; confirm with URA).`,
         );
         remediationActions.push(
           'Enforce automated pump-to-EFRIS fiscal receipt lock so no transaction closes without an EFRIS validation code.',

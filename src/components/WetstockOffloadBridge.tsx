@@ -118,7 +118,7 @@ export const WetstockOffloadBridge: React.FC<WetstockOffloadBridgeProps> = ({
       variancePct: -0.06,
       isShrinkageCritical: false,
       jurisdiction: 'ZA',
-      fiscalSystem: 'SARS eFiling / eBOL Verified',
+      fiscalSystem: 'SARS eFiling (reference)',
       interlockSignedOff: true
     }
   ]);
