@@ -41,6 +41,22 @@ export default async function handler(req: any, res: any) {
     return send(res, 405, { success: false, error: 'Method Not Allowed' });
   }
 
+  // Browser cross-site requests are refused. Requests with no Origin header (server-side tools) pass this check.
+  // This is NOT authentication: any client can forge or omit Origin. Authentication is a separate open item.
+  const origin = req?.headers?.origin;
+  const host = req?.headers?.host;
+  if (origin && host) {
+    let originHost = '';
+    try {
+      originHost = new URL(origin).host;
+    } catch {
+      originHost = '';
+    }
+    if (originHost !== host) {
+      return send(res, 403, { success: false, error: 'Cross-origin requests are not allowed' });
+    }
+  }
+
   if (isRateLimited(clientKey(req), Date.now())) {
     return send(res, 429, {
       success: false,

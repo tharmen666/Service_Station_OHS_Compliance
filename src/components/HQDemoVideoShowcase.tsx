@@ -79,7 +79,7 @@ export const demoSteps: DemoStep[] = [
     endSec: 60,
     title: 'One-Click PDF Generation & GEAR Calibration',
     subtitle: 'Instant ReportLab PDF compliance manual export and G.E.A.R. Pillar threshold recalibration',
-    script: 'Calibrate your site parameters via G.E.A.R. meters and generate full, physically signable compliance manuals in a single click. 100% audit-ready, anytime, anywhere.',
+    script: 'Calibrate your site parameters via G.E.A.R. meters and generate full, physically signable compliance manuals in a single click. Each draft is reviewed by a competent person before use.',
     frameworks: ['G.E.A.R. Pillar System', 'Python ReportLab PDF', 'Audit Sign-off']
   }
 ];

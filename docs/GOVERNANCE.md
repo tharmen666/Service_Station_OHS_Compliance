@@ -27,7 +27,10 @@ This document describes what the statutory engine enforces, where each control l
 | C10 | Single model setting | `ohsComplianceGuardrails.ts` `STATUTORY_MODEL_ID` | One constant for the model used everywhere. |
 | C11 | Template integrity | `src/api/compliance.ts` template | The template no longer contains an attestation that measures comply or a fabricated verification signature. The reviewer declaration is blank until the reviewer completes it. |
 | C12 | Browser bundle hygiene | `src/api/compliance.ts` | The model SDK is loaded by dynamic import, only when a server-side key exists. |
-| C13 | Automated tests | `e2e/governance.spec.ts`, `e2e/ohsCompliance.spec.ts` | 15 Chromium tests: redaction, validation, output checks, no raw PII in responses, UI wording, tab navigation, tenant rendering. |
+| C13 | Automated tests | `e2e/governance.spec.ts`, `e2e/ohsCompliance.spec.ts`, `e2e/reviewerGate.spec.ts` | Redaction, validation, output checks, no raw PII in responses, UI wording, tab navigation, tenant rendering, and the reviewer gate in a real browser. |
+| C14 | Cross-origin refusal | `server/handler.ts` | Browser requests whose Origin differs from the host get 403. **This is not authentication.** Requests with no Origin header still pass. |
+| C15 | Engine disclosure | `StatutoryDocGeneratorModal.tsx` | The draft banner states whether a live model or the template produced the text, and how many governance issues were flagged. The banner says "not approved". |
+| C16 | Bundled server handler | `scripts/build-api.mjs` | The handler is bundled into one file at build time, so the deployed function has no fragile relative imports. |
 
 ## 3. Regulators and bodies this engine touches
 
@@ -41,22 +44,27 @@ This document describes what the statutory engine enforces, where each control l
 
 ## 4. Verification status (honest)
 
-- Build passes (`npm run build`). The `api/` handler type-checks.
-- 15 Chromium Playwright tests pass.
-- **Not tested:** Firefox and Mobile Chrome profiles in this revision; the reviewer gate in a real browser session; the live model path (no API key in the test environment).
+- Build passes (`npm run build`). The `api/` handler is bundled and type-checks.
+- Full Playwright matrix passes on Chromium, Firefox and Mobile Chrome for the UI tests. Governance and reviewer-gate tests run on Chromium.
+- Production API verified: a rejected request returns 400 with issues; a valid request returns a governance record.
+- **Not verified in production:** the live model path. Production drafts currently use the template, which means the live call failed. The cause is not visible from here (the key value and runtime logs are not accessible to this environment).
 - **Not verified:** that any citation in any generated document is correct. Only a competent person can confirm that.
 
-## 5. Open items before production or a paid pilot
+## 5. Open items (status)
 
-1. **Persistent audit log.** Governance records are returned to the client, not stored. Add a server-side store (append-only) before relying on them as an audit trail.
-2. **Shared rate limiter.** Replace the in-memory limit with a shared store.
-3. **Operator agreement (POPIA s20–21)** with each client station owner, and a transfer assessment for the model provider (POPIA s72). Confirm where the provider processes data.
-4. **Legal review** of statutory wording (Section 24, COIDA reporting, SANS references) by a South African OHS lawyer.
-5. **Evaluation set.** A set of test requests with answers checked by a competent person, plus a recorded accuracy rate per task type, before any accuracy claim is made.
-6. **Authentication.** The handler is public. Add authentication and tenant scoping before client data flows through it.
-7. **Model change control.** Pin the model version in one place (done) and re-run the evaluation set when it changes.
-8. **Secrets.** Any API key lives server-side only. None is embedded in the client bundle.
+| # | Item | Status | What is needed |
+|---|---|---|---|
+| 1 | Persistent, append-only audit log | **Open** | A storage choice (Vercel KV, Blob, Postgres or similar) and an approval to add it. |
+| 2 | Shared rate limiter | **Open** | The same storage decision as item 1. Current limit is per instance. |
+| 3 | Operator agreement (POPIA s20–21) and s72 transfer assessment | **Draft written** (`docs/OPERATOR_AGREEMENT_TEMPLATE.md`) | Lawyer and POPIA specialist review. Confirm the model provider's processing location. |
+| 4 | Legal review of statutory wording (Section 24, COIDA, SANS) | **Open** | A South African OHS lawyer. |
+| 5 | Evaluation set and accuracy rate | **Starter written** (`docs/EVALUATION_SET.md`) | Competent person to write the expected answers and score at least 30 cases per task type. |
+| 6 | Authentication and tenant scoping | **Open, partly mitigated** | Cross-origin refusal (C14) is in place. Real authentication needs a decision on the identity provider. |
+| 7 | Model change control | **Partly done** | Model pinned in one constant. Re-run the evaluation set on any model change. |
+| 8 | Secrets server-side only | **Done** | `ANTHROPIC_API_KEY` is read from `process.env` only. |
+| 9 | Live model not producing drafts in production | **Open** | Check `ANTHROPIC_API_KEY` in Vercel and the model ID. Needs access to logs or the key. |
 
 ## 6. Change log
 
 - **2026.11-1:** Added input validation, PII redaction, output checks, governance records, reviewer sign-off gate, rate limit, body limit. Removed false compliance attestation from the template. Removed wildcard CORS. Unified model constant.
+- **2026.11-1 (follow-up):** Engine disclosure in the UI; "not approved" banner; cross-origin refusal; browser test for the reviewer gate; operator agreement and evaluation set drafts; overclaim wording removed from the demo showcase.

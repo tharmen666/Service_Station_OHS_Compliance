@@ -256,13 +256,20 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span className="font-extrabold text-white">Statutory Document Compiled</span>
+                    <span className="font-extrabold text-white">AI draft compiled - not approved</span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-black font-mono border border-emerald-500/30">
                       {docResponse.metadata.engineVersion}
                     </span>
                   </div>
                   <p className="text-slate-400 text-[11px]">
-                    Grounding: OHS Act 85 of 1993 • Driven Machinery Regs • Ergonomics Regs 2019 • Hierarchy of Controls Verified
+                    Grounding: OHS Act 85 of 1993 • Driven Machinery Regs • Ergonomics Regs 2019 • Hierarchy of Controls (citations to be verified by the reviewer)
+                  </p>
+                  <p className="text-slate-400 text-[11px]">
+                    Engine: {docResponse.metadata.governance?.engine === 'live-model'
+                      ? `live model (${docResponse.metadata.governance.modelId})`
+                      : 'template (no live model used)'}
+                    {' • '}Governance check: {docResponse.metadata.governance?.issues.length ?? 0} issue(s) flagged
+                    {' • '}Policy {docResponse.metadata.governance?.policyVersion ?? 'n/a'}
                   </p>
                 </div>
 

@@ -77,7 +77,7 @@ export function validateOHSGuardrails(inputPrompt: string): {
 }
 
 /**
- * Generates the system instruction for Gemini API
+ * Generates the system instruction for an external AI studio (model-agnostic text)
  */
 export function getOHSSystemInstruction(customTenantName?: string): string {
   const tenant = customTenantName || 'Service Station Forecourt';
