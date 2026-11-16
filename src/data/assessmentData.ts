@@ -89,33 +89,3 @@ export const spillRoles: SpillRole[] = [
   }
 ];
 
-export const aiStudioPromptTemplate = {
-  system_instruction: `You are an expert AI Service Station OHS & Compliance Advisor trained on South African OHS Act (Act 85 of 1993), COIDA, SABS SANS 10089 petroleum handling standards, and forecourt customer service protocols.
-
-Your primary mission is to assist service station managers, forecourt attendants, and safety officers in creating micro-training modules, resolving emergency spill/fire compliance queries, and generating audit-ready hazard reports.
-
-Always adhere to these rules:
-1. Prioritize immediate life safety and ESD (Emergency Stop) protocol.
-2. Maintain zero-tolerance for naked flames, unapproved fuel containers, and static electricity sparks near forecourt pumps.
-3. Provide step-by-step role cards and actionable instructions.
-4. Reference exact video clips and OHS compliance manuals when recommending remediation.`,
-
-  sample_prompts: [
-    {
-      title: 'Generate Spill Response Micro-Drill',
-      prompt: 'Act as AI OHS Compliance Advisor. Generate a 3-minute forecourt scenario for a 45L diesel spill caused by a customer drive-off. Provide specific step-by-step role instructions for 4 forecourt staff members using plastic spades and containment booms.'
-    },
-    {
-      title: 'Customer De-escalation & Ignition Safety',
-      prompt: 'Draft a polite, professional script for a forecourt attendant to address a customer who refuses to extinguish a cigarette and turn off their vehicle engine while parked at Pump 4.'
-    },
-    {
-      title: 'Fire Extinguisher PASS Method Refresher',
-      prompt: 'Create a 60-second quiz with 3 questions testing staff on the PASS technique (Pull, Aim, Squeeze, Sweep) for 9kg Dry Chemical Powder (DCP) fire extinguishers on Class B fuel fires.'
-    },
-    {
-      title: 'Post-Evacuation Debrief Checklist',
-      prompt: 'Generate an audit-compliant post-evacuation debrief checklist including head count validation, ESD reset verification, and environmental incident reporting thresholds under COIDA.'
-    }
-  ]
-};

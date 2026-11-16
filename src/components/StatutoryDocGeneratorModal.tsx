@@ -1,25 +1,50 @@
-import React, { useState } from 'react';
-import { 
-  FileText, 
-  Copy, 
-  Check, 
-  Download, 
-  ShieldCheck, 
-  Scale, 
-  Bot, 
-  Sparkles, 
-  X, 
-  AlertTriangle, 
-  Lock, 
+import React, { useState, useEffect } from 'react';
+import {
+  FileText,
+  Copy,
+  Check,
+  Download,
+  Scale,
+  Sparkles,
+  X,
+  AlertTriangle,
+  Lock,
   RefreshCw,
   Zap,
   CheckCircle2,
-  FileCheck
+  ClipboardCheck,
+  UserCheck,
 } from 'lucide-react';
 import { requestStatutoryComplianceDoc } from '../services/complianceClient';
 import { StatutoryComplianceResponse } from '../api/compliance';
 import { encryptPIIWithAES256GCM } from '../popiActCompliance';
 import { getActiveTenant } from '../multiTenantConfig';
+import { downloadStatutoryPdf } from '../lib/pdfGenerator';
+
+export const AUDIT_LOG_STORAGE_KEY = 'forecourt_statutory_audit_log_v1';
+
+export interface PersistedAuditLogRecord {
+  id: string;
+  taskType: string;
+  siteContext: string;
+  hazards: string;
+  user: string;
+  timestamp: string;
+  popiaSignatureHash: string;
+}
+
+export function getPersistedAuditLogs(): PersistedAuditLogRecord[] {
+  try {
+    const raw = localStorage.getItem(AUDIT_LOG_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    }
+  } catch {
+    // ignore storage errors
+  }
+  return [];
+}
 
 interface StatutoryDocGeneratorModalProps {
   isOpen: boolean;
@@ -32,27 +57,37 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 }) => {
   const tenant = getActiveTenant();
   const [taskType, setTaskType] = useState<string>('HIRA');
-  const [siteContext, setSiteContext] = useState<string>(`${tenant.brandName} - ${tenant.stationName} (${tenant.siteCode})`);
+  const [siteContext, setSiteContext] = useState<string>(
+    `${tenant.brandName} - ${tenant.stationName} (${tenant.siteCode})`
+  );
+  const [auditUser, setAuditUser] = useState<string>('Appointed 16(2) Supervisor');
   const [hazards, setHazards] = useState<string>(
     'High-pressure fuel dispenser pipe wear, volatile gasoline vapor accumulation during peak forecourt traffic, and static discharge potential during tanker offloading.'
   );
-  
+
   const [loading, setLoading] = useState<boolean>(false);
   const [docResponse, setDocResponse] = useState<StatutoryComplianceResponse | null>(null);
-  const [copied, setCopied] = useState<boolean>(false);
+  const [copyStatus, setCopyStatus] = useState<'success' | 'error' | null>(null);
+  const [copyMessage, setCopyMessage] = useState<string>('');
   const [exportedAudit, setExportedAudit] = useState<boolean>(false);
+  const [auditLogs, setAuditLogs] = useState<PersistedAuditLogRecord[]>([]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setAuditLogs(getPersistedAuditLogs());
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   const handleGenerate = async () => {
     if (!hazards.trim()) return;
     setLoading(true);
-    setCopied(false);
+    setCopyStatus(null);
+    setCopyMessage('');
     setExportedAudit(false);
-    
+
     try {
-      // Model Configuration: temperature: 0.0 is selected for deterministic prompt hydration 
-      // and repeatable statutory outputs, requiring human-in-the-loop review by a designated competent person (Section 16.2 / SHE Rep).
       const response = await requestStatutoryComplianceDoc({
         taskType,
         siteContext,
@@ -66,44 +101,69 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
     }
   };
 
-  const handleCopy = () => {
+  const handleCopy = async () => {
     if (!docResponse?.document) return;
-    navigator.clipboard.writeText(docResponse.document);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        await navigator.clipboard.writeText(docResponse.document);
+      } else {
+        // Fallback copy method
+        const ta = document.createElement('textarea');
+        ta.value = docResponse.document;
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (!ok) throw new Error('execCommand copy failed');
+      }
+      setCopyStatus('success');
+      setCopyMessage('✓ Copied to clipboard! Document text is ready to paste.');
+    } catch {
+      setCopyStatus('error');
+      setCopyMessage(
+        '✗ Failed to copy automatically. Please select the document text below and press Ctrl+C.'
+      );
+    }
   };
 
   const handleExportAuditLog = async () => {
     if (!docResponse?.document) return;
 
-    // Encrypt digital signature with POPIA AES-256 layer (technical safeguard under POPIA Condition 7 / Section 19)
+    const nowIso = new Date().toISOString();
+    const userRole = auditUser.trim() || 'Appointed 16(2) Supervisor';
+
     const encryptedSignature = await encryptPIIWithAES256GCM(
-      `STATUTORY_DOC_${taskType}_${siteContext}_${Date.now()}`
+      `STATUTORY_DOC_${taskType}_${siteContext}_${userRole}_${nowIso}`
     );
 
-    // Prepare full audit export content
-    const exportContent = `${docResponse.document}
+    const record: PersistedAuditLogRecord = {
+      id: `AUD-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+      taskType,
+      siteContext,
+      hazards,
+      user: userRole,
+      timestamp: nowIso,
+      popiaSignatureHash: encryptedSignature.ciphertext,
+    };
 
----
-### POPIA & STATUTORY AUDIT LEDGER TRAIL
-- **POPIA Signature Hash**: \`${encryptedSignature.ciphertext}\`
-- **Encryption Standard**: ${encryptedSignature.algo}
-- **Timestamp**: ${encryptedSignature.timestamp}
-- **Audit Verification Code**: ZA-OHS-ACT85-COMPLIANT
-`;
-
-    const blob = new Blob([exportContent], { type: 'text/markdown;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `ErgoSafe_Statutory_OHS_${taskType.replace(/\s+/g, '_')}_${Date.now()}.md`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
+    const existing = getPersistedAuditLogs();
+    const updated = [record, ...existing];
+    try {
+      localStorage.setItem(AUDIT_LOG_STORAGE_KEY, JSON.stringify(updated));
+    } catch {
+      // ignore
+    }
+    setAuditLogs(updated);
     setExportedAudit(true);
-    setTimeout(() => setExportedAudit(false), 4000);
+  };
+
+  const handleDownloadPdf = () => {
+    if (!docResponse?.document) return;
+    downloadStatutoryPdf(
+      `Forecourt_Statutory_${taskType.replace(/\s+/g, '_')}.pdf`,
+      `${taskType} — ${siteContext}`,
+      docResponse.document
+    );
   };
 
   const hazardPresets = [
@@ -114,9 +174,13 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-y-auto">
-      <div className="bg-slate-900 border-2 border-amber-500/50 rounded-3xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative font-sans">
-        
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="statutory-doc-modal-title"
+    >
+      <div className="bg-slate-900 border-2 border-amber-500/50 rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative font-sans">
         {/* Modal Header */}
         <div className="p-5 md:p-6 bg-gradient-to-r from-slate-950 via-slate-900 to-purple-950/80 border-b border-slate-800 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
@@ -124,15 +188,18 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
               <Scale className="w-6 h-6" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-black uppercase tracking-wider border border-amber-500/30">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-wider border border-amber-500/30">
                   Statutory OHS Document Engine
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-bold border border-cyan-500/30 flex items-center gap-1">
+                <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-xs font-bold border border-cyan-500/30 flex items-center gap-1">
                   <Lock className="w-3 h-3 text-cyan-400" /> Temp 0.0 (Deterministic)
                 </span>
               </div>
-              <h2 className="text-xl md:text-2xl font-black text-white leading-tight mt-0.5">
+              <h2
+                id="statutory-doc-modal-title"
+                className="text-xl md:text-2xl font-black text-white leading-tight mt-0.5"
+              >
                 Generate Statutory Compliance Document
               </h2>
             </div>
@@ -140,7 +207,8 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+            aria-label="Close Statutory Document Modal"
+            className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -148,40 +216,84 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
         {/* Modal Content - Scrollable */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-200">
-          
+          {/* POPIA Data-Minimisation Notice */}
+          <div
+            data-testid="popia-minimisation-note"
+            className="p-3.5 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 text-xs text-cyan-200 flex items-start gap-2.5"
+          >
+            <Lock className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-cyan-300 font-bold">
+                POPIA Data-Minimisation &amp; Retention Notice (Act 4 of 2013, Section 10 &amp; 14):
+              </strong>{' '}
+              Enter role titles or station codes rather than personal ID numbers or private contact details. Exported audit logs are retained solely for statutory OHS inspection intervals.
+            </div>
+          </div>
+
           {/* Form Input Section */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Document Type Selector */}
             <div className="space-y-1.5">
-              <label className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <label
+                htmlFor="doc-task-type"
+                className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
+              >
                 <FileText className="w-4 h-4 text-amber-400" />
                 1. Statutory Document Type
               </label>
               <select
+                id="doc-task-type"
                 value={taskType}
                 onChange={(e) => setTaskType(e.target.value)}
                 className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-bold focus:outline-none focus:border-amber-500 transition"
               >
-                <option value="HIRA">HIRA (Hazard Identification & Risk Assessment)</option>
-                <option value="SWP">SWP (Safe Work Procedure & Standard Operating Proc)</option>
-                <option value="Incident Root Cause">Incident Root Cause Analysis (Section 24 COIDA)</option>
-                <option value="Toolbox Talk">Toolbox Talk (60s Statutory Shift Briefing)</option>
-                <option value="Emergency Protocol">Emergency Evacuation & ESD Isolation Protocol</option>
+                <option value="HIRA">HIRA (Hazard Identification &amp; Risk Assessment)</option>
+                <option value="SWP">SWP (Safe Work Procedure)</option>
+                <option value="Incident Root Cause">
+                  Incident Root Cause Analysis (Section 24 / COIDA)
+                </option>
+                <option value="Toolbox Talk">Toolbox Talk (60s Shift Briefing)</option>
+                <option value="Emergency Protocol">
+                  Emergency Evacuation &amp; ESD Isolation Protocol
+                </option>
               </select>
             </div>
 
             {/* Site Context Input */}
             <div className="space-y-1.5">
-              <label className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+              <label
+                htmlFor="doc-site-context"
+                className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
+              >
                 <Zap className="w-4 h-4 text-amber-400" />
-                2. Site Context & Location
+                2. Site Context &amp; Location
               </label>
               <input
+                id="doc-site-context"
                 type="text"
                 value={siteContext}
                 onChange={(e) => setSiteContext(e.target.value)}
-                placeholder="e.g. Gauteng Forecourt - Lenasia Station"
+                placeholder="e.g. Retail Service Station Alpha (STN-ALPHA)"
+                className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-semibold focus:outline-none focus:border-amber-500 transition"
+              />
+            </div>
+
+            {/* Auditor / User Role Input */}
+            <div className="space-y-1.5">
+              <label
+                htmlFor="doc-audit-user"
+                className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
+              >
+                <UserCheck className="w-4 h-4 text-amber-400" />
+                3. Logged By (Role / User)
+              </label>
+              <input
+                id="doc-audit-user"
+                data-testid="doc-audit-user-input"
+                type="text"
+                value={auditUser}
+                onChange={(e) => setAuditUser(e.target.value)}
+                placeholder="e.g. Appointed 16(2) Supervisor"
                 className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-semibold focus:outline-none focus:border-amber-500 transition"
               />
             </div>
@@ -189,28 +301,31 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
           {/* Hazard & Scope Description */}
           <div className="space-y-2">
-            <label className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <label
+              htmlFor="doc-hazards-textarea"
+              className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
+            >
               <AlertTriangle className="w-4 h-4 text-amber-400" />
-              3. Hazard Description & Operational Scope
+              4. Hazard Description &amp; Operational Scope
             </label>
             <textarea
+              id="doc-hazards-textarea"
               rows={3}
               value={hazards}
               onChange={(e) => setHazards(e.target.value)}
               placeholder="Describe specific forecourt/retail hazards, machinery, or work tasks..."
               className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-amber-500 transition"
             />
-            
-            {/* Quick Preset Chips */}
+
             <div className="space-y-1">
-              <span className="text-[11px] text-slate-400 font-bold">Quick Hazard Presets:</span>
+              <span className="text-xs text-slate-300 font-bold">Quick Hazard Presets:</span>
               <div className="flex flex-wrap gap-2">
                 {hazardPresets.map((preset, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => setHazards(preset)}
-                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-amber-300 text-xs font-medium border border-slate-700 transition"
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-amber-300 text-xs font-medium border border-slate-700 transition"
                   >
                     + {preset.substring(0, 42)}...
                   </button>
@@ -223,12 +338,13 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
           <button
             onClick={handleGenerate}
             disabled={loading || !hazards.trim()}
-            className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-xl shadow-amber-950/60 transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            data-testid="generate-statutory-doc-btn"
+            className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-sm uppercase tracking-wider shadow-xl transition flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
               <>
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                <span>Hydrating Statutory Prompt (Temp 0.0)...</span>
+                <span>Compiling Statutory Document...</span>
               </>
             ) : (
               <>
@@ -241,29 +357,30 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
           {/* Generated Document Display Output */}
           {docResponse && (
             <div className="space-y-4 pt-4 border-t border-slate-800">
-              
               {/* Metadata Banner */}
-              <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+              <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 text-xs">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                     <span className="font-extrabold text-white">Statutory Document Compiled</span>
-                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-black font-mono border border-emerald-500/30">
+                    <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-xs font-black font-mono border border-emerald-500/30">
                       {docResponse.metadata.engineVersion}
                     </span>
                   </div>
-                  <p className="text-slate-400 text-[11px]">
-                    Grounding: OHS Act 85 of 1993 • Driven Machinery Regs • Ergonomics Regs 2019 • Hierarchy of Controls Verified
+                  <p className="text-slate-300 text-xs">
+                    Grounding: OHS Act 85 of 1993 • SANS 10089-3 • Hierarchy of Controls Verified
                   </p>
                 </div>
 
-                {/* Quick Action Buttons */}
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
                   <button
+                    type="button"
                     onClick={handleCopy}
-                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-700 transition flex-1 sm:flex-none"
+                    data-testid="copy-doc-btn"
+                    className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-slate-700 transition"
                   >
-                    {copied ? (
+                    {copyStatus === 'success' ? (
                       <>
                         <Check className="w-4 h-4 text-emerald-400" />
                         <span className="text-emerald-400">Copied!</span>
@@ -277,17 +394,29 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                   </button>
 
                   <button
+                    type="button"
+                    onClick={handleDownloadPdf}
+                    data-testid="download-doc-pdf-btn"
+                    className="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg transition"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download PDF</span>
+                  </button>
+
+                  <button
+                    type="button"
                     onClick={handleExportAuditLog}
-                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition flex-1 sm:flex-none"
+                    data-testid="export-audit-log-btn"
+                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition"
                   >
                     {exportedAudit ? (
                       <>
                         <Check className="w-4 h-4 text-white" />
-                        <span>Exported to Audit Log!</span>
+                        <span>Saved to Audit Log!</span>
                       </>
                     ) : (
                       <>
-                        <Download className="w-4 h-4 text-purple-200" />
+                        <ClipboardCheck className="w-4 h-4 text-purple-200" />
                         <span>Export to Audit Log</span>
                       </>
                     )}
@@ -295,29 +424,87 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                 </div>
               </div>
 
+              {/* Explicit Copy Success / Failure Confirmation Banner */}
+              {copyStatus && (
+                <div
+                  role={copyStatus === 'success' ? 'status' : 'alert'}
+                  data-testid="doc-copy-status"
+                  className={`p-3 rounded-xl border text-xs font-bold ${
+                    copyStatus === 'success'
+                      ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-300'
+                      : 'bg-red-950/60 border-red-500/50 text-red-300'
+                  }`}
+                >
+                  {copyMessage}
+                </div>
+              )}
+
               {/* Formatted Markdown Container */}
-              <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap max-h-96 overflow-y-auto shadow-inner select-text border-l-4 border-l-amber-500">
+              <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200 leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto shadow-inner select-text border-l-4 border-l-amber-500">
                 {docResponse.document}
               </div>
             </div>
           )}
 
+          {/* Persisted Statutory Audit Log Table (Survives Reload) */}
+          <div
+            data-testid="persisted-audit-log-section"
+            className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-wider text-purple-300 flex items-center gap-1.5">
+                <ClipboardCheck className="w-4 h-4 text-purple-400" />
+                Persisted Statutory Audit Log ({auditLogs.length} records)
+              </span>
+              <span className="text-xs text-slate-300 font-mono">
+                Stored in Local Audit Ledger
+              </span>
+            </div>
+
+            {auditLogs.length === 0 ? (
+              <p className="text-xs text-slate-300">
+                No audit log records saved yet. Compile a document and click &ldquo;Export to Audit Log&rdquo; to persist a timestamped record.
+              </p>
+            ) : (
+              <div className="space-y-2 max-h-40 overflow-y-auto">
+                {auditLogs.map((entry) => (
+                  <div
+                    key={entry.id}
+                    data-testid="persisted-audit-log-row"
+                    className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                  >
+                    <div>
+                      <span className="font-mono font-bold text-amber-400">{entry.id}</span>
+                      <span className="mx-2 text-slate-500">•</span>
+                      <span className="font-bold text-white">{entry.taskType}</span>
+                      <span className="mx-2 text-slate-500">•</span>
+                      <span className="text-slate-300">{entry.siteContext}</span>
+                    </div>
+                    <div className="font-mono text-xs text-slate-300">
+                      <span>User: {entry.user}</span>
+                      <span className="mx-2 text-slate-500">|</span>
+                      <span>{entry.timestamp}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-500 flex-shrink-0">
-          <span className="flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            ErgoSafe Statutory Engine • Grounded in SA OHS Regulations
-          </span>
+        <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300 flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <Lock className="w-3.5 h-3.5 text-cyan-400" />
+            <span>POPIA Section 10 Minimality &amp; Section 19 Safeguards Applied</span>
+          </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold transition"
+            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition"
           >
-            Close
+            Close Window
           </button>
         </div>
-
       </div>
     </div>
   );

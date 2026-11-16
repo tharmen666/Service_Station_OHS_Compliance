@@ -96,7 +96,7 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
         </div>
       </div>
 
-      {/* Real-time Fuel Spill Incident Volume Logger (Linked to Tab 6 Wetstock Bridge) */}
+      {/* Real-time Fuel Spill Incident Volume Logger */}
       <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/40 border border-amber-500/40 shadow-xl space-y-3">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
@@ -106,12 +106,12 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
             <div>
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <span>Active Spill Incident Volume Logger</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                  Tab 6 Bridge Sync Active
+                <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  Wetstock Reconciliation Linked
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
-                Log spilled litres below to automatically deduct from <strong>Tab 6 Wetstock Offload &amp; Reconciliation</strong> variance.
+              <p className="text-xs text-slate-300">
+                Log spilled litres below to automatically deduct from <strong>Wetstock Offload &amp; Reconciliation</strong> variance.
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
                 className="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-black flex items-center gap-1 transition shadow"
                 title="View in Wetstock Offload Bridge"
               >
-                <span>Check in Tab 6</span>
+                <span>Open Wetstock Reconciliation</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}

@@ -1,31 +1,23 @@
 import type { StatutoryComplianceRequest, StatutoryComplianceResponse } from '../api/compliance';
 
 /**
- * Client-Side API Bridge to Server-Side Statutory Engine
+ * Client-Side API Bridge to Server-Side Statutory Engine (/api/compliance).
+ * Never ships API keys, system prompts, or model names in the client bundle.
  */
 export async function requestStatutoryComplianceDoc(
   request: StatutoryComplianceRequest
 ): Promise<StatutoryComplianceResponse> {
-  try {
-    const res = await fetch('/api/compliance', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request),
-    });
+  const res = await fetch('/api/compliance', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(request),
+  });
 
-    if (res.ok) {
-      const data = await res.json();
-      if (data && data.success) {
-        return data;
-      }
-    }
-  } catch (err) {
-    console.warn('[Compliance API Bridge Warning] Server endpoint fetch failed, loading local engine fallback:', err);
+  if (!res.ok) {
+    throw new Error(`Compliance API returned HTTP ${res.status}`);
   }
 
-  // Client-side execution fallback if backend endpoint unreachable
-  const { executeStatutoryComplianceEngine } = await import('../api/compliance');
-  return await executeStatutoryComplianceEngine(request);
+  return await res.json();
 }
