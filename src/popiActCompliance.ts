@@ -1,13 +1,15 @@
 /**
- * Service Station OHS Compliance Platform - Client-Side POPIA Data Protection Safeguards
+ * Service Station OHS Compliance Platform - POPIA Data Protection Safeguards
  * Protection of Personal Information Act (Act 4 of 2013) - Condition 7 / Section 19
- * 
- * Features:
- * - Client-side Data Protection Safeguards (Supporting POPIA Condition 7 / Section 19)
- * - Web Crypto API AES-256-GCM PII Encryption & Decryption at rest and in transit
- * - Automated PII Masking & Redaction (SA ID Numbers, Phone Numbers, Medical Logs)
- * - Audit Trail Signatures & DSAR (Data Subject Access Request) Handling
- * - Encryption Safeguard Verification (`verifyPOPIAEncryption`)
+ *
+ * Design rules:
+ * - Encryption (AES-256-GCM via Web Crypto) requires a key supplied by the caller.
+ *   There is NO built-in or VITE_-prefixed default key: anything embedded in client
+ *   JavaScript is public and cannot protect personal information.
+ * - No silent fallbacks. If Web Crypto is unavailable or an operation fails, the
+ *   function throws. Data is never labelled "encrypted" unless it was encrypted.
+ * - Audit-trail signatures are SHA-256 digests (integrity), not encryption.
+ * - PII masking for SA ID numbers and phone numbers.
  */
 
 export interface POPIAEncryptionResult {
@@ -15,7 +17,7 @@ export interface POPIAEncryptionResult {
   iv: string;
   algo: 'AES-256-GCM';
   timestamp: string;
-  isEncrypted: boolean;
+  isEncrypted: true;
 }
 
 export interface EmployeePII {
@@ -26,6 +28,8 @@ export interface EmployeePII {
   medicalClearanceDate?: string;
   incidentNotes?: string;
 }
+
+const MIN_KEY_LENGTH = 16;
 
 /**
  * Mask South African 13-digit ID number to preserve POPIA privacy
@@ -45,54 +49,52 @@ export function maskPhoneNumber(phone: string): string {
   return `${phone.substring(0, 5)}***${phone.substring(phone.length - 4)}`;
 }
 
-/**
- * Client-Side AES-256-GCM Encryption Simulation using Web Crypto API or standard crypto fallback
- */
-export async function encryptPIIWithAES256GCM(
-  data: string,
-  secretKeyString: string = 'ZA-OHS-POPIA-SECURE-KEY-2026-AES256'
-): Promise<POPIAEncryptionResult> {
-  try {
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode(secretKeyString.padEnd(32, '0').substring(0, 32));
-
-    const cryptoObj = window.crypto || (globalThis as unknown as { crypto: Crypto }).crypto;
-    if (cryptoObj && cryptoObj.subtle) {
-      const key = await cryptoObj.subtle.importKey(
-        'raw',
-        keyData,
-        { name: 'AES-GCM' },
-        false,
-        ['encrypt']
-      );
-
-      const iv = cryptoObj.getRandomValues(new Uint8Array(12));
-      const encrypted = await cryptoObj.subtle.encrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        encoder.encode(data)
-      );
-
-      const ciphertextBase64 = btoa(String.fromCharCode(...new Uint8Array(encrypted)));
-      const ivBase64 = btoa(String.fromCharCode(...iv));
-
-      return {
-        ciphertext: ciphertextBase64,
-        iv: ivBase64,
-        algo: 'AES-256-GCM',
-        timestamp: new Date().toISOString(),
-        isEncrypted: true,
-      };
-    }
-  } catch (err) {
-    console.warn('[POPIA Crypto Fallback]', err);
+function getSubtle(): SubtleCrypto {
+  const subtle = globalThis.crypto?.subtle;
+  if (!subtle) {
+    throw new Error('POPIA safeguard unavailable: Web Crypto (crypto.subtle) is not accessible in this context.');
   }
+  return subtle;
+}
 
-  // Pure JS Fallback representation for non-browser / test environments
-  const fallbackB64 = btoa(`ENC_POPIA_AES256_${data}`);
+function bytesToBase64(bytes: Uint8Array): string {
+  let binary = '';
+  for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  return btoa(binary);
+}
+
+function base64ToBytes(b64: string): Uint8Array<ArrayBuffer> {
+  const binary = atob(b64);
+  const bytes = new Uint8Array(new ArrayBuffer(binary.length));
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+
+/**
+ * Derive a 256-bit AES key from a caller-supplied secret via SHA-256.
+ * Throws if the secret is missing or too short, rather than padding it.
+ */
+async function importAesKey(secret: string, usage: 'encrypt' | 'decrypt'): Promise<CryptoKey> {
+  if (!secret || secret.length < MIN_KEY_LENGTH) {
+    throw new Error(`POPIA encryption key must be supplied and at least ${MIN_KEY_LENGTH} characters.`);
+  }
+  const subtle = getSubtle();
+  const keyBytes = await subtle.digest('SHA-256', new TextEncoder().encode(secret));
+  return subtle.importKey('raw', keyBytes, { name: 'AES-GCM' }, false, [usage]);
+}
+
+/**
+ * AES-256-GCM encryption of PII. The key must be supplied by the caller.
+ * Throws on any failure; never returns unencrypted data.
+ */
+export async function encryptPIIWithAES256GCM(data: string, secretKey: string): Promise<POPIAEncryptionResult> {
+  const key = await importAesKey(secretKey, 'encrypt');
+  const iv = globalThis.crypto.getRandomValues(new Uint8Array(12));
+  const encrypted = await getSubtle().encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(data));
+
   return {
-    ciphertext: fallbackB64,
-    iv: 'STATIC_IV_FALLBACK',
+    ciphertext: bytesToBase64(new Uint8Array(encrypted)),
+    iv: bytesToBase64(iv),
     algo: 'AES-256-GCM',
     timestamp: new Date().toISOString(),
     isEncrypted: true,
@@ -100,48 +102,29 @@ export async function encryptPIIWithAES256GCM(
 }
 
 /**
- * Decrypts AES-256-GCM encrypted PII
+ * Decrypts AES-256-GCM encrypted PII. Throws if the key is wrong or data was tampered with.
  */
-export async function decryptPIIWithAES256GCM(
-  encryptedResult: POPIAEncryptionResult,
-  secretKeyString: string = 'ZA-OHS-POPIA-SECURE-KEY-2026-AES256'
-): Promise<string> {
-  try {
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode(secretKeyString.padEnd(32, '0').substring(0, 32));
-
-    const cryptoObj = window.crypto || (globalThis as unknown as { crypto: Crypto }).crypto;
-    if (cryptoObj && cryptoObj.subtle && encryptedResult.iv !== 'STATIC_IV_FALLBACK') {
-      const key = await cryptoObj.subtle.importKey(
-        'raw',
-        keyData,
-        { name: 'AES-GCM' },
-        false,
-        ['decrypt']
-      );
-
-      const iv = Uint8Array.from(atob(encryptedResult.iv), (c) => c.charCodeAt(0));
-      const ciphertextBytes = Uint8Array.from(atob(encryptedResult.ciphertext), (c) => c.charCodeAt(0));
-
-      const decrypted = await cryptoObj.subtle.decrypt(
-        { name: 'AES-GCM', iv },
-        key,
-        ciphertextBytes
-      );
-
-      return new TextDecoder().decode(decrypted);
-    }
-  } catch (err) {
-    console.warn('[POPIA Decrypt Error]', err);
-  }
-
-  // Fallback decoding
-  const decoded = atob(encryptedResult.ciphertext);
-  return decoded.replace('ENC_POPIA_AES256_', '');
+export async function decryptPIIWithAES256GCM(encryptedResult: POPIAEncryptionResult, secretKey: string): Promise<string> {
+  const key = await importAesKey(secretKey, 'decrypt');
+  const decrypted = await getSubtle().decrypt(
+    { name: 'AES-GCM', iv: base64ToBytes(encryptedResult.iv) },
+    key,
+    base64ToBytes(encryptedResult.ciphertext)
+  );
+  return new TextDecoder().decode(decrypted);
 }
 
 /**
- * Verifies that client-side POPIA AES-256-GCM encryption checks remain intact
+ * SHA-256 digest (hex) for audit-trail signatures. Integrity only, not confidentiality.
+ */
+export async function hashAuditSignature(data: string): Promise<string> {
+  const digest = await getSubtle().digest('SHA-256', new TextEncoder().encode(data));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/**
+ * Runtime check that the Web Crypto safeguards are available in this browser.
+ * Does not claim encryption is active: that depends on the caller supplying a key.
  */
 export function verifyPOPIAEncryption(): {
   compliant: boolean;
@@ -149,10 +132,13 @@ export function verifyPOPIAEncryption(): {
   popiActSection: string;
   auditMessage: string;
 } {
+  const available = typeof globalThis.crypto?.subtle !== 'undefined';
   return {
-    compliant: true,
-    algorithm: 'AES-256-GCM',
+    compliant: available,
+    algorithm: 'AES-256-GCM (caller-supplied key); SHA-256 for audit signatures',
     popiActSection: 'POPIA Act 4 of 2013 - Section 19 (Security Measures on Integrity and Confidentiality of Personal Information)',
-    auditMessage: 'POPIA Client-Side AES-256-GCM Encryption Layer Verified & Active.',
+    auditMessage: available
+      ? 'POPIA Web Crypto safeguards available.'
+      : 'POPIA Web Crypto safeguards NOT available: encryption and signing will fail.',
   };
 }

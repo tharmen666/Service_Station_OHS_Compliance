@@ -22,39 +22,35 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     await expect(headerTitle).toBeVisible();
 
     // Test switching tabs (Evacuation, Spill, Fire, Rights, Quiz, Refresher)
+    // Each tab must exist and render its content. A missing tab fails the test.
     const spillTabButton = page.getByRole('button', { name: /Fuel Spill Containment/i }).first();
-    if (await spillTabButton.isVisible()) {
-      await spillTabButton.click();
-      await expect(page.locator('text=Emergency Spill Response Process & Steps')).toBeVisible();
-    }
+    await expect(spillTabButton).toBeVisible();
+    await spillTabButton.click();
+    await expect(page.locator('text=Emergency Spill Response Process & Steps')).toBeVisible();
 
     const rightsTabButton = page.getByRole('button', { name: /Employee Rights/i }).first();
-    if (await rightsTabButton.isVisible()) {
-      await rightsTabButton.click();
-      await expect(page.locator('text=BCEA Section 9')).toBeVisible();
-    }
+    await expect(rightsTabButton).toBeVisible();
+    await rightsTabButton.click();
+    await expect(page.locator('text=BCEA Section 9')).toBeVisible();
 
     const trainingTabButton = page.getByRole('button', { name: /Training/i }).first();
-    if (await trainingTabButton.isVisible()) {
-      await trainingTabButton.click();
-      await expect(page.getByRole('heading', { name: /Basic First Aid Level 1/i })).toBeVisible();
-      await expect(page.getByRole('heading', { name: /Basic Firefighting & Equipment Handling/i })).toBeVisible();
-      await expect(page.getByRole('heading', { name: /Hazard Identification & Risk Assessment/i })).toBeVisible();
-      await expect(page.getByRole('heading', { name: /Health & Safety Representative/i })).toBeVisible();
-    }
+    await expect(trainingTabButton).toBeVisible();
+    await trainingTabButton.click();
+    await expect(page.getByRole('heading', { name: /Basic First Aid Level 1/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Basic Firefighting & Equipment Handling/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Hazard Identification & Risk Assessment/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Health & Safety Representative/i })).toBeVisible();
 
     const wetstockBridgeTabButton = page.getByRole('button', { name: /Wetstock & Offload/i }).first();
-    if (await wetstockBridgeTabButton.isVisible()) {
-      await wetstockBridgeTabButton.click();
-      await expect(page.locator('text=RSD 26 Safety').first()).toBeVisible();
-    }
+    await expect(wetstockBridgeTabButton).toBeVisible();
+    await wetstockBridgeTabButton.click();
+    await expect(page.locator('text=RSD 26 Safety').first()).toBeVisible();
 
     const wetstockTabButton = page.getByRole('button', { name: /Wetstock ATG|Wetstock & Reconciliation|8\. Wetstock/i }).first();
-    if (await wetstockTabButton.isVisible()) {
-      await wetstockTabButton.click();
-      await expect(page.getByRole('heading', { name: /Wetstock Accounting & Automatic Tank Gauge/i })).toBeVisible();
-      await expect(page.locator('text=Daily Tank Wetstock Reconciliation Ledger')).toBeVisible();
-    }
+    await expect(wetstockTabButton).toBeVisible();
+    await wetstockTabButton.click();
+    await expect(page.getByRole('heading', { name: /Wetstock Accounting & Automatic Tank Gauge/i })).toBeVisible();
+    await expect(page.locator('text=Daily Tank Wetstock Reconciliation Ledger')).toBeVisible();
   });
 
   test('White-Label Tenant Rendering: Dynamic .env.local tenant site code & header reflect correctly', async ({ page }) => {

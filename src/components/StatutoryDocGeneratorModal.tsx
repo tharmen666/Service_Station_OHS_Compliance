@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { requestStatutoryComplianceDoc } from '../services/complianceClient';
 import { StatutoryComplianceResponse } from '../api/compliance';
-import { encryptPIIWithAES256GCM } from '../popiActCompliance';
+import { hashAuditSignature } from '../popiActCompliance';
 import { getActiveTenant } from '../multiTenantConfig';
 
 interface StatutoryDocGeneratorModalProps {
@@ -76,9 +76,10 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const handleExportAuditLog = async () => {
     if (!docResponse?.document) return;
 
-    // Encrypt digital signature with POPIA AES-256 layer (technical safeguard under POPIA Condition 7 / Section 19)
-    const encryptedSignature = await encryptPIIWithAES256GCM(
-      `STATUTORY_DOC_${taskType}_${siteContext}_${Date.now()}`
+    // SHA-256 integrity digest of the audit signature (POPIA Condition 7 / Section 19 integrity safeguard)
+    const timestamp = new Date().toISOString();
+    const signatureDigest = await hashAuditSignature(
+      `STATUTORY_DOC_${taskType}_${siteContext}_${timestamp}`
     );
 
     // Prepare full audit export content
@@ -86,9 +87,9 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
 ---
 ### POPIA & STATUTORY AUDIT LEDGER TRAIL
-- **POPIA Signature Hash**: \`${encryptedSignature.ciphertext}\`
-- **Encryption Standard**: ${encryptedSignature.algo}
-- **Timestamp**: ${encryptedSignature.timestamp}
+- **Audit Signature (SHA-256)**: \`${signatureDigest}\`
+- **Digest Standard**: SHA-256
+- **Timestamp**: ${timestamp}
 - **Audit Verification Code**: ZA-OHS-ACT85-COMPLIANT
 `;
 
