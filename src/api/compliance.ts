@@ -56,7 +56,9 @@ Hazards & Scope: ${hazards}
 
 Ensure full statutory grounding, exact South African section citations, and strict Hierarchy of Controls sequencing (Elimination -> Substitution -> Engineering -> Administrative -> PPE).`;
 
-  const apiKey = process.env.ANTHROPIC_API_KEY || (import.meta as any).env?.ANTHROPIC_API_KEY || '';
+  // Server-side only. Never read from VITE_* or import.meta: those are bundled into public client code,
+  // and import.meta is a syntax error in the CommonJS output that Vercel functions use.
+  const apiKey = (typeof process !== 'undefined' && process.env?.ANTHROPIC_API_KEY) || '';
 
   if (apiKey && apiKey.trim() !== '') {
     try {
