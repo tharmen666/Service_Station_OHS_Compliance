@@ -20,8 +20,14 @@ function complianceApiPlugin(): Plugin {
               res.statusCode = 200;
               res.end(JSON.stringify(result));
             } catch (err: any) {
-              res.statusCode = 500;
-              res.end(JSON.stringify({ success: false, error: err?.message || 'Server error' }));
+              // Mirror api/compliance.ts: governance rejections are 400 with the list of issues.
+              const isPolicy = err?.name === 'GovernanceValidationError';
+              res.statusCode = isPolicy ? 400 : err instanceof SyntaxError ? 400 : 500;
+              res.end(JSON.stringify(
+                isPolicy
+                  ? { success: false, error: err.message, issues: err.issues }
+                  : { success: false, error: err instanceof SyntaxError ? 'Request body must be valid JSON' : 'Failed to process statutory compliance request' }
+              ));
             }
           });
         } else {
