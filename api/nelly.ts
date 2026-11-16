@@ -1,13 +1,856 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { approvedQuestions } from './approvedMaterial';
 
 /**
  * Server-side route for Nelly. The API key is read only from the server environment
  * (ANTHROPIC_API_KEY, set in Vercel project settings). It is never sent to the browser.
  *
- * Answers are limited to the approved training material (api/approvedMaterial.ts, generated from assessment_bank.json).
+ * Answers are limited to the approved training material (embedded below, generated from assessment_bank.json).
  * If that material does not cover the question, Nelly says so and does not guess.
  */
+
+// Approved material: the 42 questions and explanations from assessment_bank.json, embedded here.
+const approvedQuestions = [
+  {
+    "question_id": "CS_Q01",
+    "topic": "Customer Service",
+    "question": "What is the primary safety rule when a customer approaches a forecourt pump while smoking a cigarette?",
+    "options": {
+      "A": "Politely and immediately ask the customer to extinguish the cigarette before fuel dispensing begins.",
+      "B": "Ignore it as long as they are standing outside their vehicle.",
+      "C": "Wait until fuel dispensing is complete before informing the manager.",
+      "D": "Offer them a designated smoking area on the forecourt island."
+    },
+    "correct_answer": "A",
+    "explanation": "Naked flames on the forecourt pose an immediate fire hazard due to volatile fuel vapors. Staff must politely demand immediate extinguishment before fuel flow.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "00:12",
+      "timestamp_end": "00:35",
+      "remediation_guidance": "Review forecourt customer safety standards and immediate hazard intervention protocols."
+    }
+  },
+  {
+    "question_id": "CS_Q02",
+    "topic": "Customer Service",
+    "question": "When dispensing fuel into portable unapproved glass or plastic containers brought by a customer, what action must the forecourt attendant take?",
+    "options": {
+      "A": "Fill the container to 100% capacity to prevent spillages.",
+      "B": "Refuse to dispense fuel into non-approved containers and offer an approved anti-static container.",
+      "C": "Dispense fuel only if the customer signs an indemnity waiver.",
+      "D": "Allow filling if the container is placed on a rubber floor mat."
+    },
+    "correct_answer": "B",
+    "explanation": "Unapproved containers can accumulate static electricity or chemically degrade, creating explosive hazards. Only certified anti-static containers may be filled.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "00:20",
+      "timestamp_end": "00:48",
+      "remediation_guidance": "Review fuel dispensing regulations and approved container safety compliance."
+    }
+  },
+  {
+    "question_id": "CS_Q03",
+    "topic": "Customer Service",
+    "question": "How should forecourt staff communicate with a customer who refuses to switch off their vehicle engine during refueling?",
+    "options": {
+      "A": "Proceed with fueling quickly while monitoring the dashboard.",
+      "B": "Shout at the customer from the cashier booth.",
+      "C": "Explain politely that turning off the ignition is a legal OHS requirement to prevent spark hazards before starting the pump.",
+      "D": "Disconnect the battery before inserting the nozzle."
+    },
+    "correct_answer": "C",
+    "explanation": "Running engines create hot exhaust surfaces and electrical spark potential. Staff must firmly and professionally explain the legal safety requirement.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:10",
+      "timestamp_end": "00:30",
+      "remediation_guidance": "Watch customer interaction guidelines for enforcing vehicle ignition shutoff."
+    }
+  },
+  {
+    "question_id": "CS_Q04",
+    "topic": "Customer Service",
+    "question": "What personal protective equipment (PPE) must forecourt customer service attendants wear at all times during shift work?",
+    "options": {
+      "A": "Cotton t-shirt and standard athletic running shoes.",
+      "B": "Ear protection headphones and dark sunglasses.",
+      "C": "Latex gloves only when checking engine oil levels.",
+      "D": "High-visibility anti-static safety vest, steel-toe non-slip boots, and flame-retardant uniform."
+    },
+    "correct_answer": "D",
+    "explanation": "Forecourt staff operate in high-traffic zones with flammable liquid risk. High-vis anti-static clothing and non-slip safety boots are mandatory.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "00:40",
+      "timestamp_end": "01:05",
+      "remediation_guidance": "Review required PPE standards for forecourt customer service personnel."
+    }
+  },
+  {
+    "question_id": "CS_Q05",
+    "topic": "Customer Service",
+    "question": "If a customer uses a mobile phone on the forecourt near fuel pumps, what is the appropriate staff intervention?",
+    "options": {
+      "A": "Politely inform the customer that mobile phones pose static discharge risks and request they step inside the shop area or car.",
+      "B": "Confiscate the mobile phone immediately.",
+      "C": "Ignore the mobile phone if the vehicle is electric.",
+      "D": "Report the customer to law enforcement after refueling."
+    },
+    "correct_answer": "A",
+    "explanation": "Electronic devices can emit RF energy or drop-battery sparks. Courteous redirection to a safe zone ensures customer cooperation and compliance.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "00:50",
+      "timestamp_end": "01:15",
+      "remediation_guidance": "Review mobile device hazard warnings and customer communication techniques."
+    }
+  },
+  {
+    "question_id": "CS_Q06",
+    "topic": "Customer Service",
+    "question": "What is the correct protocol when a customer experiences a fuel splash onto their skin or clothing at the pump?",
+    "options": {
+      "A": "Provide a dry paper towel and send them on their way.",
+      "B": "Escort them to the emergency wash basin immediately, flush affected skin with clean water for 15 minutes, and offer clean clothing.",
+      "C": "Apply hand sanitizer to dilute the gasoline.",
+      "D": "Instruct them to go home and shower without delay."
+    },
+    "correct_answer": "B",
+    "explanation": "Fuel contact can cause severe chemical burns and dermatitis. Immediate copious water flushing at the emergency station is required.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:35",
+      "timestamp_end": "00:55",
+      "remediation_guidance": "Review customer first-aid procedure for fuel skin contact."
+    }
+  },
+  {
+    "question_id": "CS_Q07",
+    "topic": "Customer Service",
+    "question": "How should an attendant handle a customer driving off while the nozzle is still inserted in their fuel tank?",
+    "options": {
+      "A": "Run after the car and pull the nozzle manually.",
+      "B": "Turn off the shop main electrical breaker after 5 minutes.",
+      "C": "Hit the Emergency Pump Shutoff button immediately, alert forecourt staff, and ensure breakaway safety valve operated safely.",
+      "D": "Allow the pump hose to stretch to its maximum length."
+    },
+    "correct_answer": "C",
+    "explanation": "Drive-offs cause mechanical stress and potential fuel line rupture. Emergency shutoff stops fuel pressurization while magnetic breakaways isolate the pump.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:10",
+      "timestamp_end": "01:35",
+      "remediation_guidance": "Watch emergency pump shutoff procedure for drive-off incidents."
+    }
+  },
+  {
+    "question_id": "CS_Q08",
+    "topic": "Customer Service",
+    "question": "During peak hours, a customer becomes aggressive regarding queue delays. How should forecourt attendants maintain safety?",
+    "options": {
+      "A": "Engage in a verbal argument to defend station policy.",
+      "B": "Shut down all pumps until the customer leaves.",
+      "C": "Bypass safety checks to speed up fuel delivery.",
+      "D": "De-escalate calmly, maintain safety boundaries around active pumps, and request manager assistance if safety is compromised."
+    },
+    "correct_answer": "D",
+    "explanation": "Customer conflict on forecourts elevates distraction risks near hazardous equipment. Calm de-escalation prevents unsafe operational shortcuts.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:20",
+      "timestamp_end": "01:45",
+      "remediation_guidance": "Review conflict de-escalation and safety boundary preservation."
+    }
+  },
+  {
+    "question_id": "CS_Q09",
+    "topic": "Customer Service",
+    "question": "When checking vehicle fluid levels (windshield wash, engine oil), what safety precaution protects both customer and attendant?",
+    "options": {
+      "A": "Ensure vehicle engine is off, handbrake engaged, and wear protective gloves before opening hood.",
+      "B": "Open the radiator cap immediately while engine is hot.",
+      "C": "Perform service while vehicle is actively being refueled.",
+      "D": "Use shop towels stored in flammable waste bins."
+    },
+    "correct_answer": "A",
+    "explanation": "Hot engine parts and moving belts pose severe burn/pinch risks. Turning off engine and securing vehicle is mandatory prior to under-hood service.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:25",
+      "timestamp_end": "00:50",
+      "remediation_guidance": "Review vehicle under-hood service safety steps for forecourt attendants."
+    }
+  },
+  {
+    "question_id": "CS_Q10",
+    "topic": "Customer Service",
+    "question": "What is the required standard for maintaining forecourt walking surfaces and customer walkways?",
+    "options": {
+      "A": "Clean oil spots once a week with water.",
+      "B": "Keep surfaces free of fuel slicks, trip hazards, and debris; clean spills instantly using absorbent materials and display wet floor signs.",
+      "C": "Apply paint over oil stains to conceal them.",
+      "D": "Rinse oil into storm drains using high-pressure hoses."
+    },
+    "correct_answer": "B",
+    "explanation": "Slip and fall injuries are primary forecourt liabilities. Instant spill absorption and hazard signage protect customers and staff.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:40",
+      "timestamp_end": "02:00",
+      "remediation_guidance": "Review forecourt surface housekeeping and slip/trip prevention."
+    }
+  },
+  {
+    "question_id": "SR_Q01",
+    "topic": "Emergency Spill Response",
+    "question": "What is the very FIRST action to take upon discovering a major fuel spill (>20 liters) on the forecourt?",
+    "options": {
+      "A": "Start sweeping fuel into the oil/water separator drain.",
+      "B": "Fetch a mop and bucket from the storage room.",
+      "C": "Hit the Emergency Stop (ESD) button to cut fuel supply and isolate ignition sources.",
+      "D": "Call the fuel delivery tanker supplier."
+    },
+    "correct_answer": "C",
+    "explanation": "Stopping active fuel pressurization via ESD eliminates ongoing flow and minimizes vapor cloud expansion.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:05",
+      "timestamp_end": "00:25",
+      "remediation_guidance": "Watch initial spill response protocols and emergency shut-off activation."
+    }
+  },
+  {
+    "question_id": "SR_Q02",
+    "topic": "Emergency Spill Response",
+    "question": "Which item in a service station Spill Kit is deployed to prevent fuel from entering municipal storm drains?",
+    "options": {
+      "A": "Plastic trash bags.",
+      "B": "Paper wipes.",
+      "C": "Dry powder fire extinguisher.",
+      "D": "Drain cover seals / containment booms."
+    },
+    "correct_answer": "D",
+    "explanation": "Containment booms and drain covers seal off drainage inlets, preventing hazardous hydrocarbons from polluting municipal water systems.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "00:30",
+      "timestamp_end": "00:55",
+      "remediation_guidance": "Review spill kit contents and drain isolation techniques."
+    }
+  },
+  {
+    "question_id": "SR_Q03",
+    "topic": "Emergency Spill Response",
+    "question": "Why must water NEVER be used to wash away a gasoline spill on a forecourt floor?",
+    "options": {
+      "A": "Gasoline floats on water, spreading flammable liquid over a wider area and generating volatile vapor.",
+      "B": "Water increases fuel pressure inside underground tanks.",
+      "C": "Water turns gasoline into explosive gel.",
+      "D": "It ruins the concrete seal sealant."
+    },
+    "correct_answer": "A",
+    "explanation": "Gasoline is lighter than water and insoluble. Adding water floats the fuel, expanding the fire hazard zone.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:00",
+      "timestamp_end": "01:25",
+      "remediation_guidance": "Review liquid hydrocarbon physics and prohibited spill practices."
+    }
+  },
+  {
+    "question_id": "SR_Q04",
+    "topic": "Emergency Spill Response",
+    "question": "What absorbents should be applied to absorb spilled diesel or petrol on forecourt surfaces?",
+    "options": {
+      "A": "Sawdust or shredded cardboard.",
+      "B": "Hydrocarbon-specific absorbents (peat moss, synthetic absorbent granules, or polypropylene pads).",
+      "C": "Baking soda mixed with sand.",
+      "D": "Cement powder only."
+    },
+    "correct_answer": "B",
+    "explanation": "Certified absorbent granules encapsulate fuel without creating secondary combustible dust hazards like sawdust.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:30",
+      "timestamp_end": "00:50",
+      "remediation_guidance": "Review approved spill absorbent materials and application steps."
+    }
+  },
+  {
+    "question_id": "SR_Q05",
+    "topic": "Emergency Spill Response",
+    "question": "How should fuel-soaked absorbent materials be disposed of after cleaning a spill?",
+    "options": {
+      "A": "Discarded into municipal general waste bins.",
+      "B": "Burned in an open fire pit behind the shop.",
+      "C": "Placed into heavy-duty labelled hazardous waste bags/drums for certified hazardous disposal.",
+      "D": "Left on the grass perimeter to evaporate."
+    },
+    "correct_answer": "C",
+    "explanation": "Fuel-contaminated absorbent is classified as hazardous waste under environmental laws and requires specialized disposal.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:00",
+      "timestamp_end": "01:25",
+      "remediation_guidance": "Review hazardous waste containment and disposal regulations."
+    }
+  },
+  {
+    "question_id": "SR_Q06",
+    "topic": "Emergency Spill Response",
+    "question": "What personal protective equipment must staff wear when handling hazardous chemical or fuel spill cleanup?",
+    "options": {
+      "A": "Cloth mask and plastic apron.",
+      "B": "No PPE is required if spill is outdoors.",
+      "C": "Surgical gloves and paper slippers.",
+      "D": "Nitrile/solvent-resistant gloves, safety goggles, high-vis vest, and non-sparking footwear."
+    },
+    "correct_answer": "D",
+    "explanation": "Solvent-resistant gloves and eye protection prevent chemical absorption and splash injuries during spill recovery.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:30",
+      "timestamp_end": "01:55",
+      "remediation_guidance": "Review mandatory PPE for chemical spill response personnel."
+    }
+  },
+  {
+    "question_id": "SR_Q07",
+    "topic": "Emergency Spill Response",
+    "question": "What environmental authority notification threshold applies to major petroleum fuel spills under national regulations?",
+    "options": {
+      "A": "Spills exceeding reportable thresholds (e.g. >50L or entering soil/water) must be reported to environmental authorities within required timelines.",
+      "B": "Notification required only if fuel reaches a river.",
+      "C": "No reporting needed if clean-up takes under 1 hour.",
+      "D": "Report only during annual audits."
+    },
+    "correct_answer": "A",
+    "explanation": "Environmental statutory law mandates formal reporting for uncontained spills to mitigate ground water contamination.",
+    "remediation": {
+      "video_reference": "Global Breaking News.mp4",
+      "video_path": "assets/remediation/Global Breaking News.mp4",
+      "timestamp_start": "00:15",
+      "timestamp_end": "00:40",
+      "remediation_guidance": "Review environmental incident compliance reporting duties."
+    }
+  },
+  {
+    "question_id": "SR_Q08",
+    "topic": "Emergency Spill Response",
+    "question": "What role does an Oil/Water Separator pit play during forecourt spill management?",
+    "options": {
+      "A": "Stores clean drinking water for emergency use.",
+      "B": "Traps light petroleum hydrocarbons on the surface while allowing clean water to discharge into sewers.",
+      "C": "Burns off excess fuel vapor.",
+      "D": "Filters engine oil for recycling."
+    },
+    "correct_answer": "B",
+    "explanation": "Oil/water separators utilize specific gravity differences to trap petroleum product before drainage exit.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:30",
+      "timestamp_end": "01:55",
+      "remediation_guidance": "Watch separator pit operational mechanics and maintenance."
+    }
+  },
+  {
+    "question_id": "SR_Q09",
+    "topic": "Emergency Spill Response",
+    "question": "If a fuel spill ignites on the forecourt during spill response, what is the immediate action step?",
+    "options": {
+      "A": "Try to sweep the burning fuel.",
+      "B": "Cover the flame with plastic sheeting.",
+      "C": "Sound emergency alarm, evacuate personnel, deploy DCP fire extinguishers if safe, and call Emergency Services (10177 / 112).",
+      "D": "Wait for the fuel to burn out."
+    },
+    "correct_answer": "C",
+    "explanation": "Once ignited, spill response transitions into active firefighting and life safety evacuation.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:40",
+      "timestamp_end": "00:58",
+      "remediation_guidance": "Review transition from spill response to active fire emergency response."
+    }
+  },
+  {
+    "question_id": "SR_Q10",
+    "topic": "Emergency Spill Response",
+    "question": "How frequently should service station Spill Kits be inspected and restocked?",
+    "options": {
+      "A": "Once every two years.",
+      "B": "When the box becomes dusty.",
+      "C": "Only after an official government audit.",
+      "D": "Monthly checks and immediate restocking after any spill event."
+    },
+    "correct_answer": "D",
+    "explanation": "Regular monthly audits ensure absorbent pads, seals, and PPE remain fully stocked and functional for sudden emergencies.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "02:00",
+      "timestamp_end": "02:20",
+      "remediation_guidance": "Review spill kit inspection schedules and readiness checklists."
+    }
+  },
+  {
+    "question_id": "FS_Q01",
+    "topic": "Fire Safety",
+    "question": "Which type of fire extinguisher is the standard primary extinguisher for service station forecourts (Class B flammable liquids)?",
+    "options": {
+      "A": "Dry Chemical Powder (DCP / ABE) Extinguisher.",
+      "B": "Water (APW) Extinguisher.",
+      "C": "Wet Chemical Extinguisher.",
+      "D": "Fire Blanket only."
+    },
+    "correct_answer": "A",
+    "explanation": "DCP extinguishers smother Class B liquid fuel fires and Class C electrical fires without spreading liquid fuel.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:15",
+      "timestamp_end": "00:35",
+      "remediation_guidance": "Watch extinguisher selection and fire classification overview."
+    }
+  },
+  {
+    "question_id": "FS_Q02",
+    "topic": "Fire Safety",
+    "question": "What does the acronym PASS stand for when operating a portable fire extinguisher?",
+    "options": {
+      "A": "Push, Aim, Squeeze, Stop.",
+      "B": "Pull pin, Aim low at base of fire, Squeeze handle, Sweep side to side.",
+      "C": "Point, Activate, Spray, Step back.",
+      "D": "Position, Arm, Squeeze, Smother."
+    },
+    "correct_answer": "B",
+    "explanation": "PASS is the universal standard technique for safe and effective portable fire extinguisher operation.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "00:45",
+      "timestamp_end": "01:10",
+      "remediation_guidance": "Review PASS technique step-by-step video demonstration."
+    }
+  },
+  {
+    "question_id": "FS_Q03",
+    "topic": "Fire Safety",
+    "question": "Where should Emergency Stop (ESD) push buttons be located on a service station facility?",
+    "options": {
+      "A": "Inside the manager safe only.",
+      "B": "On the roof of the canopy.",
+      "C": "At accessible forecourt locations, inside the main cashier building, and near fuel discharge bays.",
+      "D": "Behind locked storage cabinets."
+    },
+    "correct_answer": "C",
+    "explanation": "ESD buttons must be readily accessible across key operational zones so any staff member can cut fuel flow instantly.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "00:40",
+      "timestamp_end": "01:05",
+      "remediation_guidance": "Review ESD placement standards and emergency activation."
+    }
+  },
+  {
+    "question_id": "FS_Q04",
+    "topic": "Fire Safety",
+    "question": "What is the function of automatic fire extinguishing systems installed inside service station canopy hoods above dispensers?",
+    "options": {
+      "A": "Sprays cooling water over vehicle roofs.",
+      "B": "Seals the fuel underground.",
+      "C": "Triggers loud music to alert customers.",
+      "D": "Detects thermal surges and automatically releases dry chemical or foam agent directly over pumps."
+    },
+    "correct_answer": "D",
+    "explanation": "Automatic canopy suppression systems provide rapid thermal response to suppress high-intensity pump fires instantly.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:35",
+      "timestamp_end": "00:55",
+      "remediation_guidance": "Watch canopy fire suppression systems and automated safety features."
+    }
+  },
+  {
+    "question_id": "FS_Q05",
+    "topic": "Fire Safety",
+    "question": "What color band on a fire extinguisher designates a Carbon Dioxide (CO2) extinguisher suitable for electrical fires?",
+    "options": {
+      "A": "Black band.",
+      "B": "Red band.",
+      "C": "Yellow band.",
+      "D": "Blue band."
+    },
+    "correct_answer": "A",
+    "explanation": "Under international standards (SANS 1910 / BS EN3), CO2 extinguishers feature a black color band.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:15",
+      "timestamp_end": "01:35",
+      "remediation_guidance": "Review fire extinguisher color coding standards."
+    }
+  },
+  {
+    "question_id": "FS_Q06",
+    "topic": "Fire Safety",
+    "question": "How frequently must fire extinguishers and fire hose reels undergo professional maintenance inspections?",
+    "options": {
+      "A": "Every 5 years.",
+      "B": "Annually (every 12 months) by a certified SABS/SANAS technician, plus monthly internal visual checks.",
+      "C": "Only after they are used.",
+      "D": "Every month by the cashier."
+    },
+    "correct_answer": "B",
+    "explanation": "Statutory OHS law mandates annual certified servicing and monthly internal visual checks of pressure gauges and seals.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:10",
+      "timestamp_end": "01:30",
+      "remediation_guidance": "Review compliance inspection intervals for fire fighting equipment."
+    }
+  },
+  {
+    "question_id": "FS_Q07",
+    "topic": "Fire Safety",
+    "question": "When using a portable ladder for canopy or light fixture maintenance, what safety ratio must be observed for ladder angle?",
+    "options": {
+      "A": "1:1 ratio (45 degrees).",
+      "B": "2:1 ratio (60 degrees).",
+      "C": "4:1 ratio (75 degrees inclination - 1 unit out for every 4 units of height).",
+      "D": "Placing ladder vertically flat against wall."
+    },
+    "correct_answer": "C",
+    "explanation": "The 4-to-1 ladder rule ensures maximum stability and prevents slip-out or tipping accidents.",
+    "remediation": {
+      "video_reference": "OHS_Haven_Ladder_Safety_OnePager.pdf",
+      "video_path": "assets/remediation/OHS_Haven_Ladder_Safety_OnePager.pdf",
+      "timestamp_start": "00:00",
+      "timestamp_end": "00:30",
+      "remediation_guidance": "Review portable ladder angle safety standards and three-point contact rule."
+    }
+  },
+  {
+    "question_id": "FS_Q08",
+    "topic": "Fire Safety",
+    "question": "Why is smoking or using non-explosion-proof electrical tools within 6 meters of underground tank fill points prohibited?",
+    "options": {
+      "A": "It creates noise disturbance for shop customers.",
+      "B": "It voids the oil company warranty.",
+      "C": "It drains underground tank sensors.",
+      "D": "Heavy petroleum vapors settle near ground level around vents and fill points, creating a high-risk flammable atmosphere."
+    },
+    "correct_answer": "D",
+    "explanation": "Petroleum vapor is heavier than air and collects around fill points. Non-explosion-proof electrical equipment can ignite vapors.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:40",
+      "timestamp_end": "02:05",
+      "remediation_guidance": "Watch hazardous area zoning (Zone 0/1/2) and ignition source controls."
+    }
+  },
+  {
+    "question_id": "FS_Q09",
+    "topic": "Fire Safety",
+    "question": "What should staff do if an electrical fire breaks out inside the main cashier office DB board?",
+    "options": {
+      "A": "Isolate main power at external isolator if safe, and deploy CO2 or DCP extinguisher; NEVER use water on live electrical equipment.",
+      "B": "Throw a bucket of water onto the circuit breakers.",
+      "C": "Fan the flames with cardboard to cool the wires.",
+      "D": "Leave office door open to let smoke out."
+    },
+    "correct_answer": "A",
+    "explanation": "Water conducts electricity and creates severe electrocution risk. CO2 or DCP starves fire without electrical conductivity.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:45",
+      "timestamp_end": "01:05",
+      "remediation_guidance": "Review electrical fire suppression and power isolation steps."
+    }
+  },
+  {
+    "question_id": "FS_Q10",
+    "topic": "Fire Safety",
+    "question": "What minimum distance must be maintained around fire extinguishers and fire hose reels to keep them clear of obstructions?",
+    "options": {
+      "A": "0.5 meters.",
+      "B": "1.0 meter of unobstructed, clear floor space at all times.",
+      "C": "Obstructions are allowed if labeled.",
+      "D": "3.0 meters."
+    },
+    "correct_answer": "B",
+    "explanation": "Firefighting equipment must be accessible without delay. Storing merchandise or boxes in front of extinguishers is an OHS breach.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:40",
+      "timestamp_end": "02:00",
+      "remediation_guidance": "Review fire equipment accessibility and housekeeping rules."
+    }
+  },
+  {
+    "question_id": "EV_Q01",
+    "topic": "Evacuation",
+    "question": "Where is the Designated Emergency Assembly Point located at a service station facility?",
+    "options": {
+      "A": "Underneath the main fuel canopy.",
+      "B": "Inside the walk-in cold storage room.",
+      "C": "In a clearly marked outdoor area upwind from fuel storage and dispensers, away from vehicle traffic.",
+      "D": "Next to the LPG bottle storage cage."
+    },
+    "correct_answer": "C",
+    "explanation": "Assembly points must be upwind and outside danger zones (dispensers, LPG, underground tanks) to prevent secondary risk exposure.",
+    "remediation": {
+      "video_reference": "Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "video_path": "assets/remediation/Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "timestamp_start": "00:10",
+      "timestamp_end": "00:35",
+      "remediation_guidance": "Review emergency assembly point selection criteria and site evacuation maps."
+    }
+  },
+  {
+    "question_id": "EV_Q02",
+    "topic": "Evacuation",
+    "question": "Who is responsible for conducting the roll call and head count at the assembly point during an evacuation?",
+    "options": {
+      "A": "The first customer who exits.",
+      "B": "Each employee checks themselves in on an app.",
+      "C": "The local police officer upon arrival.",
+      "D": "The designated Evacuation Marshal / Fire Warden using the daily shift register."
+    },
+    "correct_answer": "D",
+    "explanation": "The designated Evacuation Marshal uses official shift registers to account for all staff and visitors.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:15",
+      "timestamp_end": "01:40",
+      "remediation_guidance": "Review Evacuation Marshal duties and head count verification."
+    }
+  },
+  {
+    "question_id": "EV_Q03",
+    "topic": "Evacuation",
+    "question": "When the emergency alarm sounds, what action should forecourt attendants take regarding active refueling?",
+    "options": {
+      "A": "Immediately release nozzle trigger, return nozzle to holster, press ESD, and guide customers toward assembly point.",
+      "B": "Finish filling the customer vehicle to the requested amount.",
+      "C": "Leave nozzle in car tank and run away.",
+      "D": "Lock the pump meter handle."
+    },
+    "correct_answer": "A",
+    "explanation": "Securing fuel nozzles and activating ESD cuts off fuel flow and eliminates unmonitored dispensing hazards.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:20",
+      "timestamp_end": "01:45",
+      "remediation_guidance": "Watch forecourt evacuation action plan and pump isolation steps."
+    }
+  },
+  {
+    "question_id": "EV_Q04",
+    "topic": "Evacuation",
+    "question": "Why should elevators/lifts NEVER be used during a building or shop fire evacuation?",
+    "options": {
+      "A": "Elevators consume too much electricity.",
+      "B": "Elevator shafts can act as chimneys for smoke/heat, and power failure can trap occupants inside.",
+      "C": "Elevator doors open too slowly.",
+      "D": "Elevators are reserved for fire chief."
+    },
+    "correct_answer": "B",
+    "explanation": "Power outages and thermal elevator shaft convection pose severe entrapment and asphyxiation risks.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:25",
+      "timestamp_end": "00:45",
+      "remediation_guidance": "Review emergency exit selection and stairwell evacuation safety."
+    }
+  },
+  {
+    "question_id": "EV_Q05",
+    "topic": "Evacuation",
+    "question": "How often must service station facilities conduct mandatory emergency evacuation drills?",
+    "options": {
+      "A": "Once every 5 years.",
+      "B": "Only after an actual fire emergency occurs.",
+      "C": "Bi-annually (at least twice per year / every 6 months) for all shifts.",
+      "D": "Every week."
+    },
+    "correct_answer": "C",
+    "explanation": "Bi-annual drills satisfy statutory OHS regulations and ensure muscle memory for all rotating shift staff.",
+    "remediation": {
+      "video_reference": "Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "video_path": "assets/remediation/Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "timestamp_start": "00:40",
+      "timestamp_end": "01:00",
+      "remediation_guidance": "Review evacuation drill requirements and documentation registers."
+    }
+  },
+  {
+    "question_id": "EV_Q06",
+    "topic": "Evacuation",
+    "question": "If smoke fills a shop building during evacuation, what is the safest breathing and movement posture?",
+    "options": {
+      "A": "Walk upright with arms stretched forward.",
+      "B": "Stand on a chair to find fresh air.",
+      "C": "Run at full speed through the center of the room.",
+      "D": "Crawl low on hands and knees under the smoke layer, covering nose and mouth with a cloth."
+    },
+    "correct_answer": "D",
+    "explanation": "Superheated toxic smoke rises to the ceiling. Cleaner air and lower temperatures remain near floor level.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
+      "timestamp_start": "00:40",
+      "timestamp_end": "01:00",
+      "remediation_guidance": "Watch smoke inhalation protection and low-crawl evacuation technique."
+    }
+  },
+  {
+    "question_id": "EV_Q07",
+    "topic": "Evacuation",
+    "question": "What key document must be brought to the assembly point by the manager or OHS officer during an evacuation?",
+    "options": {
+      "A": "The Staff Attendance Register, Visitor Log, and Emergency Contact List.",
+      "B": "The weekly sales invoice register.",
+      "C": "The supplier product catalogs.",
+      "D": "The store inventory audit sheets."
+    },
+    "correct_answer": "A",
+    "explanation": "Attendance and visitor records enable accurate accounting of every person present on site during the incident.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 Meet Nelly_ Safety Automation, Done Right.mp4",
+      "timestamp_start": "01:45",
+      "timestamp_end": "02:05",
+      "remediation_guidance": "Review essential emergency register documentation duties."
+    }
+  },
+  {
+    "question_id": "EV_Q08",
+    "topic": "Evacuation",
+    "question": "When is it safe for staff or customers to re-enter a service station facility following an evacuation?",
+    "options": {
+      "A": "As soon as the alarm stops ringing.",
+      "B": "Only after the Fire Chief, Emergency Commander, or OHS Manager gives formal \"All Clear\" clearance.",
+      "C": "When fuel smell disappears.",
+      "D": "10 minutes after evacuating."
+    },
+    "correct_answer": "B",
+    "explanation": "Invisible toxic gases or structural instabilities can persist after flames are out. Re-entry requires certified clearance.",
+    "remediation": {
+      "video_reference": "Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "video_path": "assets/remediation/Emergency Response and Evacuation Steps service stations Oct 2023.pdf",
+      "timestamp_start": "01:10",
+      "timestamp_end": "01:30",
+      "remediation_guidance": "Review post-incident evaluation and formal All-Clear procedures."
+    }
+  },
+  {
+    "question_id": "EV_Q09",
+    "topic": "Evacuation",
+    "question": "What emergency assistance should be provided to mobility-impaired or injured individuals during an evacuation?",
+    "options": {
+      "A": "Instruct them to wait alone inside the shop.",
+      "B": "Carry them over high barriers without assistance.",
+      "C": "Assign designated buddy assistants to help evacuate them along accessible, barrier-free exit routes to assembly point.",
+      "D": "Evacuate staff first and return later."
+    },
+    "correct_answer": "C",
+    "explanation": "Pre-assigned buddy systems ensure vulnerable individuals receive prompt assistance without delaying overall evacuation.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:50",
+      "timestamp_end": "02:15",
+      "remediation_guidance": "Watch assisted evacuation protocols and buddy system assignment."
+    }
+  },
+  {
+    "question_id": "EV_Q10",
+    "topic": "Evacuation",
+    "question": "What post-evacuation procedure must be completed after an emergency drill or real evacuation event?",
+    "options": {
+      "A": "Resume work immediately without discussion.",
+      "B": "Flicker main lights three times.",
+      "C": "Discard the drill log sheets.",
+      "D": "Hold a formal debrief meeting, document response times, identify bottlenecks, and update the Evacuation Plan."
+    },
+    "correct_answer": "D",
+    "explanation": "Post-evacuation debriefs measure performance metrics and identify continuous OHS improvements.",
+    "remediation": {
+      "video_reference": "Evacuation_Debrief_Template.docx",
+      "video_path": "assets/remediation/Evacuation_Debrief_Template.docx",
+      "timestamp_start": "00:00",
+      "timestamp_end": "00:30",
+      "remediation_guidance": "Review evacuation debrief reporting and CAPA (Corrective Action) logging."
+    }
+  },
+  {
+    "question_id": "FA_Q01",
+    "topic": "Fire Safety",
+    "question": "Under the Nightshift Forecourt First Responder Protocol, what is the mandatory first PPE action an attendant must take before rendering first aid to an injured customer or colleague?",
+    "options": {
+      "A": "Don disposable nitrile/latex medical gloves from the forecourt emergency kit before touching the victim or blood.",
+      "B": "Attempt to carry the victim into the Quick Shop immediately.",
+      "C": "Wipe the wound with a dry shop rag.",
+      "D": "Offer the victim a hot beverage before assessing wounds."
+    },
+    "correct_answer": "A",
+    "explanation": "Disposable medical gloves are mandatory PPE to prevent transmission of bloodborne pathogens and chemical contamination.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "00:45",
+      "timestamp_end": "01:10",
+      "remediation_guidance": "Review Forecourt First Responder PPE and nitrile glove mandatory protocol."
+    }
+  },
+  {
+    "question_id": "FA_Q02",
+    "topic": "Fire Safety",
+    "question": "When conducting a primary diagnostic check on a conscious injured patient on the forecourt, which 4 key diagnostic questions must be checked?",
+    "options": {
+      "A": "Car make, fuel tank capacity, payment method, and receipt preference.",
+      "B": "Patient orientation (name/location), pain level (1-10), chronic medical conditions (diabetes/meds), and emergency contact numbers.",
+      "C": "Attendant staff ID, cashier register balance, nozzle flow rate, and ESD pressure.",
+      "D": "Tire pressure, oil dipstick level, wiper fluid, and fuel octane."
+    },
+    "correct_answer": "B",
+    "explanation": "Checking orientation, pain severity, chronic meds (e.g. insulin), and next of kin contacts provides critical triage data for EMS paramedics.",
+    "remediation": {
+      "video_reference": "invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "video_path": "assets/remediation/invideo-ai-1080 How Nelly Makes Workplace Safety Effortless.mp4",
+      "timestamp_start": "01:10",
+      "timestamp_end": "01:35",
+      "remediation_guidance": "Review Conscious Patient Diagnostics and EMS hand-over protocols."
+    }
+  }
+] as const;
 
 const MODEL = process.env.NELLY_MODEL || 'claude-sonnet-5-5';
 const NOT_COVERED = "I don't have an approved source for this. Please check with your OHS officer.";
