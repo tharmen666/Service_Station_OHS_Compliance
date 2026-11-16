@@ -1,11 +1,11 @@
 import Anthropic from '@anthropic-ai/sdk';
-import bank from '../assessment_bank.json';
+import { approvedQuestions } from './approvedMaterial';
 
 /**
  * Server-side route for Nelly. The API key is read only from the server environment
  * (ANTHROPIC_API_KEY, set in Vercel project settings). It is never sent to the browser.
  *
- * Answers are limited to the approved training material in assessment_bank.json.
+ * Answers are limited to the approved training material (api/approvedMaterial.ts, generated from assessment_bank.json).
  * If that material does not cover the question, Nelly says so and does not guess.
  */
 
@@ -21,7 +21,7 @@ type BankQuestion = {
   explanation: string;
 };
 
-const questions = bank.questions as unknown as BankQuestion[];
+const questions = approvedQuestions as unknown as BankQuestion[];
 
 const APPROVED_MATERIAL = questions
   .map(
