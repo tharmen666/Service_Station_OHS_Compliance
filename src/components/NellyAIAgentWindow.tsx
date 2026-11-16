@@ -39,7 +39,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  const initialGreeting = "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. Operating at deterministic temperature: 0.0 with direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. How can I assist your site today?";
+  const initialGreeting = "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. I give AI-drafted guidance with citations to OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. Verify every citation against the primary legislation, and have a competent person review anything you act on. How can I assist your site today?";
 
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'nelly' | 'user'; text: string; time: string }>>([
     {

@@ -109,7 +109,7 @@ Expands the compliance matrix across Southern and Eastern Africa with country-sp
 
 ## 9. Nelly AI Advisor & Browser Speech Synthesis Engine (`src/components/NellyAIAgentWindow.tsx`)
 Provides deterministic statutory advisory and auditory guidance across all operational forecourt standards:
-- **Deterministic T=0.0 Statutory Persona**: Nelly operates with `temperature: 0.0` to eliminate hallucinations, grounding every recommendation in direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards.
+- **Deterministic T=0.0 Statutory Persona**: Nelly operates with `temperature: 0.0` to reduce output variation (AI output still requires human review), grounding every recommendation in direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards.
 - **Asynchronous Voice Cache & Browser Audio Lifecycle**:
   - Registers `window.speechSynthesis.onvoiceschanged` listeners to eliminate zero-voice empty arrays in Chromium/Safari.
   - Implements a 60ms delay post-`cancel()` and unpauses stuck queues via `window.speechSynthesis.resume()`.
@@ -177,8 +177,8 @@ The test suite (`e2e/ohsCompliance.spec.ts`) enforces strict regulatory and oper
 
 | Test Case | Scope & Standards Enforced | Target Status |
 | :--- | :--- | :--- |
-| **Navigation & Routing** | Validates document titles, top POS header, and zero 404/console errors across Evacuation (Tab 2), Spill (Tab 3), Training (Tab 1), Offload Bridge (Tab 6), and ATG Reconciliation (Tab 8). | **100% PASSED** (Desktop Chrome, Firefox, Mobile) |
-| **White-Label Topology** | Verifies dynamic `.env.local` tenant injection, confirming station site code (`STN-ALPHA`) renders in the header without commercial brand leakage. | **100% PASSED** (Desktop Chrome, Firefox, Mobile) |
-| **Statutory AI Studio** | Confirms temperature parameter is hard-locked to `temperature: 0.0` with strict SANS 10089 and OHS Act 85 system instructions. | **100% PASSED** (Desktop Chrome, Firefox, Mobile) |
-| **POPIA Privacy Status** | Verifies client-side AES-256-GCM digital safeguard badge is actively displayed in the header across desktop, tablet, and mobile viewports. | **100% PASSED** (Desktop Chrome, Firefox, Mobile) |
+| **Navigation & Routing** | Validates document titles, top POS header, and zero 404/console errors across Evacuation (Tab 2), Spill (Tab 3), Training (Tab 1), Offload Bridge (Tab 6), and ATG Reconciliation (Tab 8). | **Chromium PASSED** (Firefox and Mobile not re-verified in this revision) |
+| **White-Label Topology** | Verifies dynamic `.env.local` tenant injection, confirming station site code (`STN-ALPHA`) renders in the header without commercial brand leakage. | **Chromium PASSED** (Firefox and Mobile not re-verified in this revision) |
+| **Statutory AI Studio** | Confirms temperature is requested as `temperature: 0.0` with strict SANS 10089 and OHS Act 85 system instructions. | **Chromium PASSED** (Firefox and Mobile not re-verified in this revision) |
+| **POPIA Privacy Status** | Verifies client-side AES-256-GCM digital safeguard badge is actively displayed in the header across desktop, tablet, and mobile viewports. | **Chromium PASSED** (Firefox and Mobile not re-verified in this revision) |
 

@@ -41,6 +41,10 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const [docResponse, setDocResponse] = useState<StatutoryComplianceResponse | null>(null);
   const [copied, setCopied] = useState<boolean>(false);
   const [exportedAudit, setExportedAudit] = useState<boolean>(false);
+  // Human sign-off gate: AI output is a draft until a named competent person reviews it (OHS Act s16.2 / SHE Rep)
+  const [reviewerName, setReviewerName] = useState<string>('');
+  const [reviewerConfirmed, setReviewerConfirmed] = useState<boolean>(false);
+  const canExport = reviewerName.trim().length >= 3 && reviewerConfirmed;
 
   if (!isOpen) return null;
 
@@ -74,7 +78,8 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   };
 
   const handleExportAuditLog = async () => {
-    if (!docResponse?.document) return;
+    if (!docResponse?.document || !canExport) return;
+    const reviewedAt = new Date().toISOString();
 
     // SHA-256 integrity digest of the audit signature (POPIA Condition 7 / Section 19 integrity safeguard)
     const timestamp = new Date().toISOString();
@@ -90,6 +95,9 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 - **Audit Signature (SHA-256)**: \`${signatureDigest}\`
 - **Digest Standard**: SHA-256
 - **Timestamp**: ${timestamp}
+- **Human Reviewer (competent person)**: ${reviewerName.trim()}
+- **Review Confirmed At**: ${reviewedAt}
+- **Review Status**: AI-drafted. Reviewed and confirmed by the named person above. Verify against primary legislation before reliance.
 - **Audit Verification Code**: ZA-OHS-ACT85-COMPLIANT
 `;
 
@@ -279,7 +287,9 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
                   <button
                     onClick={handleExportAuditLog}
-                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition flex-1 sm:flex-none"
+                    disabled={!canExport}
+                    title={canExport ? 'Export with reviewer sign-off' : 'Enter the reviewer name and confirm review first'}
+                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition flex-1 sm:flex-none"
                   >
                     {exportedAudit ? (
                       <>
@@ -294,6 +304,29 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                     )}
                   </button>
                 </div>
+              </div>
+
+              {/* Human sign-off gate */}
+              <div className="p-4 rounded-2xl bg-slate-900 border border-amber-500/40 space-y-3">
+                <p className="text-amber-300 text-xs font-bold">
+                  DRAFT - AI-generated. Not approved. A competent person must review it before it is used or exported.
+                </p>
+                <input
+                  type="text"
+                  value={reviewerName}
+                  onChange={(e) => setReviewerName(e.target.value)}
+                  placeholder="Reviewer full name (competent person / SHE Representative)"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 text-xs"
+                />
+                <label className="flex items-start gap-2 text-xs text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={reviewerConfirmed}
+                    onChange={(e) => setReviewerConfirmed(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span>I have reviewed this draft against the primary legislation and accept responsibility for it.</span>
+                </label>
               </div>
 
               {/* Formatted Markdown Container */}

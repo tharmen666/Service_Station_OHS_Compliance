@@ -59,7 +59,7 @@ export const demoSteps: DemoStep[] = [
     endSec: 28,
     title: 'Statutory Guardrails & T=0.0 Determinism',
     subtitle: 'Nelly AI deterministic response engine enforcing regulatory standards & thermal checks',
-    script: 'At the core is Nelly—configured for deterministic statutory response generation at temperature: 0.0. Every recommendation strictly maps across regulatory frameworks including OHS Act 85 of 1993, R638, ISO 22000, and FDA standards with direct citations.',
+    script: 'At the core is Nelly, an AI assistant that drafts statutory guidance with citations across OHS Act 85 of 1993, R638, ISO 22000, and FDA standards. Every draft is reviewed by a competent person before use.',
     frameworks: ['OHS Act 85', 'R638 Food Hygiene', 'ISO 22000', 'FDA Food Code 2022', 'Nevada SNHD']
   },
   {
@@ -362,7 +362,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
                       Nelly AI Agent • T=0.0 Determinism Mode
                     </span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
-                      Zero Hallucinations
+                      Human-Reviewed
                     </span>
                   </div>
 

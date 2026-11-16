@@ -68,8 +68,8 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
       overall_compliance_percentage: complianceScore,
       monthly_refresher_rate_percentage: refresherRate,
       escalation_tier: tierStatus,
-      sans_10089_alignment: "100% Verified",
-      sans_10263_spill_readiness: "100% Verified",
+      sans_10089_alignment: "Not verified - pending competent-person review",
+      sans_10263_spill_readiness: "Not verified - pending competent-person review",
       hitl_cert_audit_hash: dossierHash,
       timestamp: new Date().toISOString()
     };
@@ -186,7 +186,7 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
 
               <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
                 <span className="text-[10px] uppercase font-black text-slate-400 block">Audit Sign-off Status</span>
-                <span className="text-xs font-black text-emerald-300 block pt-3">100% HITL Manager Audited</span>
+                <span className="text-xs font-black text-amber-300 block pt-3">Manager sign-off required</span>
                 <span className="text-[10px] text-slate-400 block font-mono">Hash Persisted</span>
               </div>
             </div>

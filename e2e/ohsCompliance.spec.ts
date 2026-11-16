@@ -66,8 +66,10 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     await aiDrawerBtn.click();
 
     // Verify temperature 0.0 lock badge
-    await expect(page.locator('text=Temperature Parameter Locked: 0.0')).toBeVisible();
-    await expect(page.locator('text=Zero Hallucination Compliance Mode')).toBeVisible();
+    await expect(page.locator('text=Temperature Requested: 0.0')).toBeVisible();
+    await expect(page.locator('text=AI-drafted output requires human review')).toBeVisible();
+    // Overclaim guard: these phrases must never appear in the UI again
+    await expect(page.locator('text=Zero Hallucination')).toHaveCount(0);
 
     // Verify statutory SANS 10089 / OHS Act 85 system instruction content
     const textarea = page.locator('textarea');
@@ -79,7 +81,7 @@ test.describe('Service Station OHS Compliance - E2E Suite', () => {
     // Close drawer
     const closeBtn = page.getByRole('button', { name: /Close Drawer/i }).first();
     await closeBtn.click();
-    await expect(page.locator('text=Temperature Parameter Locked: 0.0')).not.toBeVisible();
+    await expect(page.locator('text=Temperature Requested: 0.0')).not.toBeVisible();
   });
 
   test('POPIA Privacy Status: Client-side AES-256-GCM encryption indicator is active in header', async ({ page }) => {

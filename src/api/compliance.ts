@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import { STATUTORY_MODEL_ID } from '../ohsComplianceGuardrails';
 
 export interface StatutoryComplianceRequest {
   taskType: 'HIRA' | 'SWP' | 'Incident Root Cause' | 'Toolbox Talk' | string;
@@ -13,7 +14,8 @@ export interface StatutoryComplianceResponse {
   metadata: {
     statutoryFrameworks: string[];
     hierarchyOfControlsApplied: boolean;
-    zeroHallucinationLock: boolean;
+    humanReviewRequired: boolean;
+    status: 'DRAFT';
     engineVersion: string;
   };
 }
@@ -44,9 +46,9 @@ export async function executeStatutoryComplianceEngine(
     try {
       const anthropic = new Anthropic({ apiKey });
       const response = await anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: STATUTORY_MODEL_ID,
         max_tokens: 2500,
-        temperature: 0.0, // Strict statutory zero-hallucination lock
+        temperature: 0.0, // Requested for repeatability only; does NOT guarantee accuracy. Output requires human review.
         system: STATUTORY_SYSTEM_PROMPT,
         messages: [
           {
@@ -71,8 +73,9 @@ Ensure full statutory grounding, exact South African section citations, and stri
         metadata: {
           statutoryFrameworks: ['OHS Act 85 of 1993', 'Ergonomics Regs 2019', 'SANS 10089-3', 'COIDA Act 130 of 1993', 'ISO 45001:2018'],
           hierarchyOfControlsApplied: true,
-          zeroHallucinationLock: true,
-          engineVersion: 'ErgoSafe Statutory AI v3.4 (Live Claude API)',
+          humanReviewRequired: true,
+          status: 'DRAFT',
+          engineVersion: 'ErgoSafe Statutory AI v3.4 (Live Claude API, AI-drafted)',
         },
       };
     } catch (err) {
@@ -90,8 +93,9 @@ Ensure full statutory grounding, exact South African section citations, and stri
     metadata: {
       statutoryFrameworks: ['OHS Act 85 of 1993', 'Driven Machinery Regs', 'General Machinery Regs', 'Ergonomics Regs 2019', 'COIDA Act 130 of 1993', 'ISO 45001:2018'],
       hierarchyOfControlsApplied: true,
-      zeroHallucinationLock: true,
-      engineVersion: 'ErgoSafe Statutory Embedded Engine v3.4 (Zero-Hallucination Lock)',
+      humanReviewRequired: true,
+      status: 'DRAFT',
+      engineVersion: 'ErgoSafe Statutory Engine v3.4 (AI-drafted; human review required)',
     },
   };
 }
@@ -107,8 +111,8 @@ function generateFallbackStatutoryDocument(taskType: string, siteContext: string
 **Document Type**: ${taskType.toUpperCase()}  
 **Site Context**: ${siteContext}  
 **Date of Audit & Issue**: ${currentDate}  
-**Status**: APPROVED & AUDIT-LOCKED (SANS 10089 / ISO 45001 Compliant)  
-**AI Statutory Engine Lock**: Temperature 0.0 (Deterministic Compliance Mode)  
+**Status**: DRAFT - NOT APPROVED. AI-generated. Must be reviewed and signed off by a competent person (OHS Act s16.2 / SHE Representative) before use.
+**Generation**: AI-drafted; temperature 0.0 requested for repeatability. Not independently verified against primary legislation.
 
 ---
 

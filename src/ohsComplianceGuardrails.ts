@@ -24,13 +24,19 @@ export const OHS_STATUTORY_CONSTANTS = {
   LOCKED_TEMPERATURE: 0.0,
 };
 
+/**
+ * Single source of truth for the AI model used by the statutory engine.
+ * Change it here only; the API handler reads this constant.
+ */
+export const STATUTORY_MODEL_ID = 'claude-sonnet-5-5';
+
 export const DEFAULT_OHS_GUARDRAILS: OHSGuardrailConfig = {
   temperature: OHS_STATUTORY_CONSTANTS.LOCKED_TEMPERATURE,
   ohsActEnforced: true,
   sans10089Enforced: true,
   section24EscalationEnforced: true,
   esdEmergencyIsolationEnforced: true,
-  model: 'gemini-1.5-pro-0.0-locked',
+  model: STATUTORY_MODEL_ID,
 };
 
 /**
