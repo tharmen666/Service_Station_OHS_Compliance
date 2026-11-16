@@ -1,3 +1,4 @@
+import { SHOW_DEV_TOOLS } from '../lib/devTools';
 import React, { useState, useRef, useEffect } from 'react';
 import { Language, translations, DemoChapter } from '../data/translations';
 import { 
@@ -226,8 +227,8 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
               </div>
             </div>
 
-            {/* Right Side: Script Visualizer Teleprompter (5 Cols) */}
-            <div className="lg:col-span-5 space-y-4">
+            {/* Right Side: Script Visualizer Teleprompter (developer only) */}
+            <div className={`lg:col-span-5 space-y-4 ${SHOW_DEV_TOOLS ? "" : "hidden"}`}>
               <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-4 shadow-xl flex flex-col justify-between min-h-[340px]">
                 
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">

@@ -35,11 +35,10 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
   const [isVoiceActive, setIsVoiceActive] = useState<boolean>(true);
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
   const [inputQuery, setInputQuery] = useState<string>('');
-  const [ccpThermalTemp] = useState<number>(73.9);
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const activeUtteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
-  const initialGreeting = "Hello! I am Nelly, your AI guide for forecourt & retail statutory compliance. Operating at deterministic temperature: 0.0 with direct citations across OHS Act 85 of 1993, SANS 10089, R638, ISO 22000, and FDA standards. How can I assist your site today?";
+  const initialGreeting = "Hello! I am Nelly, your OHS training guide. I answer only from the approved training material and show the question I used. How can I help?";
 
   const [chatMessages, setChatMessages] = useState<Array<{ sender: 'nelly' | 'user'; text: string; time: string }>>([
     {
@@ -185,36 +184,61 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
     setChatMessages(prev => [...prev, { sender: 'user', text: userMsg, time: now }]);
     setInputQuery('');
 
-    setTimeout(() => {
-      let replyText = "Under T=0.0 Statutory Determinism, every operational step is logged and mapped strictly to OHS Act 85 of 1993 and SANS 10089 standards.";
+    const lower = userMsg.toLowerCase();
 
-      const lower = userMsg.toLowerCase();
-      if (lower.includes('ccp') || lower.includes('thermal') || lower.includes('temperature') || lower.includes('food')) {
-        replyText = `CCP Thermal Probe verified: Internal poultry temperature threshold strictly locked at ${ccpThermalTemp}°C (Min 73.9°C required under FDA Food Code 2022 & R638). Critical Control Point is COMPLIANT.`;
-      } else if (lower.includes('brand') || lower.includes('express') || lower.includes('standard') || lower.includes('highway') || lower.includes('urban')) {
-        replyText = "Switching multi-tenant white-label brand configuration while maintaining client-side POPIA AES-256 data encryption.";
-        if (lower.includes('express')) onTriggerBrandSwitch?.('express');
-        else if (lower.includes('highway')) onTriggerBrandSwitch?.('highway');
-        else if (lower.includes('urban')) onTriggerBrandSwitch?.('urban');
-        else onTriggerBrandSwitch?.('standard');
-      } else if (lower.includes('gear') || lower.includes('pillar') || lower.includes('calibrate')) {
-        replyText = "Opening G.E.A.R. Pillar System Suite. Governance, Ergonomics, SLA Escalation, and Risk Reduction meters are ready for live threshold calibration.";
-        onOpenGearModal?.();
-      }
-
+    // UI actions run locally.
+    if (/\b(switch|brand|tenant)\b/.test(lower) && /(express|highway|urban|standard)/.test(lower)) {
+      const replyText = 'Switching multi-tenant white-label brand configuration.';
+      if (lower.includes('express')) onTriggerBrandSwitch?.('express');
+      else if (lower.includes('highway')) onTriggerBrandSwitch?.('highway');
+      else if (lower.includes('urban')) onTriggerBrandSwitch?.('urban');
+      else onTriggerBrandSwitch?.('standard');
       setChatMessages(prev => [...prev, { sender: 'nelly', text: replyText, time: now }]);
       speakText(replyText);
-    }, 600);
+      return;
+    }
+    if (lower.includes('gear') || lower.includes('pillar') || lower.includes('calibrate')) {
+      const replyText = 'Opening the G.E.A.R. Pillar System Suite.';
+      onOpenGearModal?.();
+      setChatMessages(prev => [...prev, { sender: 'nelly', text: replyText, time: now }]);
+      speakText(replyText);
+      return;
+    }
+
+    // Everything else goes to the guidance service, which answers only from approved material.
+    void askNelly(userMsg, now);
+  };
+
+  const askNelly = async (question: string, now: string) => {
+    const unavailable =
+      'Nelly is unavailable right now. Please use the approved training material or ask your OHS officer.';
+    let replyText = unavailable;
+    try {
+      const res = await fetch('/api/nelly', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && typeof data.answer === 'string') {
+        replyText = data.answer;
+      }
+    } catch {
+      // Network failure: keep the "unavailable" message. Never invent an answer.
+    }
+    setChatMessages(prev => [...prev, { sender: 'nelly', text: replyText, time: now }]);
+    speakText(replyText);
   };
 
   const runPresetAction = (actionType: 'ccp' | 'gear' | 'brand' | 'sla') => {
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     if (actionType === 'ccp') {
-      const text = `Executing CCP Thermal Check: Food probe measures ${ccpThermalTemp}°C against mandatory 73.9°C poultry safety threshold. Status: PASSED (ISO 22000 & R638 Certified).`;
+      // No probe reading is stored in this app, so no CCP status is reported.
+      const text = 'No thermal reading has been entered, so no CCP status can be given. Enter the probe reading from the site record to check it against the threshold set by your OHS officer.';
       setChatMessages(prev => [
         ...prev,
-        { sender: 'user', text: "Conduct CCP 73.9°C Thermal Probe Verification", time: now },
+        { sender: 'user', text: 'Check the CCP thermal probe', time: now },
         { sender: 'nelly', text, time: now }
       ]);
       speakText(text);
@@ -277,7 +301,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
                 👩‍💼 Female Avatar Guide
               </span>
             </div>
-            <p className="text-[10px] text-slate-400 mt-0.5 font-mono">T=0.0 Statutory Determinism</p>
+            <p className="text-[10px] text-slate-400 mt-0.5 font-mono">Answers from approved material</p>
           </div>
         </div>
 
@@ -316,7 +340,7 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
             <div className="flex items-center justify-between">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[10px] font-extrabold border border-cyan-500/40">
                 <Lock className="w-3 h-3 text-cyan-400" />
-                <span>Determinism Mode: T=0.0 (Locked)</span>
+                <span>Source: approved training material</span>
               </div>
 
               {/* Animated Audio Waveform */}
@@ -338,8 +362,6 @@ export const NellyAIAgentWindow: React.FC<NellyAIAgentWindowProps> = ({
               <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-amber-400">OHS Act 85</span>
               <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-emerald-400">R638</span>
               <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-blue-400">ISO 22000</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-purple-400">FDA Food Code 2022</span>
-              <span className="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-rose-400">Nevada SNHD</span>
             </div>
           </div>
 

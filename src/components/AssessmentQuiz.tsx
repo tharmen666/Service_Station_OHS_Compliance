@@ -4,6 +4,7 @@ import { assessmentQuestions } from '../data/assessmentData';
 import { VideoRemediationModal } from './VideoRemediationModal';
 import { AuditCertificateModal } from './AuditCertificateModal';
 import { Language, translations } from '../data/translations';
+import { SECONDS_PER_QUESTION, TIMEOUT_REVEAL_SECONDS } from '../lib/assessmentRules';
 import { 
   CheckCircle2, 
   XCircle, 
@@ -30,8 +31,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [score, setScore] = useState<number>(0);
   const [answersState, setAnswersState] = useState<{ [key: number]: { selected: string; correct: boolean } }>({});
-  const [timerSeconds, setTimerSeconds] = useState<number>(60);
-  const [isTimerRunning, setIsTimerRunning] = useState<boolean>(true);
+  const [timerSeconds, setTimerSeconds] = useState<number>(SECONDS_PER_QUESTION);
 
   // Remediation Modal State
   const [isRemediationOpen, setIsRemediationOpen] = useState<boolean>(false);
@@ -44,32 +44,48 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
   const [isCertModalOpen, setIsCertModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedTopic === 'All') {
-      setFilteredQuestions(assessmentQuestions);
-    } else {
-      setFilteredQuestions(assessmentQuestions.filter(q => q.topic === selectedTopic));
-    }
+    const list = selectedTopic === 'All'
+      ? assessmentQuestions
+      : assessmentQuestions.filter(q => q.topic === selectedTopic);
+    setFilteredQuestions(list);
     setCurrentIndex(0);
     setSelectedAnswer(null);
     setAnswersState({});
     setScore(0);
-    setTimerSeconds(60);
+    setTimerSeconds(SECONDS_PER_QUESTION);
   }, [selectedTopic]);
 
-  // Timer countdown
-  useEffect(() => {
-    let interval: any = null;
-    if (isTimerRunning && timerSeconds > 0) {
-      interval = setInterval(() => {
-        setTimerSeconds(prev => prev - 1);
-      }, 1000);
-    } else if (timerSeconds === 0) {
-      setIsTimerRunning(false);
-    }
-    return () => clearInterval(interval);
-  }, [isTimerRunning, timerSeconds]);
-
   const currentQuestion = filteredQuestions[currentIndex];
+  const totalQuestions = filteredQuestions.length;
+
+  // Move to a question. Restores its earlier answer, or starts a fresh 60s timer.
+  const goTo = (index: number) => {
+    setCurrentIndex(index);
+    const previous = answersState[index];
+    setSelectedAnswer(previous ? previous.selected : null);
+    setTimerSeconds(SECONDS_PER_QUESTION);
+  };
+
+  // Per-question countdown. It stops as soon as the question is answered.
+  useEffect(() => {
+    if (!currentQuestion || selectedAnswer !== null) return;
+    if (timerSeconds <= 0) {
+      // Time ran out: lock the question as incorrect.
+      setSelectedAnswer('TIMEOUT');
+      setAnswersState(prev => ({ ...prev, [currentIndex]: { selected: 'TIMEOUT', correct: false } }));
+      return;
+    }
+    const id = setInterval(() => setTimerSeconds(prev => prev - 1), 1000);
+    return () => clearInterval(id);
+  }, [timerSeconds, selectedAnswer, currentIndex, currentQuestion]);
+
+  // After a timeout, show the correct answer briefly, then move on (not after the last question).
+  useEffect(() => {
+    if (selectedAnswer !== 'TIMEOUT') return;
+    if (currentIndex >= totalQuestions - 1) return;
+    const id = setTimeout(() => goTo(currentIndex + 1), TIMEOUT_REVEAL_SECONDS * 1000);
+    return () => clearTimeout(id);
+  }, [selectedAnswer, currentIndex, totalQuestions]);
 
   const handleSelectAnswer = (optionKey: 'A' | 'B' | 'C' | 'D') => {
     if (selectedAnswer !== null) return; // prevent double clicks
@@ -97,20 +113,11 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
   };
 
   const handleNext = () => {
-    if (currentIndex < filteredQuestions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-      setSelectedAnswer(null);
-      setTimerSeconds(60);
-      setIsTimerRunning(true);
-    }
+    if (currentIndex < totalQuestions - 1) goTo(currentIndex + 1);
   };
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
-      const prevAnswer = answersState[currentIndex - 1];
-      setSelectedAnswer(prevAnswer ? prevAnswer.selected : null);
-    }
+    if (currentIndex > 0) goTo(currentIndex - 1);
   };
 
   const resetQuiz = () => {
@@ -118,8 +125,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
     setSelectedAnswer(null);
     setScore(0);
     setAnswersState({});
-    setTimerSeconds(60);
-    setIsTimerRunning(true);
+    setTimerSeconds(SECONDS_PER_QUESTION);
   };
 
   if (!currentQuestion) return null;
@@ -131,7 +137,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-400 text-xs font-black uppercase tracking-wider mb-2 border border-amber-500/30">
             <Award className="w-4 h-4" />
-            60-Second Micro-Assessment Loop • SANS 10089
+            60 seconds per question • SANS 10089
           </div>
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">{t.quizTitle}</h2>
           <p className="text-slate-300 text-sm mt-1">{t.quizSubtitle}</p>
@@ -177,7 +183,9 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
                 : 'text-slate-400 hover:text-white hover:bg-slate-900'
             }`}
           >
-            {topicName} {topicName === 'All' ? '(40 Qs)' : '(10 Qs)'}
+            {topicName} ({topicName === 'All'
+              ? assessmentQuestions.length
+              : assessmentQuestions.filter(q => q.topic === topicName).length} Qs)
           </button>
         ))}
       </div>
@@ -259,6 +267,9 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
                   <><ShieldAlert className="w-4 h-4 text-red-400" /> {t.incorrectAnswer}</>
                 )}
               </strong>
+              {selectedAnswer === 'TIMEOUT' && (
+                <p className="font-bold">Time ran out. This question counts as incorrect.</p>
+              )}
               <p className="leading-relaxed">{currentQuestion.explanation}</p>
             </div>
 
@@ -273,7 +284,11 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({ lang }) => {
                   onClick={() => {
                     setActiveRemediation(currentQuestion.remediation);
                     setModalQuestionText(currentQuestion.question);
-                    setModalIncorrectChoice(`${selectedAnswer}: ${currentQuestion.options[selectedAnswer as 'A'|'B'|'C'|'D']}`);
+                    setModalIncorrectChoice(
+                      selectedAnswer === 'TIMEOUT'
+                        ? 'No answer (time ran out)'
+                        : `${selectedAnswer}: ${currentQuestion.options[selectedAnswer as 'A'|'B'|'C'|'D']}`
+                    );
                     setModalCorrectChoice(`${currentQuestion.correct_answer}: ${currentQuestion.options[currentQuestion.correct_answer]}`);
                     setIsRemediationOpen(true);
                   }}

@@ -70,6 +70,9 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
 
   const { pillars, thresholds, overallHealthScore } = gearState;
 
+  // Status comes from the reading vs its target. Changing a target changes only the label, never the score.
+  const onTarget = (value: number, target: number) => value >= target;
+
   return (
     <div className="w-full max-w-full overflow-x-hidden min-w-0 space-y-8 font-sans">
       
@@ -303,7 +306,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
             </div>
             <div className="flex justify-between text-[11px] font-mono text-slate-400">
               <span>Target: {thresholds.governanceThreshold}%</span>
-              <span className="text-emerald-400 font-bold">✓ Compliant</span>
+              <span className={`font-bold ${onTarget(pillars.governance, thresholds.governanceThreshold) ? 'text-emerald-400' : 'text-red-400'}`}>{onTarget(pillars.governance, thresholds.governanceThreshold) ? '✓ Compliant' : '✗ Below target'}</span>
             </div>
           </div>
 
@@ -324,7 +327,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
             </div>
             <div className="flex justify-between text-[11px] font-mono text-slate-400">
               <span>Shift Cutoff: {thresholds.fatigueMaxShiftHours}h</span>
-              <span className="text-emerald-400 font-bold">✓ Rested</span>
+              <span className="text-slate-300 font-bold">Limit set (no % target)</span>
             </div>
           </div>
 
@@ -345,7 +348,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
             </div>
             <div className="flex justify-between text-[11px] font-mono text-slate-400">
               <span>Target Resolution: {thresholds.slaEscalationMaxHours}h</span>
-              <span className="text-emerald-400 font-bold">✓ Audit-Proof</span>
+              <span className="text-slate-300 font-bold">Target not set</span>
             </div>
           </div>
 
@@ -366,7 +369,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
             </div>
             <div className="flex justify-between text-[11px] font-mono text-slate-400">
               <span>Risk Target: {thresholds.hazardMitigationCutoff}%</span>
-              <span className="text-emerald-400 font-bold">✓ Low Risk</span>
+              <span className={`font-bold ${onTarget(pillars.riskReduction, thresholds.hazardMitigationCutoff) ? 'text-emerald-400' : 'text-red-400'}`}>{onTarget(pillars.riskReduction, thresholds.hazardMitigationCutoff) ? '✓ On target' : '✗ Below target'}</span>
             </div>
           </div>
 
@@ -526,7 +529,7 @@ export const ExecutiveBriefingDashboard: React.FC<ExecutiveBriefingDashboardProp
             </div>
             <div>
               <h3 className="text-sm font-extrabold text-white">5. 60s Assessment & Quiz</h3>
-              <p className="text-xs text-slate-400 mt-0.5">40 Questions & Video Remediation</p>
+              <p className="text-xs text-slate-400 mt-0.5">Video Remediation</p>
             </div>
           </button>
 

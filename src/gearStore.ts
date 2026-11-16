@@ -51,18 +51,9 @@ export function getGearState(): GearState {
 export function updateGearThresholds(updates: Partial<GearThresholds>): GearState {
   const newThresholds = { ...currentGearState.thresholds, ...updates };
   
-  // Recalculate pillars based on live recalibration thresholds
-  const govDelta = (newThresholds.governanceThreshold - 85) * 0.2;
-  const ergDelta = (10 - newThresholds.fatigueMaxShiftHours) * 1.5;
-  const slaDelta = (4 - newThresholds.slaEscalationMaxHours) * 1.2;
-  const riskDelta = (newThresholds.hazardMitigationCutoff - 75) * 0.3;
-
-  const newPillars: GearPillars = {
-    governance: Math.min(100, Math.max(40, Math.round(96 + govDelta))),
-    ergonomic: Math.min(100, Math.max(40, Math.round(92 + ergDelta))),
-    auditReadiness: Math.min(100, Math.max(40, Math.round(98 + slaDelta))),
-    riskReduction: Math.min(100, Math.max(40, Math.round(95 + riskDelta))),
-  };
+  // Targets change only the status labels. Pillar readings are NOT recalculated from targets:
+  // a reading must come from recorded data. Here the readings stay at their current values.
+  const newPillars: GearPillars = { ...currentGearState.pillars };
 
   currentGearState = {
     pillars: newPillars,

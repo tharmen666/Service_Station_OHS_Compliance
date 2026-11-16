@@ -62,7 +62,7 @@ export const AIStudioDrawer: React.FC<AIStudioDrawerProps> = ({ isOpen, onClose 
               <Lock className="w-4 h-4 text-emerald-400" />
               <div>
                 <span className="font-extrabold text-emerald-300">Temperature Parameter Locked: 0.0</span>
-                <span className="block text-[11px] text-emerald-400/80">Zero Hallucination Compliance Mode (OHS Act 85 / SANS 10089)</span>
+                <span className="block text-[11px] text-emerald-400/80">Strict-temperature drafting mode (OHS Act 85 / SANS 10089)</span>
               </div>
             </div>
             <span className="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 text-[10px] flex items-center gap-1">

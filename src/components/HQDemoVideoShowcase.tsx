@@ -1,3 +1,4 @@
+import { SHOW_DEV_TOOLS } from '../lib/devTools';
 import React, { useState, useEffect, useRef } from 'react';
 import { Language } from '../data/translations';
 import { 
@@ -362,7 +363,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
                       Nelly AI Agent • T=0.0 Determinism Mode
                     </span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[10px] font-bold border border-emerald-500/30">
-                      Zero Hallucinations
+                      Approved-source drafting
                     </span>
                   </div>
 
@@ -503,7 +504,7 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
         </div>
 
         {/* Right Side: Timeline Teleprompter Script */}
-        <div className="lg:col-span-4 space-y-4">
+        <div className={`lg:col-span-4 space-y-4 ${SHOW_DEV_TOOLS ? "" : "hidden"}`}>
           <div className="p-5 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-xl flex flex-col justify-between min-h-[420px]">
             
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">

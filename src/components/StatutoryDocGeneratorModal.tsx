@@ -68,9 +68,15 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
   const handleCopy = () => {
     if (!docResponse?.document) return;
-    navigator.clipboard.writeText(docResponse.document);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
+    navigator.clipboard
+      .writeText(docResponse.document)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 3000);
+      })
+      .catch(() => {
+        window.alert('Copy failed. Select the document text and copy it manually.');
+      });
   };
 
   const handleExportAuditLog = async () => {
@@ -89,7 +95,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 - **POPIA Signature Hash**: \`${encryptedSignature.ciphertext}\`
 - **Encryption Standard**: ${encryptedSignature.algo}
 - **Timestamp**: ${encryptedSignature.timestamp}
-- **Audit Verification Code**: ZA-OHS-ACT85-COMPLIANT
+- **Status**: Draft generated for review. Not verified by a registered OHS practitioner until signed.
 `;
 
     const blob = new Blob([exportContent], { type: 'text/markdown;charset=utf-8' });

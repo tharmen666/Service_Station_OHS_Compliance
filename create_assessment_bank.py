@@ -833,6 +833,15 @@ assessment_data['questions'].extend(sr_questions)
 assessment_data['questions'].extend(fs_questions)
 assessment_data['questions'].extend(ev_questions)
 
+# Rebalance the answer key so correct answers are spread across A-D (previously every answer was B).
+_letters = ['A', 'B', 'C', 'D']
+for _i, _q in enumerate(assessment_data['questions']):
+    _target = _letters[_i % 4]
+    _cur = _q['correct_answer']
+    if _target != _cur:
+        _q['options'][_target], _q['options'][_cur] = _q['options'][_cur], _q['options'][_target]
+        _q['correct_answer'] = _target
+
 with open(target_path, 'w', encoding='utf-8') as f:
     json.dump(assessment_data, f, indent=2)
 

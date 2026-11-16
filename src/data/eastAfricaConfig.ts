@@ -26,56 +26,56 @@ export const EAST_AFRICA_PRESETS: Record<JurisdictionCode, RegionalRegulatoryPre
     siteCode: 'ENG-JHB-042',
     siteName: 'Gauteng South Forecourt Hub',
     currency: 'ZAR',
-    fiscalSystem: 'SARS eFiling / eBOL Verified',
+    fiscalSystem: 'SARS eFiling (reference)',
     maxLossTolerancePct: 0.35,
     maxLossToleranceLitres: 50,
     emergencyNumber: '10177 / 112',
-    regulatoryNotice: 'Compliant with DMRE Petroleum Products Act & SANS 10089-3 flammable liquid handling regulations.'
+    regulatoryNotice: 'Reference: DMRE / DoEL; Petroleum Products Act; OHSA 85 of 1993; SANS 10089-3 (underground tanks, dispensers and pipework at service stations). Reference only: confirm with local counsel.'
   },
   KE: {
     code: 'KE',
     country: 'Kenya',
     flag: '🇰🇪',
     regulators: 'EPRA',
-    statutoryReference: 'KRA eTIMS Live & OSHA 2007',
+    statutoryReference: 'EPRA (Energy Act 2019) & OSHA 2007',
     siteCode: 'NBO-MSA-018',
     siteName: 'Nairobi Mombasa Rd Energy Plaza',
     currency: 'KES',
-    fiscalSystem: 'KRA eTIMS Fiscal Electronic Device',
+    fiscalSystem: 'KRA eTIMS (reference)',
     maxLossTolerancePct: 0.35,
     maxLossToleranceLitres: 50,
     emergencyNumber: '999 / 112',
-    regulatoryNotice: 'Regulated by EPRA (Energy Act 2019) & OSHA 2007. Real-time fiscal offload tracking matched to KRA eTIMS.'
+    regulatoryNotice: 'Reference: EPRA (Energy Act 2019; Petroleum Act 2019); Occupational Safety and Health Act 2007 (No. 15 of 2007). KRA eTIMS fuel-station integration: confirm current status with KRA. Reference only: confirm with local counsel.'
   },
   TZ: {
     code: 'TZ',
     country: 'Tanzania',
     flag: '🇹🇿',
     regulators: 'EWURA',
-    statutoryReference: 'TRA EFD / VFD & OSHA 2003',
+    statutoryReference: 'OSH Act 2003 (Act 5 of 2003)',
     siteCode: 'DAR-KIG-009',
     siteName: 'Dar es Salaam Kigamboni Marine Hub',
     currency: 'TZS',
-    fiscalSystem: 'TRA EFD / VFD Electronic Fiscal Device',
+    fiscalSystem: 'TRA EFD / VFD (reference)',
     maxLossTolerancePct: 0.35,
     maxLossToleranceLitres: 50,
-    emergencyNumber: '112 / 114',
-    regulatoryNotice: 'Licensed under EWURA Petroleum General Regulations & OSHA 2003. TRA EFD automated receipting active.'
+    emergencyNumber: '112 (verify locally)',
+    regulatoryNotice: 'Reference: EWURA (Petroleum Act) and OSH Act 2003 (Act 5 of 2003). TRA EFD / VFD receipting: confirm the pump-integration requirement with TRA. Reference only: confirm with local counsel.'
   },
   UG: {
     code: 'UG',
     country: 'Uganda',
     flag: '🇺🇬',
     regulators: 'PAU / MEMD',
-    statutoryReference: 'URA EFRIS Live & OSH Act 2006',
+    statutoryReference: 'OSH Act 2006 (Act 9 of 2006)',
     siteCode: 'KLA-ENT-014',
     siteName: 'Kampala Entebbe Corridor Station',
     currency: 'UGX',
-    fiscalSystem: 'URA EFRIS Electronic Fiscal Receipting',
+    fiscalSystem: 'URA EFRIS (reference)',
     maxLossTolerancePct: 0.35,
     maxLossToleranceLitres: 50,
     emergencyNumber: '999 / 112',
-    regulatoryNotice: 'Monitored by Petroleum Authority of Uganda (PAU) & Ministry of Energy. Real-time URA EFRIS tax invoice matching.'
+    regulatoryNotice: 'Reference: Petroleum Authority of Uganda (PAU); Ministry of Energy and Mineral Development (MEMD); OSH Act 2006 (Act 9 of 2006). URA EFRIS fuel-retail invoicing applies from 1 July 2025 (press reports; confirm with URA). Reference only: confirm with local counsel.'
   }
 };
 
