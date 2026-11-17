@@ -187,4 +187,29 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
       'Shift Supervisor A'
     );
   });
+
+  test('5. Dual-Mode Wetstock Reconciliation: Manual Dip + Pump Totalizer + Next-Morning Shift Rollover', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    // Open Wetstock & Reconciliation tab
+    await page.getByRole('button', { name: /8\. Wetstock & Reconciliation/i }).first().click();
+    await expect(page.getByTestId('dual-mode-wetstock-panel')).toBeVisible();
+    await expect(page.getByTestId('wetstock-active-shift-badge')).toContainText('Active Shift #1');
+
+    // Enter Closing Meter Totalizer (158000) and Physical Closing Dip (18195)
+    await page.getByTestId('wetstock-closing-meter-input').fill('158000');
+    await page.getByTestId('wetstock-closing-dip-input').fill('18195');
+
+    // Click "Lock Shift & Roll Over to Tomorrow's Opening"
+    await page.getByTestId('wetstock-lock-rollover-btn').click();
+
+    // Verify Shift #2 is active and Opening Dip & Opening Meter Totalizer rolled over from previous closing
+    await expect(page.getByTestId('wetstock-active-shift-badge')).toContainText('Active Shift #2');
+    await expect(page.getByTestId('wetstock-opening-dip-input')).toHaveValue('18195');
+    await expect(page.getByTestId('wetstock-opening-meter-input')).toHaveValue('158000');
+    await expect(page.getByTestId('wetstock-rollover-history-row').first()).toContainText('18195 L');
+  });
 });

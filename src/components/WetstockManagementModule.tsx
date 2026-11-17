@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Language, translations } from '../data/translations';
 import { getActiveTenant } from '../multiTenantConfig';
+import { DualModeWetstockPanel } from './DualModeWetstockPanel';
 import { 
   reconcileTankDaily, 
   TankDailyInput, 
@@ -423,6 +424,9 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
           </div>
         </div>
       </div>
+
+      {/* 1B. Interactive Dual-Mode Wetstock Reconciliation (ATG Telemetry + Manual Dip, Pump Meter Totalizer & Shift Rollover) */}
+      <DualModeWetstockPanel />
 
       {/* 2. Sub-Navigation View Switcher */}
       <div className="flex items-center justify-between gap-3 bg-slate-900/80 p-2.5 rounded-2xl border border-slate-800 flex-wrap">
