@@ -67,7 +67,9 @@ export default async function handler(req: any, res: any) {
     const result = await executeStatutoryComplianceEngine(body);
 
     // Audit first. The draft is returned only after its record is written to the selected store.
-    const recordId = globalThis.crypto.randomUUID();
+    // Ephemeral records carry a visible prefix, so nobody mistakes a sandbox ID for a durable one.
+    const uuid = globalThis.crypto.randomUUID();
+    const recordId = store.mode === 'postgres' ? uuid : `DEMO-EPHEMERAL-${uuid}`;
     const governance = result.metadata.governance;
     if (governance) {
       governance.recordStore = store.mode;

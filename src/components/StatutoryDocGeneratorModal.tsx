@@ -285,7 +285,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                   </p>
                   {docResponse.metadata.governance?.recordStore === 'memory-ephemeral' && (
                     <p role="status" className="text-amber-300 text-[11px] font-bold">
-                      Audit record: TEMPORARY in-memory ledger. Not persisted, not shared, not an audit trail. Demo mode only.
+                      SANDBOX DEMO MODE (In-Memory Ephemeral — Connect Postgres DATABASE_URL for Persistent Audit Storage)
                     </p>
                   )}
                 </div>

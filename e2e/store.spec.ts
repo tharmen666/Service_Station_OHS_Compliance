@@ -189,7 +189,7 @@ test.describe('Store: in-memory fallback (DATABASE_URL unset)', () => {
       expect(payload.success).toBe(true);
       expect(payload.document).toContain('DRAFT');
       expect(payload.metadata.governance.recordStore).toBe('memory-ephemeral');
-      expect(payload.metadata.governance.recordId).toMatch(/^[0-9a-f-]{36}$/);
+      expect(payload.metadata.governance.recordId).toMatch(/^DEMO-EPHEMERAL-[0-9a-f-]{36}$/);
       expect(payload.metadata.governance.promptSha256).toMatch(/^[0-9a-f]{64}$/);
     } finally {
       if (savedDb !== undefined) process.env.DATABASE_URL = savedDb;
