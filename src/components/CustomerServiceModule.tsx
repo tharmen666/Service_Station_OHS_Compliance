@@ -59,12 +59,12 @@ export const SA_CUSTOMER_SERVICE_STEPS: ServiceStep[] = [
   },
   {
     stepNumber: 4,
-    title: 'Ask for Additional Services: Oil, Water & 4+1 Spare Wheel Check',
-    badge: 'Step 4 • The Spare Wheel Rule',
+    title: 'Offer Store Promos & Ask for Additional Services: Oil, Water, Windscreen & 4+1 Spare Wheel Check',
+    badge: 'Step 4 • Store Promos & The Spare Wheel Rule',
     dialogue:
-      '"While your fuel is dispensing, may I check your oil, water, windscreen, and the pressure in all 4 tyres PLUS your spare wheel?"',
+      '"While your fuel is dispensing, we have a great store promotion inside today! May I also check your oil, water, clean your windscreen, and check the pressure in all 4 tyres PLUS your spare wheel?"',
     whyItMatters:
-      'When does a motorist check their spare wheel? Only when they already have a puncture! Even an unused spare loses ~1.5–2.0 PSI/month via rubber permeation—checking all 4+1 wheels prevents roadside strandings.',
+      'When does a motorist check their spare wheel? Only when they already have a puncture! Offering store promos boosts convenience store basket size, while checking all 4+1 wheels prevents roadside strandings.',
     icon: Wrench,
   },
   {

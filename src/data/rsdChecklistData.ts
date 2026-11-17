@@ -13,6 +13,33 @@ export interface ChecklistItem {
 
 export const dailyChecklists: ChecklistItem[] = [
   {
+    "id": "DAILY-OHS-EVAC-01",
+    "category": "Forecourt Emergency Evacuation & Crisis Protocol",
+    "referenceCode": "EVAC-1.1",
+    "item": "Emergency Evacuation Readiness: Cashier emergency stop activation, 2x entrance/exit traffic controllers, 2–3 DCP/CO2 fire suppression team, engine shut-off & assembly direction, kiosk/restroom sweep, and Manager Daily Shift Sheet roll call with staff & customer names and signatures.",
+    "weighting": 5,
+    "frequency": "Daily",
+    "guidance": "Verify daily shift sheet is on the manager clipboard for roll call signatures and all 8 evacuation steps + twice-yearly fire drill log are current."
+  },
+  {
+    "id": "DAILY-OHS-SPILL-01",
+    "category": "Forecourt Spill Response & 6-to-7-Person Teamwork",
+    "referenceCode": "SPILL-1.1",
+    "item": "Spill Kit Single-Use Readiness & 6-to-7-Person Team Assignment: Emergency stop, PPE gloves, absorbent sponge/pads + specialized cloths, designated old-oil drums for hazardous waste, dry sand & non-sparking broom, and 100% single-use kit replenishment.",
+    "weighting": 5,
+    "frequency": "Daily",
+    "guidance": "Confirm 6-to-7-person spill response team roles are assigned on shift and single-use spill kit materials are fully restocked to protect stormwater drains."
+  },
+  {
+    "id": "DAILY-OHS-CS-01",
+    "category": "Forecourt Customer Service & 4+1 Spare Wheel SOP",
+    "referenceCode": "CS-1.1",
+    "item": "5-Step South African Forecourt Customer Service SOP: (1) Direct vehicle to open pump, (2) Smile & confirm order + zero meter, (3) Remind no smoking & no cellphone, (4) Offer store promos, oil, water, windscreen & 4+1 spare wheel tyre pressure check, (5) Confirm card/cash payment & farewell with a smile.",
+    "weighting": 4,
+    "frequency": "Daily",
+    "guidance": "Observe forecourt attendants asking motorists to check the spare wheel (since motorists only check the spare when a puncture strikes) and offering store promos."
+  },
+  {
     "id": "DAILY-01",
     "category": "Daily Foodstock & Perishables Audit",
     "referenceCode": "1.1.",
@@ -1556,6 +1583,15 @@ export const monthlyChecklists: ChecklistItem[] = [
     "weighting": 2,
     "frequency": "Monthly",
     "guidance": "Verify full monthly SANS & Retail RSD 26 compliance audit."
+  },
+  {
+    "id": "MONTHLY-86",
+    "category": "14. Statutory Fire Drills & Emergency Readiness (Bi-Annual Mandate)",
+    "referenceCode": "RSD26-M86",
+    "item": "Statutory Bi-Annual Fire Drill Verification: Confirm verified fire and evacuation drills are conducted at least twice a year, including cashier emergency stop, entrance/exit traffic blockade, 2–3 staff DCP/CO2 fire team, kiosk/restroom sweep, and site manager daily shift sheet roll call with staff and customer signatures.",
+    "weighting": 10,
+    "frequency": "Monthly",
+    "guidance": "Inspect bi-annual fire drill register and signed shift sheet roll call records."
   }
 ];
 

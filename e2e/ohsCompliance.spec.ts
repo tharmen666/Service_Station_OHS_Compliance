@@ -212,4 +212,40 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
     await expect(page.getByTestId('wetstock-opening-meter-input')).toHaveValue('158000');
     await expect(page.getByTestId('wetstock-rollover-history-row').first()).toContainText('18195 L');
   });
+
+  test('6. Operational Protocols Upgrade: Evacuation Roll Call & Bi-Annual Drills, 6-to-7-Person Spill Team & 5-Step Customer Service', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
+    // 1. Customer Service (Tab 4): Verify 5-Step SOP, Store Promos & 4+1 Spare Wheel Checker
+    await page.getByRole('button', { name: /4\. Customer Hazmat/i }).first().click();
+    await expect(page.getByTestId('sa-customer-service-5steps')).toContainText(
+      'Offer Store Promos'
+    );
+    await expect(page.getByTestId('spare-wheel-4plus1-checker')).toBeVisible();
+
+    // 2. Spill Response (Tab 3): Verify 6-to-7-person spill team, old-oil drums & single-use spill kit
+    await page.getByRole('button', { name: /3\. Fuel Spill Containment/i }).first().click();
+    await expect(page.getByTestId('spill-team-6to7-singleuse-banner')).toContainText(
+      '6-to-7-person spill team'
+    );
+    await expect(page.getByTestId('spill-team-6to7-singleuse-banner')).toContainText(
+      'single-use only'
+    );
+
+    // 3. Emergency Evacuation (Tab 2): Verify Shift Sheet Roll Call & Twice-Yearly Fire Drills
+    await page.getByRole('button', { name: /2\. ESD & Evacuation/i }).first().click();
+    await expect(page.getByTestId('evacuation-drill-rollcall-banner')).toContainText(
+      'daily shift sheet'
+    );
+    await expect(page.getByTestId('evacuation-drill-rollcall-banner')).toContainText(
+      'twice a year'
+    );
+
+    // 4. RSD 26 Checklists (Tab 13): Verify Core Operational Protocols Matrix
+    await page.getByRole('button', { name: /13\. RSD 26 Checklists/i }).first().click();
+    await expect(page.getByTestId('rsd-core-operational-protocols')).toBeVisible();
+  });
 });

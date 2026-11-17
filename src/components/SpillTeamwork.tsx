@@ -252,12 +252,19 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
         </div>
       </div>
 
-      {/* Critical Non-Sparking Safety Notice */}
-      <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-start gap-3">
+      {/* Critical Non-Sparking & Single-Use Spill Kit Safety Notice */}
+      <div
+        data-testid="spill-team-6to7-singleuse-banner"
+        className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-start gap-3"
+      >
         <Sparkles className="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-amber-200">
-          <strong className="text-amber-400 font-bold text-sm block mb-0.5">CRITICAL SAFETY MANDATE: NON-SPARKING PLASTIC TOOLS ONLY</strong>
-          Metal shovels or steel brooms striking forecourt concrete generate friction sparks that will instantly ignite volatile gasoline vapors. Only certified plastic spades, soft brooms, and peat moss granules are permitted on the forecourt.
+        <div className="text-xs text-amber-200 space-y-1">
+          <strong className="text-amber-400 font-bold text-sm block">
+            CRITICAL SPILL PROTOCOL: 6-TO-7-PERSON TEAMWORK, OLD-OIL DRUM DISPOSAL &amp; SINGLE-USE KIT REPLENISHMENT
+          </strong>
+          <p>
+            Deploy the coordinated <strong>6-to-7-person spill team</strong> wearing full PPE gloves immediately after hitting the emergency stop button so zero fuel reaches stormwater drains. Cover the spill simultaneously with absorbent sponge/pads and specialized cloths, transfer saturated materials with PPE gloves into designated <strong>old-oil drums / waste containers</strong>, cast sand and sweep residue with non-sparking plastic tools, and <strong>immediately restock the spill kit (all spill kit contents are strictly single-use only)</strong>.
+          </p>
         </div>
       </div>
 

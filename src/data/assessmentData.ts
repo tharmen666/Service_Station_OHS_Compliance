@@ -57,34 +57,34 @@ export const evacuationSteps: EvacuationStep[] = [
 export const spillRoles: SpillRole[] = [
   {
     role_id: 'SP_01',
-    title: 'Role 1: The Fetcher (Equipment & Isolation)',
-    primary_tool: 'Yellow Heavy-Duty Spill Kit & Containment Booms',
-    step_action: 'Rushes to the main storage bay, grabs the mobile Spill Kit container, equips nitrile gloves + safety goggles, and lays flexible booms around storm drain grates.',
-    safety_rule: 'Never approach liquid fuel spills without full chemical PPE.',
+    title: 'Role 1: Emergency Stop & 6-to-7-Person Team PPE Deployment',
+    primary_tool: 'Emergency Stop Button, Full PPE Gloves, Goggles & Spill Kit',
+    step_action: 'Immediately hits the emergency stop button and deploys the coordinated 6-to-7-person spill response team wearing full PPE gloves and protective gear to block stormwater drains.',
+    safety_rule: 'Contain all fuel spills immediately before any product reaches stormwater drains.',
     badge_color: 'border-amber-500 bg-amber-500/10 text-amber-400'
   },
   {
     role_id: 'SP_02',
-    title: 'Role 2: Plastic Spade Applicator (Granule Absorber)',
-    primary_tool: 'Non-Sparking Heavy Plastic Spade & Peat Moss Granules',
-    step_action: 'Spreads absorbent peat moss / synthetic granules generously around the outer perimeter of the spill, working inwards to absorb fuel and suppress vapors.',
-    safety_rule: 'Use ONLY non-sparking plastic tools. Metal shovels can trigger explosive sparks!',
+    title: 'Role 2: Dual Absorption (Sponge/Pads & Specialized Cloths)',
+    primary_tool: 'Absorbent Sponge/Pads & Specialized Fuel Cloths',
+    step_action: 'One team member covers the spill with absorbent sponge/pads to soak it up; simultaneously, another team member covers the fuel with specialized absorbent cloths.',
+    safety_rule: 'Use only certified spill kit pads and cloths; never wash fuel into drains with water.',
     badge_color: 'border-amber-400 bg-amber-400/10 text-amber-300'
   },
   {
     role_id: 'SP_03',
-    title: 'Role 3: Broom Sweeper (Encapsulation)',
-    primary_tool: 'Non-Static Soft Bristle Broom',
-    step_action: 'Gently sweeps the fuel-saturated granules into a centralized pile, ensuring all liquid fuel is encapsulated by the absorbent material.',
-    safety_rule: 'Sweep with slow, controlled strokes to prevent dust clouds and static electricity build-up.',
+    title: 'Role 3: Hazardous Waste Disposal (Old-Oil Drums)',
+    primary_tool: 'Heavy-Duty PPE Gloves & Designated Old-Oil Drums / Waste Containers',
+    step_action: 'Staff wearing chemical PPE gloves pick up all fuel-saturated sponges, pads, and cloths and place them directly into proper old-oil drums / hazardous waste containers.',
+    safety_rule: 'Never dispose of fuel-soaked pads or cloths in general shop bins.',
     badge_color: 'border-yellow-500 bg-yellow-500/10 text-yellow-400'
   },
   {
     role_id: 'SP_04',
-    title: 'Role 4: Oil Drum Disposal & Hazardous Tagging',
-    primary_tool: 'Heavy Plastic Hazardous Waste Bags & Labeled Steel Drum',
-    step_action: 'Spades saturated waste into hazardous waste bags, seals bags securely, deposits inside marked steel waste drums, and completes the Spill Incident Log.',
-    safety_rule: 'Never mix fuel-soaked waste with general municipal shop trash bins.',
+    title: 'Role 4: Sand Casting, Broom Sweep & Single-Use Kit Replenishment',
+    primary_tool: 'Forecourt Sand, Non-Sparking Broom & Fresh Single-Use Spill Kit Stock',
+    step_action: 'One team member casts sand over the remaining residue while another sweeps it thoroughly. Immediately restock the spill kit afterward—all spill kit contents are strictly single-use only.',
+    safety_rule: 'Spill kit materials are single-use only and must be 100% replenished immediately after use.',
     badge_color: 'border-orange-500 bg-orange-500/10 text-orange-400'
   }
 ];

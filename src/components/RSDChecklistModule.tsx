@@ -143,6 +143,48 @@ export const RSDChecklistModule: React.FC<RSDChecklistModuleProps> = ({ lang = '
         </div>
       </div>
 
+      {/* Core Forecourt Operational Protocols Summary Matrix */}
+      <div
+        data-testid="rsd-core-operational-protocols"
+        className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full max-w-full overflow-x-hidden min-w-0 box-border"
+      >
+        <div className="p-5 rounded-2xl bg-slate-900/95 border border-red-500/40 space-y-2">
+          <span className="text-[11px] font-black uppercase tracking-wider text-red-400 block">
+            1. Emergency Evacuation &amp; Fire Drills
+          </span>
+          <h3 className="text-sm font-black text-white">
+            8-Step Crisis Response &amp; Shift Sheet Roll Call
+          </h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Cashier hits emergency stop; 2 staff block entrance/exit traffic; 2–3 trained staff attack fire with DCP/CO2 extinguishers; customers switch off engines &amp; move to assembly point; internal store notification; kiosk &amp; restroom sweep; Manager conducts formal roll call with <strong>daily shift sheet names &amp; signatures</strong>. Verified fire drills mandated <strong>twice a year</strong>.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-slate-900/95 border border-amber-500/40 space-y-2">
+          <span className="text-[11px] font-black uppercase tracking-wider text-amber-400 block">
+            2. Spill Response &amp; 6-to-7-Person Teamwork
+          </span>
+          <h3 className="text-sm font-black text-white">
+            Sponge/Pads, Cloths, Old-Oil Drums &amp; Single-Use Kit
+          </h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Hit emergency stop immediately; deploy <strong>6-to-7-person spill team</strong> in full PPE gloves to protect stormwater drains; cover spill simultaneously with absorbent sponge/pads and specialized cloths; dispose of saturated items into <strong>old-oil drums</strong>; cast sand &amp; sweep with non-sparking broom; immediately restock <strong>single-use only</strong> spill kit.
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-slate-900/95 border border-blue-500/40 space-y-2">
+          <span className="text-[11px] font-black uppercase tracking-wider text-blue-400 block">
+            3. Customer Service &amp; 4+1 Spare Wheel SOP
+          </span>
+          <h3 className="text-sm font-black text-white">
+            5-Step Attendant Sequence &amp; Store Promos
+          </h3>
+          <p className="text-xs text-slate-300 leading-relaxed">
+            Direct motorist to open pump; greet with a smile &amp; confirm order/zero meter; remind no smoking or cellphone use; offer <strong>store promos</strong>, oil, water, windscreen &amp; <strong>4+1 tyre pressure check including the spare wheel</strong> (only ever checked during a puncture); confirm card/cash payment &amp; farewell with a smile.
+          </p>
+        </div>
+      </div>
+
       {/* Tabs & Search Filter Controls */}
       <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-4 shadow-xl w-full max-w-full overflow-x-hidden min-w-0 box-border">
         
