@@ -11,4 +11,7 @@ await build({
   format: 'esm',
   target: 'node20',
   logLevel: 'info',
+  // pg is CommonJS and calls require() for Node built-ins (events, net, tls). In an ESM bundle those
+  // dynamic requires fail unless a real require is provided. createRequire supplies it.
+  banner: { js: "import { createRequire as __createRequire } from 'node:module'; const require = __createRequire(import.meta.url);" },
 });
