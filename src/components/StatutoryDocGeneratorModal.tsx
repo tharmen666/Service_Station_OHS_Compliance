@@ -4,6 +4,7 @@ import {
   Copy,
   Check,
   Download,
+  ShieldCheck,
   Scale,
   Sparkles,
   X,
@@ -13,11 +14,10 @@ import {
   Zap,
   CheckCircle2,
   ClipboardCheck,
-  UserCheck,
 } from 'lucide-react';
 import { requestStatutoryComplianceDoc } from '../services/complianceClient';
 import { StatutoryComplianceResponse } from '../api/compliance';
-import { encryptPIIWithAES256GCM } from '../popiActCompliance';
+import { hashAuditSignature } from '../popiActCompliance';
 import { getActiveTenant } from '../multiTenantConfig';
 import { downloadStatutoryPdf } from '../lib/pdfGenerator';
 
@@ -60,7 +60,6 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const [siteContext, setSiteContext] = useState<string>(
     `${tenant.brandName} - ${tenant.stationName} (${tenant.siteCode})`
   );
-  const [auditUser, setAuditUser] = useState<string>('Appointed 16(2) Supervisor');
   const [hazards, setHazards] = useState<string>(
     'High-pressure fuel dispenser pipe wear, volatile gasoline vapor accumulation during peak forecourt traffic, and static discharge potential during tanker offloading.'
   );
@@ -70,6 +69,10 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const [copyStatus, setCopyStatus] = useState<'success' | 'error' | null>(null);
   const [copyMessage, setCopyMessage] = useState<string>('');
   const [exportedAudit, setExportedAudit] = useState<boolean>(false);
+  const [reviewerName, setReviewerName] = useState<string>('');
+  const [reviewerConfirmed, setReviewerConfirmed] = useState<boolean>(false);
+  const canExport = reviewerName.trim().length >= 3 && reviewerConfirmed;
+  const [genError, setGenError] = useState<string | null>(null);
   const [auditLogs, setAuditLogs] = useState<PersistedAuditLogRecord[]>([]);
 
   useEffect(() => {
@@ -86,6 +89,9 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
     setCopyStatus(null);
     setCopyMessage('');
     setExportedAudit(false);
+    setGenError(null);
+    setReviewerName('');
+    setReviewerConfirmed(false);
 
     try {
       const response = await requestStatutoryComplianceDoc({
@@ -95,7 +101,8 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
       });
       setDocResponse(response);
     } catch (err) {
-      console.error('Failed to generate statutory doc:', err);
+      setDocResponse(null);
+      setGenError(err instanceof Error ? err.message : 'The draft could not be produced.');
     } finally {
       setLoading(false);
     }
@@ -107,7 +114,6 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
       if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
         await navigator.clipboard.writeText(docResponse.document);
       } else {
-        // Fallback copy method
         const ta = document.createElement('textarea');
         ta.value = docResponse.document;
         document.body.appendChild(ta);
@@ -127,23 +133,26 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   };
 
   const handleExportAuditLog = async () => {
-    if (!docResponse?.document) return;
+    if (!docResponse?.document || !canExport) return;
+    const timestamp = new Date().toISOString();
+    const userRole = reviewerName.trim();
 
-    const nowIso = new Date().toISOString();
-    const userRole = auditUser.trim() || 'Appointed 16(2) Supervisor';
-
-    const encryptedSignature = await encryptPIIWithAES256GCM(
-      `STATUTORY_DOC_${taskType}_${siteContext}_${userRole}_${nowIso}`
+    const signatureDigest = await hashAuditSignature(
+      `STATUTORY_DOC_${taskType}_${siteContext}_${userRole}_${timestamp}`
     );
 
+    const recordId =
+      docResponse.metadata.governance?.recordId ||
+      `DEMO-EPHEMERAL-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
     const record: PersistedAuditLogRecord = {
-      id: `AUD-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+      id: recordId,
       taskType,
       siteContext,
       hazards,
       user: userRole,
-      timestamp: nowIso,
-      popiaSignatureHash: encryptedSignature.ciphertext,
+      timestamp,
+      popiaSignatureHash: signatureDigest,
     };
 
     const existing = getPersistedAuditLogs();
@@ -231,7 +240,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
           </div>
 
           {/* Form Input Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Document Type Selector */}
             <div className="space-y-1.5">
               <label
@@ -248,11 +257,11 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                 className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-bold focus:outline-none focus:border-amber-500 transition"
               >
                 <option value="HIRA">HIRA (Hazard Identification &amp; Risk Assessment)</option>
-                <option value="SWP">SWP (Safe Work Procedure)</option>
+                <option value="SWP">SWP (Safe Work Procedure &amp; Standard Operating Proc)</option>
                 <option value="Incident Root Cause">
-                  Incident Root Cause Analysis (Section 24 / COIDA)
+                  Incident Root Cause Analysis (Section 24 COIDA)
                 </option>
-                <option value="Toolbox Talk">Toolbox Talk (60s Shift Briefing)</option>
+                <option value="Toolbox Talk">Toolbox Talk (60s Statutory Shift Briefing)</option>
                 <option value="Emergency Protocol">
                   Emergency Evacuation &amp; ESD Isolation Protocol
                 </option>
@@ -273,27 +282,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                 type="text"
                 value={siteContext}
                 onChange={(e) => setSiteContext(e.target.value)}
-                placeholder="e.g. Retail Service Station Alpha (STN-ALPHA)"
-                className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-semibold focus:outline-none focus:border-amber-500 transition"
-              />
-            </div>
-
-            {/* Auditor / User Role Input */}
-            <div className="space-y-1.5">
-              <label
-                htmlFor="doc-audit-user"
-                className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
-              >
-                <UserCheck className="w-4 h-4 text-amber-400" />
-                3. Logged By (Role / User)
-              </label>
-              <input
-                id="doc-audit-user"
-                data-testid="doc-audit-user-input"
-                type="text"
-                value={auditUser}
-                onChange={(e) => setAuditUser(e.target.value)}
-                placeholder="e.g. Appointed 16(2) Supervisor"
+                placeholder="e.g. Gauteng Forecourt - Lenasia Station"
                 className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm font-semibold focus:outline-none focus:border-amber-500 transition"
               />
             </div>
@@ -306,7 +295,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
               className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5"
             >
               <AlertTriangle className="w-4 h-4 text-amber-400" />
-              4. Hazard Description &amp; Operational Scope
+              3. Hazard Description &amp; Operational Scope
             </label>
             <textarea
               id="doc-hazards-textarea"
@@ -344,7 +333,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
             {loading ? (
               <>
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                <span>Compiling Statutory Document...</span>
+                <span>Hydrating Statutory Prompt (Temp 0.0)...</span>
               </>
             ) : (
               <>
@@ -354,6 +343,15 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
             )}
           </button>
 
+          {genError && (
+            <div
+              role="alert"
+              className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs"
+            >
+              {genError}
+            </div>
+          )}
+
           {/* Generated Document Display Output */}
           {docResponse && (
             <div className="space-y-4 pt-4 border-t border-slate-800">
@@ -362,14 +360,28 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span className="font-extrabold text-white">Statutory Document Compiled</span>
+                    <span className="font-extrabold text-white">AI draft compiled - not approved</span>
                     <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-xs font-black font-mono border border-emerald-500/30">
                       {docResponse.metadata.engineVersion}
                     </span>
                   </div>
                   <p className="text-slate-300 text-xs">
-                    Grounding: OHS Act 85 of 1993 • SANS 10089-3 • Hierarchy of Controls Verified
+                    Grounding: OHS Act 85 of 1993 • Driven Machinery Regs • Ergonomics Regs 2019 • Hierarchy of Controls (citations to be verified by the reviewer)
                   </p>
+                  <p className="text-slate-300 text-xs">
+                    Engine:{' '}
+                    {docResponse.metadata.governance?.engine === 'live-model'
+                      ? `live model (${docResponse.metadata.governance.modelId})`
+                      : 'template (no live model used)'}
+                    {' • '}Governance check:{' '}
+                    {docResponse.metadata.governance?.issues.length ?? 0} issue(s) flagged
+                    {' • '}Policy {docResponse.metadata.governance?.policyVersion ?? 'n/a'}
+                  </p>
+                  {docResponse.metadata.governance?.recordStore === 'memory-ephemeral' && (
+                    <p role="status" className="text-amber-300 text-xs font-bold">
+                      SANDBOX DEMO MODE (In-Memory Ephemeral — Connect Postgres DATABASE_URL for Persistent Audit Storage)
+                    </p>
+                  )}
                 </div>
 
                 {/* Action Buttons */}
@@ -406,17 +418,23 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                   <button
                     type="button"
                     onClick={handleExportAuditLog}
+                    disabled={!canExport}
                     data-testid="export-audit-log-btn"
-                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition"
+                    title={
+                      canExport
+                        ? 'Export with reviewer sign-off'
+                        : 'Enter the reviewer name and confirm review first'
+                    }
+                    className="px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:bg-slate-700 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-lg border border-purple-400/40 transition"
                   >
                     {exportedAudit ? (
                       <>
                         <Check className="w-4 h-4 text-white" />
-                        <span>Saved to Audit Log!</span>
+                        <span>Exported to Audit Log!</span>
                       </>
                     ) : (
                       <>
-                        <ClipboardCheck className="w-4 h-4 text-purple-200" />
+                        <Download className="w-4 h-4 text-purple-200" />
                         <span>Export to Audit Log</span>
                       </>
                     )}
@@ -438,6 +456,33 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                   {copyMessage}
                 </div>
               )}
+
+              {/* Human sign-off gate */}
+              <div className="p-4 rounded-2xl bg-slate-900 border border-amber-500/40 space-y-3">
+                <p className="text-amber-300 text-xs font-bold">
+                  DRAFT - AI-generated. Not approved. A competent person must review it before it is used or exported.
+                </p>
+                <input
+                  type="text"
+                  data-testid="doc-audit-user-input"
+                  value={reviewerName}
+                  onChange={(e) => setReviewerName(e.target.value)}
+                  placeholder="Reviewer full name (competent person / SHE Representative)"
+                  className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-700 text-slate-200 text-xs"
+                />
+                <label className="flex items-start gap-2 text-xs text-slate-300 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    data-testid="doc-reviewer-confirm-checkbox"
+                    checked={reviewerConfirmed}
+                    onChange={(e) => setReviewerConfirmed(e.target.checked)}
+                    className="mt-0.5"
+                  />
+                  <span>
+                    I have reviewed this draft against the primary legislation and accept responsibility for it.
+                  </span>
+                </label>
+              </div>
 
               {/* Formatted Markdown Container */}
               <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 font-mono text-xs text-slate-200 leading-relaxed whitespace-pre-wrap max-h-80 overflow-y-auto shadow-inner select-text border-l-4 border-l-amber-500">
@@ -463,7 +508,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
 
             {auditLogs.length === 0 ? (
               <p className="text-xs text-slate-300">
-                No audit log records saved yet. Compile a document and click &ldquo;Export to Audit Log&rdquo; to persist a timestamped record.
+                No audit log records saved yet. Compile a document, complete reviewer sign-off, and click &ldquo;Export to Audit Log&rdquo; to persist a timestamped record.
               </p>
             ) : (
               <div className="space-y-2 max-h-40 overflow-y-auto">
@@ -493,16 +538,16 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-300 flex-shrink-0">
-          <div className="flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-cyan-400" />
-            <span>POPIA Section 10 Minimality &amp; Section 19 Safeguards Applied</span>
-          </div>
+        <div className="p-4 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs text-slate-300 flex-shrink-0">
+          <span className="flex items-center gap-1.5">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            Forecourt Sentinel Statutory Engine • Grounded in SA OHS Regulations
+          </span>
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition"
+            className="px-4 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold transition"
           >
-            Close Window
+            Close
           </button>
         </div>
       </div>

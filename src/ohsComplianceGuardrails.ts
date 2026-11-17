@@ -25,6 +25,8 @@ export const OHS_STATUTORY_CONSTANTS = {
   LOCKED_TEMPERATURE: 0.0,
 };
 
+export const STATUTORY_MODEL_ID = 'claude-sonnet-5-5';
+
 export const DEFAULT_OHS_GUARDRAILS: OHSGuardrailConfig = {
   temperature: OHS_STATUTORY_CONSTANTS.LOCKED_TEMPERATURE,
   ohsActEnforced: true,

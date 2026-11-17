@@ -6,15 +6,16 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
   }) => {
     const consoleErrors: string[] = [];
     page.on('console', (msg) => {
-      if (msg.type() === 'error') {
+      if (msg.type() === 'error' && !msg.text().includes('fonts.gstatic.com')) {
         consoleErrors.push(msg.text());
       }
     });
 
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+
     // Check 375px, 800px, and 1024px widths for zero horizontal overflow
     for (const width of [375, 800, 1024]) {
       await page.setViewportSize({ width, height: 800 });
-      await page.goto('/', { waitUntil: 'domcontentloaded' });
 
       const hasHorizontalScroll = await page.evaluate(() => {
         return document.documentElement.scrollWidth > document.documentElement.clientWidth;
@@ -169,10 +170,11 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
     // Fix 13: Document Generator Copy Confirmation & Persisted Audit Log across reload
     await page.getByTestId('open-statutory-doc-btn').click();
     await expect(page.getByTestId('popia-minimisation-note')).toBeVisible();
-    await page.getByTestId('doc-audit-user-input').fill('Shift Supervisor A');
     await page.getByTestId('generate-statutory-doc-btn').click();
 
     await expect(page.getByTestId('copy-doc-btn')).toBeVisible();
+    await page.getByTestId('doc-audit-user-input').fill('Shift Supervisor A');
+    await page.getByTestId('doc-reviewer-confirm-checkbox').check();
     await page.getByTestId('export-audit-log-btn').click();
     await expect(page.getByTestId('persisted-audit-log-row').first()).toContainText(
       'Shift Supervisor A'

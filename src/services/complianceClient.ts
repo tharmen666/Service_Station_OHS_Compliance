@@ -1,23 +1,36 @@
 import type { StatutoryComplianceRequest, StatutoryComplianceResponse } from '../api/compliance';
 
 /**
- * Client-Side API Bridge to Server-Side Statutory Engine (/api/compliance).
- * Never ships API keys, system prompts, or model names in the client bundle.
+ * Client-side bridge to the server-side statutory engine.
+ * There is deliberately NO local fallback. A draft produced in the browser would bypass validation
+ * and the audit store. If the server cannot produce a governed draft, the caller gets an error.
  */
 export async function requestStatutoryComplianceDoc(
   request: StatutoryComplianceRequest
 ): Promise<StatutoryComplianceResponse> {
-  const res = await fetch('/api/compliance', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(request),
-  });
-
-  if (!res.ok) {
-    throw new Error(`Compliance API returned HTTP ${res.status}`);
+  let res: Response;
+  try {
+    res = await fetch('/api/compliance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(request),
+    });
+  } catch {
+    throw new Error('The statutory engine could not be reached. No draft was produced.');
   }
 
-  return await res.json();
+  let data: any = null;
+  try {
+    data = await res.json();
+  } catch {
+    // Non-JSON error page (for example a platform error). Handled below.
+  }
+
+  if (res.ok && data?.success) {
+    return data as StatutoryComplianceResponse;
+  }
+
+  const issues: string[] = Array.isArray(data?.issues) ? data.issues : [];
+  const reason = data?.error || `Request failed with status ${res.status}.`;
+  throw new Error(issues.length ? `${reason} ${issues.join('; ')}` : reason);
 }

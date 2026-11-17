@@ -483,7 +483,7 @@ export const App: React.FC = () => {
                   aria-label="Open Statutory Document Generator"
                   data-testid="open-statutory-doc-btn"
                   className="h-7 md:h-8 px-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/30 transition flex items-center gap-1 text-xs font-bold whitespace-nowrap"
-                  title="Statutory OHS Document Generator"
+                  title="Autonomous Statutory OHS Doc Generator"
                 >
                   <Scale className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                   <span className="hidden sm:inline">{extraT.statutoryDocBtn}</span>
