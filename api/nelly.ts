@@ -136,6 +136,20 @@ export const APPROVED_REGULATION_CORPUS: ApprovedRegulationPassage[] = [
     guidance:
       'Under POPIA Section 10 (Minimality), only personal information strictly required for statutory OHS training or incident registers may be collected. Under Section 14, records must not be retained longer than required by law, and under Section 19, appropriate technical and organizational security safeguards must protect against unauthorized access.',
   },
+  {
+    id: 'sa-customer-service-5step-spare-wheel',
+    topic: '5-Step South African Forecourt Customer Service & 4+1 Spare Wheel Protocol',
+    statute: 'SANS 10089-3:2010 & South African Forecourt Service Standard Operating Procedure',
+    clause: 'SANS 10089-3 Forecourt Dispenser Safety & 5-Step Attendant Customer Service Sequence (4+1 Spare Wheel Check)',
+    lastVerified: '2026-03-01',
+    sourceUrl: 'https://store.sabs.co.za/',
+    keywords: [
+      'customer service', 'spare wheel', 'spare tyre', 'spare tire', 'puncture', '4+1',
+      'oil', 'water', 'pressure', 'tyre pressure', 'tire pressure', 'greet', 'smile', 'card or cash'
+    ],
+    guidance:
+      'Follow the 5-Step South African Forecourt Customer Service SOP: (1) Direct the customer to the correct pump bay, ensure engine off and handbrake on; (2) Greet with a smile, confirm fuel grade/amount, and verify the pump meter is at zero; (3) Remind the customer that smoking and cellphone usage while dispensing fuel are unsafe under SANS 10089-3; (4) Offer to check oil, water, windscreen, and tyre pressure across all 4 road wheels PLUS the spare wheel (because motorists only check their spare wheel when they have a puncture, and spares lose ~1.5–2.0 PSI/month via permeation); (5) Confirm payment by card or cash and give a warm departure greeting with a smile.',
+  },
 ];
 
 export interface NellyQueryRequest {
