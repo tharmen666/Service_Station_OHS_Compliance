@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test:e2e": "playwright test",
     "build:api": "node scripts/build-api.mjs",
-    "db:migrate": "node scripts/migrate.mjs"
+    "db:migrate": "node scripts/migrate.mjs",
+    "test": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.125.0",

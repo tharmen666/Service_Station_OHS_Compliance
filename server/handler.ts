@@ -1,7 +1,7 @@
 import { executeStatutoryComplianceEngine } from '../src/api/compliance';
 import { GovernanceValidationError } from '../src/governance/inputGuard';
 import { LIMITS } from '../src/governance/policy';
-import { AuditStoreUnavailableError, allowRequest, getDb, hashClientKey, writeAuditRecord } from './store';
+import { AuditStoreUnavailableError, getAuditStore, hashClientKey } from './store';
 
 function clientAddress(req: any): string {
   const fwd = req?.headers?.['x-forwarded-for'];
@@ -42,10 +42,11 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    // Fail closed before any model call: no database, no draft.
-    const db = getDb();
+    // Store selection: PostgreSQL when DATABASE_URL is set (fails closed on error),
+    // otherwise an ephemeral in-memory ledger that is labelled as such in every response.
+    const store = getAuditStore();
 
-    if (!(await allowRequest(db, await hashClientKey(clientAddress(req))))) {
+    if (!(await store.allowRequest(await hashClientKey(clientAddress(req))))) {
       return send(res, 429, {
         success: false,
         error: `Rate limit reached: ${LIMITS.rateLimitRequests} requests per ${LIMITS.rateLimitWindowMs / 60000} minutes.`,
@@ -65,11 +66,12 @@ export default async function handler(req: any, res: any) {
     // No silent defaults: the governance layer validates every field and rejects bad input.
     const result = await executeStatutoryComplianceEngine(body);
 
-    // Audit first. The draft is returned only after its record is durably written.
+    // Audit first. The draft is returned only after its record is written to the selected store.
     const recordId = globalThis.crypto.randomUUID();
     const governance = result.metadata.governance;
     if (governance) {
-      await writeAuditRecord(db, recordId, governance);
+      governance.recordStore = store.mode;
+      await store.writeAudit(recordId, governance);
       governance.recordId = recordId;
     }
     return send(res, 200, result);

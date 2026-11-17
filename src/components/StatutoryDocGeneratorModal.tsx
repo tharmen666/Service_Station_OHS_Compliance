@@ -283,6 +283,11 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
                     {' • '}Governance check: {docResponse.metadata.governance?.issues.length ?? 0} issue(s) flagged
                     {' • '}Policy {docResponse.metadata.governance?.policyVersion ?? 'n/a'}
                   </p>
+                  {docResponse.metadata.governance?.recordStore === 'memory-ephemeral' && (
+                    <p role="status" className="text-amber-300 text-[11px] font-bold">
+                      Audit record: TEMPORARY in-memory ledger. Not persisted, not shared, not an audit trail. Demo mode only.
+                    </p>
+                  )}
                 </div>
 
                 {/* Quick Action Buttons */}

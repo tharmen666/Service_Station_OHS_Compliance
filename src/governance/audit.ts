@@ -20,6 +20,8 @@ export interface GovernanceRecord {
   reviewStatus: 'PENDING_REVIEW';
   /** Set by the server after the record is written to the audit store. */
   recordId?: string;
+  /** Where the record lives: durable PostgreSQL, or an ephemeral in-memory ledger (not an audit trail). */
+  recordStore?: 'postgres' | 'memory-ephemeral';
 }
 
 export async function buildGovernanceRecord(params: {
