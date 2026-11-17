@@ -1,38 +1,44 @@
 import { defineConfig, Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// Local dev runs the same handler as production (server/handler.ts), so governance behaves identically.
+// It needs DATABASE_URL in the local environment, or it returns 503 and no draft.
 function complianceApiPlugin(): Plugin {
   return {
     name: 'compliance-api-plugin',
     configureServer(server) {
-      server.middlewares.use('/api/compliance', async (req, res, next) => {
-        if (req.method === 'POST') {
-          let bodyStr = '';
-          req.on('data', (chunk) => {
-            bodyStr += chunk;
-          });
-          req.on('end', async () => {
-            try {
-              const body = bodyStr ? JSON.parse(bodyStr) : {};
-              const { executeStatutoryComplianceEngine } = await server.ssrLoadModule('/src/api/compliance.ts');
-              const result = await executeStatutoryComplianceEngine(body);
-              res.setHeader('Content-Type', 'application/json');
-              res.statusCode = 200;
-              res.end(JSON.stringify(result));
-            } catch (err: any) {
-              // Mirror api/compliance.ts: governance rejections are 400 with the list of issues.
-              const isPolicy = err?.name === 'GovernanceValidationError';
-              res.statusCode = isPolicy ? 400 : err instanceof SyntaxError ? 400 : 500;
-              res.end(JSON.stringify(
-                isPolicy
-                  ? { success: false, error: err.message, issues: err.issues }
-                  : { success: false, error: err instanceof SyntaxError ? 'Request body must be valid JSON' : 'Failed to process statutory compliance request' }
-              ));
-            }
-          });
-        } else {
-          next();
-        }
+      server.middlewares.use('/api/compliance', async (req, res) => {
+        let bodyStr = '';
+        req.on('data', (chunk) => {
+          bodyStr += chunk;
+        });
+        req.on('end', async () => {
+          try {
+            const mod = await server.ssrLoadModule('/server/handler.ts');
+            const fakeRes = {
+              statusCode: 200,
+              status(code: number) {
+                this.statusCode = code;
+                return this;
+              },
+              json(payload: unknown) {
+                res.setHeader('Content-Type', 'application/json');
+                res.statusCode = this.statusCode;
+                res.end(JSON.stringify(payload));
+                return this;
+              },
+            };
+            await mod.default(
+              { method: req.method, headers: req.headers, body: bodyStr, socket: req.socket },
+              fakeRes
+            );
+          } catch (err: any) {
+            res.statusCode = 500;
+            res.setHeader('Content-Type', 'application/json');
+            res.end(JSON.stringify({ success: false, error: 'Development server could not load the statutory engine.' }));
+            console.error('[dev compliance api]', err?.name || 'unknown');
+          }
+        });
       });
     },
   };
@@ -47,4 +53,3 @@ export default defineConfig({
     host: true
   }
 })
-

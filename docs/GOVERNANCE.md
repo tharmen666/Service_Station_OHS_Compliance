@@ -17,7 +17,9 @@ This document describes what the statutory engine enforces, where each control l
 |---|---|---|---|
 | C1 | Input allowlist and length limits | `src/governance/inputGuard.ts`, `policy.ts` | Task type must be one of four values. Hazards 10–2000 chars. Site context max 200 chars. Control characters stripped. Non-object bodies rejected. |
 | C2 | Body size limit | `api/compliance.ts` | Rejects bodies over 8 KB with HTTP 413. |
-| C3 | Rate limit | `api/compliance.ts` | 10 requests per client per 10 minutes, HTTP 429. **In-memory: each serverless instance counts separately.** |
+| C3 | Rate limit | `server/store.ts` | 10 requests per client per 10 minutes, HTTP 429. Counted in PostgreSQL, so it is shared across instances. Client addresses are stored as SHA-256 hashes. |
+| C17 | Audit record before release | `server/handler.ts`, `server/store.ts`, `db/migrations/001_governance.sql` | Every draft is written to an append-only audit table before it is returned. The record ID is returned to the user. A database failure returns 503 and no draft. The app role cannot update or delete records. |
+| C18 | No browser fallback | `src/services/complianceClient.ts` | The browser no longer generates drafts when the server fails. The user sees why, and no draft is shown. |
 | C4 | PII redaction before model call | `inputGuard.ts` `redactPII` | Replaces 13-digit ID numbers, SA/international phone numbers and emails with placeholders. Counts are recorded. |
 | C5 | Forbidden-claim removal | `outputGuard.ts`, `policy.ts` | Removes "zero hallucination", "guaranteed compliant", "100% compliant/verified", "legally certified", "APPROVED & AUDIT-LOCKED", "STATUTORY-VERIFIED", "all measures comply". The notice records the reason, not the removed text. |
 | C6 | Required markers | `outputGuard.ts` | Output must contain DRAFT, a reviewer requirement and a statutory citation. Missing items are flagged in a governance notice at the top of the document. |
@@ -54,8 +56,8 @@ This document describes what the statutory engine enforces, where each control l
 
 | # | Item | Status | What is needed |
 |---|---|---|---|
-| 1 | Persistent, append-only audit log | **Open** | A storage choice (Vercel KV, Blob, Postgres or similar) and an approval to add it. |
-| 2 | Shared rate limiter | **Open** | The same storage decision as item 1. Current limit is per instance. |
+| 1 | Persistent, append-only audit log | **Built; needs database setup** (`docs/DATABASE.md`) | Owner runs the migration, the app role is set, and `DATABASE_URL` is added in Vercel. Until then the API returns 503 and produces no draft. |
+| 2 | Shared rate limiter | **Built; needs database setup** | Same database. The limit is now shared across instances. |
 | 3 | Operator agreement (POPIA s20–21) and s72 transfer assessment | **Draft written** (`docs/OPERATOR_AGREEMENT_TEMPLATE.md`) | Lawyer and POPIA specialist review. Confirm the model provider's processing location. |
 | 4 | Legal review of statutory wording (Section 24, COIDA, SANS) | **Open** | A South African OHS lawyer. |
 | 5 | Evaluation set and accuracy rate | **Starter written** (`docs/EVALUATION_SET.md`) | Competent person to write the expected answers and score at least 30 cases per task type. |

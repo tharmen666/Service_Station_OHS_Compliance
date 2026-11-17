@@ -45,6 +45,7 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
   const [reviewerName, setReviewerName] = useState<string>('');
   const [reviewerConfirmed, setReviewerConfirmed] = useState<boolean>(false);
   const canExport = reviewerName.trim().length >= 3 && reviewerConfirmed;
+  const [genError, setGenError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
@@ -53,9 +54,12 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
     setLoading(true);
     setCopied(false);
     setExportedAudit(false);
-    
+    setGenError(null);
+    setReviewerName('');
+    setReviewerConfirmed(false);
+
     try {
-      // Model Configuration: temperature: 0.0 is selected for deterministic prompt hydration 
+      // Model Configuration: temperature: 0.0 is selected for deterministic prompt hydration
       // and repeatable statutory outputs, requiring human-in-the-loop review by a designated competent person (Section 16.2 / SHE Rep).
       const response = await requestStatutoryComplianceDoc({
         taskType,
@@ -64,7 +68,9 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
       });
       setDocResponse(response);
     } catch (err) {
-      console.error('Failed to generate statutory doc:', err);
+      // No draft is shown when the governed path fails. The user sees why.
+      setDocResponse(null);
+      setGenError(err instanceof Error ? err.message : 'The draft could not be produced.');
     } finally {
       setLoading(false);
     }
@@ -246,6 +252,12 @@ export const StatutoryDocGeneratorModal: React.FC<StatutoryDocGeneratorModalProp
               </>
             )}
           </button>
+
+          {genError && (
+            <div role="alert" className="p-4 rounded-2xl bg-red-950/40 border border-red-500/40 text-red-200 text-xs">
+              {genError}
+            </div>
+          )}
 
           {/* Generated Document Display Output */}
           {docResponse && (

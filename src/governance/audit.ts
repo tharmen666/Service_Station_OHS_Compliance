@@ -18,6 +18,8 @@ export interface GovernanceRecord {
   issues: string[];
   reviewRequired: true;
   reviewStatus: 'PENDING_REVIEW';
+  /** Set by the server after the record is written to the audit store. */
+  recordId?: string;
 }
 
 export async function buildGovernanceRecord(params: {
