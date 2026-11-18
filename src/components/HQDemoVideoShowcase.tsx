@@ -218,6 +218,19 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
         {/* Left Side: Visual Stage Display */}
         <div className="lg:col-span-8 space-y-4">
           <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[320px]">
+            {/* Realistic Commercial African Service Station Forecourt Background Video */}
+            <video
+              src="/Service_Station_OHS_Compliance_Demo.mp4"
+              poster="/assets/forecourt_realistic_scene1.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              data-testid="hq-showcase-realistic-video"
+              className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/80 pointer-events-none" />
+
             {/* Top Stage Bar */}
             <div className="relative z-10 flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono text-amber-400">

@@ -150,11 +150,30 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
       {/* Main Presentation Canvas & Key Takeaways (No internal teleprompter cues) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-4">
-          <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[280px]">
+          <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[320px]">
+            {/* Realistic Commercial Service Station Video Footage */}
+            <video
+              src="/Service_Station_OHS_Compliance_Demo.mp4"
+              poster={
+                activeChapterIndex % 3 === 0
+                  ? '/assets/forecourt_realistic_scene1.jpg'
+                  : activeChapterIndex % 3 === 1
+                  ? '/assets/forecourt_realistic_scene2.jpg'
+                  : '/assets/forecourt_realistic_scene3.jpg'
+              }
+              autoPlay
+              muted
+              loop
+              playsInline
+              data-testid="demo-video-tab-player"
+              className="absolute inset-0 w-full h-full object-cover opacity-55"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-slate-950/70 pointer-events-none" />
+
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-purple-500/40 text-purple-200 text-xs font-black">
                 <Tv className="w-4 h-4 text-purple-400" />
-                <span>CHAPTER {activeChapter.id} OF 6</span>
+                <span>CHAPTER {activeChapter.id} OF 6 • HD FORECOURT FOOTAGE</span>
               </div>
 
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-extrabold text-emerald-400">
