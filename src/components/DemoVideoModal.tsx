@@ -36,8 +36,7 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
 }) => {
   const [selectedLang, setSelectedLang] = useState<Language>(initialLang);
   const [activeChapterIndex, setActiveChapterIndex] = useState<number>(0);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
@@ -54,7 +53,7 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
     setActiveChapterIndex(index);
     setIsPlaying(true);
     if (videoRef.current) {
-      const times = [0, 20, 45, 70];
+      const times = [0, 3.3, 6.6, 0];
       videoRef.current.currentTime = times[index] || 0;
       videoRef.current.play().catch(() => {});
     }
@@ -143,14 +142,16 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
             <div className="lg:col-span-7 space-y-3">
               <div className="relative aspect-video rounded-3xl bg-slate-950 border border-slate-800 overflow-hidden shadow-2xl flex flex-col justify-between p-4 group">
                 
-                {/* Realistic Commercial Service Station Video Footage */}
+                {/* Realistic Commercial Service Station Video Footage (Silent 10s Loop) */}
                 <video
                   ref={videoRef}
                   src="/Service_Station_OHS_Compliance_Demo.mp4"
                   poster="/assets/forecourt_realistic_scene1.jpg"
-                  muted={isMuted}
+                  autoPlay
+                  muted
                   loop
                   playsInline
+                  preload="auto"
                   data-testid="realistic-forecourt-demo-video"
                   className="absolute inset-0 w-full h-full object-cover rounded-3xl"
                 />
@@ -162,16 +163,11 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
                 <div className="relative z-10 flex items-center justify-between pointer-events-none">
                   <div className="px-3 py-1 rounded-xl bg-slate-950/80 backdrop-blur border border-slate-800 text-xs font-black text-amber-400 flex items-center gap-2">
                     <Tv className="w-4 h-4 text-emerald-400" />
-                    <span>CHAPTER {activeChapter.id}: {activeChapter.timeRange}</span>
+                    <span>10s SILENT LOOP • CHAPTER {activeChapter.id}</span>
                   </div>
 
-                  <div className="flex items-center gap-2 pointer-events-auto">
-                    <button
-                      onClick={() => setIsMuted(!isMuted)}
-                      className="p-2 rounded-xl bg-slate-950/80 hover:bg-slate-800 text-slate-300 border border-slate-800 transition"
-                    >
-                      {isMuted ? <VolumeX className="w-4 h-4 text-red-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
-                    </button>
+                  <div className="px-2.5 py-1 rounded-xl bg-slate-950/80 text-emerald-400 border border-emerald-500/30 text-[10px] font-black uppercase tracking-wider">
+                    Silent HD Preview
                   </div>
                 </div>
 
@@ -205,32 +201,34 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
               </div>
             </div>
 
-            {/* Right Side: Script Visualizer Teleprompter (5 Cols) */}
+            {/* Right Side: Silent Visual Chapter Summary (5 Cols) */}
             <div className="lg:col-span-5 space-y-4">
               <div className="p-6 rounded-3xl bg-slate-950 border border-slate-800 space-y-4 shadow-xl flex flex-col justify-between min-h-[340px]">
                 
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                   <div className="flex items-center gap-2 text-xs font-black text-amber-400">
-                    <Mic className="w-4 h-4 text-emerald-400" />
-                    <span>Multilingual Voiceover Script ({selectedLang})</span>
+                    <Video className="w-4 h-4 text-emerald-400" />
+                    <span>Silent 10s Visual Summary ({selectedLang})</span>
                   </div>
                   <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-extrabold border border-emerald-500/30">
-                    SA Accent Ready
+                    10s Auto-Loop
                   </span>
                 </div>
 
-                {/* Voice Script Text */}
+                {/* Chapter Summary Text */}
                 <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2">
-                  <span className="text-xs font-extrabold text-slate-400 block">{t.scriptToReadLabel}</span>
-                  <blockquote className="text-white text-sm md:text-base font-extrabold leading-relaxed italic border-l-4 border-emerald-500 pl-3">
-                    {activeChapter.script}
+                  <span className="text-xs font-extrabold text-slate-400 block">Key Operational Takeaway:</span>
+                  <blockquote className="text-white text-sm md:text-base font-extrabold leading-relaxed border-l-4 border-emerald-500 pl-3">
+                    {activeChapter.script.replace(/^"|"$/g, '')}
                   </blockquote>
                 </div>
 
-                {/* Accent Guidance */}
+                {/* Visual Scene Breakdown */}
                 <div className="p-3 rounded-xl bg-purple-950/30 border border-purple-500/30 text-xs text-purple-300 space-y-1">
-                  <strong className="block text-amber-300 font-extrabold">South African Voice Accent Tone:</strong>
-                  <p className="text-[11px] text-slate-300">{activeChapter.accentGuidance}</p>
+                  <strong className="block text-amber-300 font-extrabold">10-Second Forecourt Loop Sequence:</strong>
+                  <p className="text-[11px] text-slate-300">
+                    0–3.3s: Dusk Canopy &amp; Dispensers • 3.3–6.6s: 4+1 Spare Wheel Check • 6.6–10.0s: Hazardous Spill Kit &amp; Fire Bay
+                  </p>
                 </div>
 
                 {/* Action Buttons */}
@@ -240,7 +238,7 @@ export const DemoVideoModal: React.FC<DemoVideoModalProps> = ({
                     className="flex-1 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black text-xs flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40 transition min-h-[44px]"
                   >
                     {isPlaying ? <Pause className="w-4 h-4 fill-slate-950" /> : <Play className="w-4 h-4 fill-slate-950" />}
-                    <span>{isPlaying ? 'Pause Presentation' : 'Play Script Voiceover'}</span>
+                    <span>{isPlaying ? 'Pause 10s Loop' : 'Resume 10s Loop'}</span>
                   </button>
 
                   <a

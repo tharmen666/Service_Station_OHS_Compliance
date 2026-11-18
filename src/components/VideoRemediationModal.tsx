@@ -69,7 +69,7 @@ export const VideoRemediationModal: React.FC<VideoRemediationModalProps> = ({
             </div>
           </div>
 
-          {/* Realistic Forecourt Video Player with Timestamp Scrubber */}
+          {/* Realistic Forecourt Video Player with Timestamp Scrubber (Silent 10s Loop) */}
           <div className="relative rounded-2xl bg-black border border-slate-800 overflow-hidden shadow-xl aspect-video flex flex-col justify-between p-4 group">
             <video
               src="/Service_Station_OHS_Compliance_Demo.mp4"
@@ -78,6 +78,7 @@ export const VideoRemediationModal: React.FC<VideoRemediationModalProps> = ({
               muted
               loop
               playsInline
+              preload="auto"
               data-testid="remediation-realistic-video"
               className="absolute inset-0 w-full h-full object-cover opacity-65 pointer-events-none"
             />

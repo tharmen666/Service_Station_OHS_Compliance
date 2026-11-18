@@ -151,7 +151,7 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-4">
           <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[320px]">
-            {/* Realistic Commercial Service Station Video Footage */}
+            {/* Realistic Commercial Service Station Video Footage (Silent 10s Loop) */}
             <video
               src="/Service_Station_OHS_Compliance_Demo.mp4"
               poster={
@@ -165,6 +165,7 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
               muted
               loop
               playsInline
+              preload="auto"
               data-testid="demo-video-tab-player"
               className="absolute inset-0 w-full h-full object-cover opacity-55"
             />
@@ -173,11 +174,11 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-purple-500/40 text-purple-200 text-xs font-black">
                 <Tv className="w-4 h-4 text-purple-400" />
-                <span>CHAPTER {activeChapter.id} OF 6 • HD FORECOURT FOOTAGE</span>
+                <span>CHAPTER {activeChapter.id} OF 6 • 10s SILENT LOOP</span>
               </div>
 
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-extrabold text-emerald-400">
-                <span>{isPlaying ? 'AUTO-ADVANCING' : 'READY'}</span>
+                <span>{isPlaying ? 'AUTO-ADVANCING' : '10s LOOP ACTIVE'}</span>
               </div>
             </div>
 
