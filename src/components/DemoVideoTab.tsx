@@ -18,6 +18,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { downloadStatutoryPdf } from '../lib/pdfGenerator';
+import { EXECUTIVE_DEMO_SRC } from './ExecutiveDemoModal';
 
 interface DemoVideoTabProps {
   lang: Language;
@@ -106,6 +107,29 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
         </div>
       </div>
 
+      {/* Narrated 2-minute executive demo: the primary player for this tab */}
+      <section
+        aria-label="2-Minute Executive Demo"
+        className="rounded-2xl bg-slate-900/90 border border-slate-800 p-3 sm:p-4 space-y-3"
+      >
+        <h3 className="text-sm font-extrabold text-white">2-Minute Executive Demo (narrated)</h3>
+        <video
+          data-testid="demo-video-tab-narrated-player"
+          className="w-full h-auto rounded-xl bg-black"
+          controls
+          playsInline
+          preload="metadata"
+          poster="/assets/forecourt_realistic_scene1.jpg"
+        >
+          <source src={EXECUTIVE_DEMO_SRC} type="video/mp4" />
+          Your browser cannot play this video.{' '}
+          <a href={EXECUTIVE_DEMO_SRC} className="underline text-amber-300">
+            Download the demo (MP4)
+          </a>
+          .
+        </video>
+      </section>
+
       {/* Multilingual Language Selector */}
       <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
@@ -151,34 +175,31 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 space-y-4">
           <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[320px]">
-            {/* Realistic Commercial Service Station Video Footage (Silent 10s Loop) */}
-            <video
-              src="/Service_Station_OHS_Compliance_Demo.mp4"
-              poster={
-                activeChapterIndex % 3 === 0
-                  ? '/assets/forecourt_realistic_scene1.jpg'
-                  : activeChapterIndex % 3 === 1
-                  ? '/assets/forecourt_realistic_scene2.jpg'
-                  : '/assets/forecourt_realistic_scene3.jpg'
-              }
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              data-testid="demo-video-tab-player"
-              className="absolute inset-0 w-full h-full object-cover opacity-55"
+            {/* Static forecourt backdrop for the chapter cards. The video itself is the narrated player above. */}
+            <div
+              aria-hidden="true"
+              data-testid="demo-video-tab-backdrop"
+              className="absolute inset-0 w-full h-full bg-cover bg-center opacity-55"
+              style={{
+                backgroundImage: `url(${
+                  activeChapterIndex % 3 === 0
+                    ? '/assets/forecourt_realistic_scene1.jpg'
+                    : activeChapterIndex % 3 === 1
+                    ? '/assets/forecourt_realistic_scene2.jpg'
+                    : '/assets/forecourt_realistic_scene3.jpg'
+                })`,
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-slate-950/70 pointer-events-none" />
 
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-purple-500/40 text-purple-200 text-xs font-black">
                 <Tv className="w-4 h-4 text-purple-400" />
-                <span>CHAPTER {activeChapter.id} OF 6 • 10s SILENT LOOP</span>
+                <span>CHAPTER {activeChapter.id} OF 6</span>
               </div>
 
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-extrabold text-emerald-400">
-                <span>{isPlaying ? 'AUTO-ADVANCING' : '10s LOOP ACTIVE'}</span>
+                <span>{isPlaying ? 'AUTO-ADVANCING' : 'PAUSED'}</span>
               </div>
             </div>
 

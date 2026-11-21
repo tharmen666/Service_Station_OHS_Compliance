@@ -218,17 +218,12 @@ export const HQDemoVideoShowcase: React.FC<HQDemoVideoShowcaseProps> = ({
         {/* Left Side: Visual Stage Display */}
         <div className="lg:col-span-8 space-y-4">
           <div className="relative rounded-3xl bg-slate-950 border-2 border-purple-500/50 overflow-hidden shadow-2xl flex flex-col justify-between p-6 min-h-[320px]">
-            {/* Realistic Commercial African Service Station Forecourt Background Video (Silent 10s Loop) */}
-            <video
-              src="/Service_Station_OHS_Compliance_Demo.mp4"
-              poster="/assets/forecourt_realistic_scene1.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              data-testid="hq-showcase-realistic-video"
-              className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none"
+            {/* Static forecourt backdrop. The narrated demo is the primary video: see the Video Showcase tab. */}
+            <div
+              aria-hidden="true"
+              data-testid="hq-showcase-backdrop"
+              className="absolute inset-0 w-full h-full bg-cover bg-center opacity-40 pointer-events-none"
+              style={{ backgroundImage: 'url(/assets/forecourt_realistic_scene1.jpg)' }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/80 pointer-events-none" />
 

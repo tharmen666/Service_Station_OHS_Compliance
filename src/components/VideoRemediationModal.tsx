@@ -69,18 +69,13 @@ export const VideoRemediationModal: React.FC<VideoRemediationModalProps> = ({
             </div>
           </div>
 
-          {/* Realistic Forecourt Video Player with Timestamp Scrubber (Silent 10s Loop) */}
+          {/* Static forecourt backdrop for the remediation segment cue */}
           <div className="relative rounded-2xl bg-black border border-slate-800 overflow-hidden shadow-xl aspect-video flex flex-col justify-between p-4 group">
-            <video
-              src="/Service_Station_OHS_Compliance_Demo.mp4"
-              poster="/assets/forecourt_realistic_scene1.jpg"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              data-testid="remediation-realistic-video"
-              className="absolute inset-0 w-full h-full object-cover opacity-65 pointer-events-none"
+            <div
+              aria-hidden="true"
+              data-testid="remediation-backdrop"
+              className="absolute inset-0 w-full h-full bg-cover bg-center opacity-65 pointer-events-none"
+              style={{ backgroundImage: 'url(/assets/forecourt_realistic_scene1.jpg)' }}
             />
             {/* Background overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-slate-950/60 to-transparent flex items-center justify-center pointer-events-none">
