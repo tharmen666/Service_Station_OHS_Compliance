@@ -47,13 +47,13 @@ export const EvacuationFlow: React.FC<EvacuationFlowProps> = ({ lang = 'EN' }) =
   const getIcon = (stepNum: number) => {
     switch (stepNum) {
       case 1: return <AlertOctagon className="w-6 h-6 text-red-400" />;
-      case 2: return <HeartPulse className="w-6 h-6 text-red-400" />;
-      case 3: return <Users className="w-6 h-6 text-red-400" />;
-      case 4: return <ClipboardCheck className="w-6 h-6 text-red-400" />;
-      case 5: return <Flame className="w-6 h-6 text-red-400" />;
-      case 6: return <ShieldAlert className="w-6 h-6 text-red-400" />;
-      case 7: return <Power className="w-6 h-6 text-red-400" />;
-      case 8: return <Search className="w-6 h-6 text-red-400" />;
+      case 2: return <ShieldAlert className="w-6 h-6 text-red-400" />;
+      case 3: return <Flame className="w-6 h-6 text-red-400" />;
+      case 4: return <Power className="w-6 h-6 text-red-400" />;
+      case 5: return <HeartPulse className="w-6 h-6 text-red-400" />;
+      case 6: return <Search className="w-6 h-6 text-red-400" />;
+      case 7: return <Users className="w-6 h-6 text-red-400" />;
+      case 8: return <ClipboardCheck className="w-6 h-6 text-red-400" />;
       case 9: return <PhoneCall className="w-6 h-6 text-red-400" />;
       default: return <AlertOctagon className="w-6 h-6 text-red-400" />;
     }
@@ -99,6 +99,31 @@ export const EvacuationFlow: React.FC<EvacuationFlowProps> = ({ lang = 'EN' }) =
             <Volume2 className="w-5 h-5" />
             <span className="text-xs">{isAudioSimulating ? 'ESD ALARM SOUNDING...' : 'Simulate ESD Siren'}</span>
           </button>
+        </div>
+      </div>
+
+      {/* Statutory Twice-Yearly Fire Drill & Daily Shift Sheet Roll Call Banner */}
+      <div
+        data-testid="evacuation-drill-rollcall-banner"
+        className="p-5 rounded-2xl bg-gradient-to-r from-red-950/60 via-slate-900 to-amber-950/40 border border-red-500/40 shadow-xl grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5">
+          <span className="text-xs font-black uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <Users className="w-4 h-4 text-amber-400" />
+            Step 7 • Managerial Daily Shift Sheet Roll Call
+          </span>
+          <p className="text-xs text-slate-200 leading-relaxed">
+            The Site Manager must bring out the <strong>daily shift sheet</strong> to the assembly point to conduct a formal roll call, recording the <strong>names and signatures</strong> of all staff on shift and assembled customers after sweeping the convenience kiosk and restrooms.
+          </p>
+        </div>
+        <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1.5">
+          <span className="text-xs font-black uppercase tracking-wider text-red-400 flex items-center gap-1.5">
+            <ClipboardCheck className="w-4 h-4 text-red-400" />
+            Step 8 • Statutory Twice-Yearly (Bi-Annual) Fire Drills
+          </span>
+          <p className="text-xs text-slate-200 leading-relaxed">
+            Statutory compliance mandates that verified emergency evacuation and fire suppression drills (2–3 trained staff attacking fire with DCP/CO2 extinguishers, 2 staff securing entrance/exit traffic) be conducted and logged <strong>twice a year</strong>.
+          </p>
         </div>
       </div>
 

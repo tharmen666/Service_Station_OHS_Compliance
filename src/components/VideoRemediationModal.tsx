@@ -69,13 +69,24 @@ export const VideoRemediationModal: React.FC<VideoRemediationModalProps> = ({
             </div>
           </div>
 
-          {/* Simulated Video Player with Timestamp Scrubber */}
+          {/* Realistic Forecourt Video Player with Timestamp Scrubber (Silent 10s Loop) */}
           <div className="relative rounded-2xl bg-black border border-slate-800 overflow-hidden shadow-xl aspect-video flex flex-col justify-between p-4 group">
-            {/* Background simulated video texture */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-slate-950/80 to-transparent flex items-center justify-center pointer-events-none">
+            <video
+              src="/Service_Station_OHS_Compliance_Demo.mp4"
+              poster="/assets/forecourt_realistic_scene1.jpg"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              data-testid="remediation-realistic-video"
+              className="absolute inset-0 w-full h-full object-cover opacity-65 pointer-events-none"
+            />
+            {/* Background overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-slate-950/60 to-transparent flex items-center justify-center pointer-events-none">
               <div className="text-center p-6 space-y-2">
-                <Film className="w-14 h-14 text-amber-500/40 mx-auto animate-pulse" />
-                <div className="text-xs text-slate-400 font-mono">SIMULATED VIDEO PLAYBACK</div>
+                <Film className="w-14 h-14 text-amber-500/70 mx-auto animate-pulse" />
+                <div className="text-xs text-amber-300 font-mono font-bold">HD FORECOURT REMEDIATION PLAYBACK</div>
                 <div className="text-sm font-bold text-white max-w-md mx-auto">{remediation.video_reference}</div>
               </div>
             </div>

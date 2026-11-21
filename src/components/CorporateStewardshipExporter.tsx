@@ -71,6 +71,7 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
       sans_10089_alignment: "Not verified - pending competent-person review",
       sans_10263_spill_readiness: "Not verified - pending competent-person review",
       hitl_cert_audit_hash: dossierHash,
+      popia_data_minimisation_notice: "POPIA Act 4 of 2013 Section 10 & 14: Exported dossier excludes personal employee ID numbers, private contact details, and named driver PDP numbers.",
       timestamp: new Date().toISOString()
     };
 
@@ -107,7 +108,8 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
 
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center border border-slate-700 transition min-h-[40px] min-w-[40px]"
+            aria-label="Close Compliance Dossier"
+            className="w-10 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center border border-slate-700 transition min-h-[40px] min-w-[40px]"
           >
             <X className="w-6 h-6" />
           </button>
@@ -191,10 +193,15 @@ export const CorporateStewardshipExporter: React.FC<CorporateStewardshipExporter
               </div>
             </div>
 
-            {/* Verification Hash Footer */}
-            <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-[11px] text-slate-400 gap-2">
-              <span className="font-mono">Audit Dossier Hash: <strong className="text-amber-400">{dossierHash}</strong></span>
-              <span>Generated: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</span>
+            {/* Verification Hash & POPIA Data-Minimisation Footer */}
+            <div className="pt-4 border-t border-slate-800 space-y-2 text-xs text-slate-300">
+              <div className="p-3 rounded-xl bg-slate-900 border border-cyan-500/30 text-cyan-200">
+                <strong>POPIA Data-Minimisation Notice (Act 4 of 2013, Section 10 &amp; 14):</strong> This export contains aggregate compliance metrics and role placeholders only. No personal identity numbers or named driver PDP numbers are exported.
+              </div>
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+                <span className="font-mono">Audit Dossier Hash: <strong className="text-amber-400">{dossierHash}</strong></span>
+                <span>Generated: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}</span>
+              </div>
             </div>
 
           </div>

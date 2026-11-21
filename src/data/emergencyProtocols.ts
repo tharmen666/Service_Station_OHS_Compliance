@@ -34,48 +34,48 @@ export const emergencyProtocols: EmergencyProtocols = {
     steps: [
       {
         step: 1,
-        action: "Hit Emergency Stop & Alert Cashiers",
-        detail: "Notify the person nearest to the emergency stop button and notify the cashiers who in turn will ensure that everybody is inside the building to be counted for."
+        action: "Emergency Stop Activation",
+        detail: "Cashier presses the emergency stop button immediately to isolate all forecourt fuel dispensers and cut submersible pump power."
       },
       {
         step: 2,
-        action: "Panic Prevention",
-        detail: "Managers/marshals to ensure there is no panic."
+        action: "Traffic Control Deployment",
+        detail: "Designated team members (2x staff) immediately secure the site entrance and exit to halt incoming traffic and clear the driveway."
       },
       {
         step: 3,
-        action: "Lead to Assembly Point",
-        detail: "Managers to ensure everyone, including customers who are inside the building, must follow them to the relevant assembly point."
+        action: "Fire Suppression Team",
+        detail: "Two to three trained staff members confidently attack the fire using appropriate 9kg DCP or CO2 fire extinguishers."
       },
       {
         step: 4,
-        action: "Roll Call Verification",
-        detail: "Managers must remember to carry their shift sheet for that particular day to use as a roll call list and update accordingly."
+        action: "Customer Assembly Direction",
+        detail: "Remaining forecourt staff instruct customers to switch off vehicle engines immediately and guide them calmly to the designated assembly point."
       },
       {
         step: 5,
-        action: "Trained First-Response Fire Fighting",
-        detail: "All staff that are trained and feel comfortable to do so, should retrieve the fire extinguisher and put out the fire, as per training received."
+        action: "Internal Notification",
+        detail: "Cashier alerts store management and all staff inside the building to initiate immediate interior evacuation."
       },
       {
         step: 6,
-        action: "Traffic Control & Site Perimeter Lockdown",
-        detail: "2 x staff members to block off the entrance and exits of the site (Control Traffic)."
+        action: "Facility Sweep (Kiosk & Restrooms)",
+        detail: "Dedicated staff sweep the convenience kiosk, back rooms, and restrooms to ensure no staff or customers are left behind."
       },
       {
         step: 7,
-        action: "Forecourt Engine Shut-Off & Evacuation",
-        detail: "Other forecourt staff must advise customers to switch off their engines, then to follow them to the relevant assembly point."
+        action: "Managerial Roll Call & Shift Sheet Signatures",
+        detail: "The site manager brings out the daily shift sheet to conduct a formal roll call at the assembly point, recording names and signatures of all staff and assembled customers."
       },
       {
         step: 8,
-        action: "Restroom & Kiosk Sweeps",
-        detail: "Forecourt staff must also ensure that all the restrooms and kiosk are checked for staff or customers (we need to account for everyone that is on shift for that day, including customers)."
+        action: "Statutory Compliance (Twice-Yearly Fire Drills)",
+        detail: "Statutory mandate: Verified fire and evacuation drills must be conducted and logged twice a year (bi-annually) across all shifts."
       },
       {
         step: 9,
-        action: "Emergency Services Dispatch",
-        detail: "Managers and Marshals must ensure that they have all emergency contact numbers."
+        action: "Emergency Services Dispatch & Handover",
+        detail: "Managers and marshals confirm Emergency Services (10177 / 112) dispatch and maintain site lockdown until formal Fire Chief clearance."
       }
     ]
   },
@@ -85,43 +85,43 @@ export const emergencyProtocols: EmergencyProtocols = {
     steps: [
       {
         step: 1,
-        title: "Risk Assessment",
-        detail: "Assess the situation, identify the source, volume, and fire danger."
+        title: "Immediate Emergency Stop",
+        detail: "Hit the emergency stop button immediately to cut fuel dispenser power and stop the source of the spill."
       },
       {
         step: 2,
-        title: "Protective Clothing",
-        detail: "Put on protective clothing provided in the spill kit (gloves, goggles, boots)."
+        title: "Teamwork & PPE (6-to-7-Person Spill Team)",
+        detail: "Deploy the coordinated 6-to-7-person spill team wearing full PPE gloves, goggles, and safety boots to contain the spill before it reaches stormwater drains."
       },
       {
         step: 3,
-        title: "Limit the Spill",
-        detail: "Plug the hole, shut the valve off, or hit emergency stop dispenser valves."
+        title: "Absorption & Containment (Sponge/Pads & Cloths)",
+        detail: "One team member covers the spill with absorbent sponge/pads to soak up bulk fuel; simultaneously, another covers the fuel with specialized absorbent cloths."
       },
       {
         step: 4,
-        title: "Containment",
-        detail: "Use brooms, containment socks, and absorbents to contain the spillage and block drains."
+        title: "Hazardous Waste Disposal (Old-Oil Drums)",
+        detail: "Staff wearing PPE gloves pick up the fuel-saturated sponges, pads, and cloths and place them directly into designated old-oil drums / hazardous waste containers."
       },
       {
         step: 5,
-        title: "Begin Clean-Up",
-        detail: "Use loose absorbent peat/granules from the spill kit to clean up the pool."
+        title: "Sand Casting & Broom Sweep",
+        detail: "Another team member casts dry forecourt sand over the remaining residue, while another sweeps it thoroughly using a non-sparking broom."
       },
       {
         step: 6,
-        title: "Contact Authorities",
-        detail: "Contact superiors or managers, and notify emergency authorities if necessary."
+        title: "Single-Use Spill Kit Replenishment",
+        detail: "Spill kit contents (absorbents, pads, cloths, and sand) are strictly single-use only and must be fully restocked immediately after use."
       },
       {
         step: 7,
-        title: "Dispose of Used Material",
-        detail: "Dispose of used, contaminated absorbents in designated hazardous waste bags as per statutory regulations."
+        title: "Stormwater Drain & Interceptor Verification",
+        detail: "Inspect stormwater drain grates and oil/water separator chambers to confirm zero hydrocarbon runoff left the forecourt apron."
       },
       {
         step: 8,
-        title: "Restock Materials",
-        detail: "Immediately replace and restock any spill kit materials used."
+        title: "Supervisor Incident Log & Wetstock Deduction",
+        detail: "Record the spill volume in the site OHS incident register and Wetstock Reconciliation ledger, and notify management/authorities if required."
       }
     ]
   }

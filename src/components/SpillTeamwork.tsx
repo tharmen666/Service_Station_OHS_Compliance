@@ -96,7 +96,7 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
         </div>
       </div>
 
-      {/* Real-time Fuel Spill Incident Volume Logger (Linked to Tab 6 Wetstock Bridge) */}
+      {/* Real-time Fuel Spill Incident Volume Logger */}
       <div className="p-5 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/40 border border-amber-500/40 shadow-xl space-y-3">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
@@ -106,12 +106,12 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
             <div>
               <h3 className="text-base font-black text-white flex items-center gap-2">
                 <span>Active Spill Incident Volume Logger</span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                  Tab 6 Bridge Sync Active
+                <span className="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                  Wetstock Reconciliation Linked
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
-                Log spilled litres below to automatically deduct from <strong>Tab 6 Wetstock Offload &amp; Reconciliation</strong> variance.
+              <p className="text-xs text-slate-300">
+                Log spilled litres below to automatically deduct from <strong>Wetstock Offload &amp; Reconciliation</strong> variance.
               </p>
             </div>
           </div>
@@ -159,7 +159,7 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
                 className="px-3 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-black flex items-center gap-1 transition shadow"
                 title="View in Wetstock Offload Bridge"
               >
-                <span>Check in Tab 6</span>
+                <span>Open Wetstock Reconciliation</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             )}
@@ -252,12 +252,19 @@ export const SpillTeamwork: React.FC<SpillTeamworkProps> = ({
         </div>
       </div>
 
-      {/* Critical Non-Sparking Safety Notice */}
-      <div className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-start gap-3">
+      {/* Critical Non-Sparking & Single-Use Spill Kit Safety Notice */}
+      <div
+        data-testid="spill-team-6to7-singleuse-banner"
+        className="p-4 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-start gap-3"
+      >
         <Sparkles className="w-6 h-6 text-amber-400 flex-shrink-0 mt-0.5" />
-        <div className="text-xs text-amber-200">
-          <strong className="text-amber-400 font-bold text-sm block mb-0.5">CRITICAL SAFETY MANDATE: NON-SPARKING PLASTIC TOOLS ONLY</strong>
-          Metal shovels or steel brooms striking forecourt concrete generate friction sparks that will instantly ignite volatile gasoline vapors. Only certified plastic spades, soft brooms, and peat moss granules are permitted on the forecourt.
+        <div className="text-xs text-amber-200 space-y-1">
+          <strong className="text-amber-400 font-bold text-sm block">
+            CRITICAL SPILL PROTOCOL: 6-TO-7-PERSON TEAMWORK, OLD-OIL DRUM DISPOSAL &amp; SINGLE-USE KIT REPLENISHMENT
+          </strong>
+          <p>
+            Deploy the coordinated <strong>6-to-7-person spill team</strong> wearing full PPE gloves immediately after hitting the emergency stop button so zero fuel reaches stormwater drains. Cover the spill simultaneously with absorbent sponge/pads and specialized cloths, transfer saturated materials with PPE gloves into designated <strong>old-oil drums / waste containers</strong>, cast sand and sweep residue with non-sparking plastic tools, and <strong>immediately restock the spill kit (all spill kit contents are strictly single-use only)</strong>.
+          </p>
         </div>
       </div>
 
