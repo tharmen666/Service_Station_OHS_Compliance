@@ -6,6 +6,7 @@ import { CustomerServiceModule } from './components/CustomerServiceModule';
 import { AssessmentQuiz } from './components/AssessmentQuiz';
 import { DemoVideoTab } from './components/DemoVideoTab';
 import { DemoVideoModal } from './components/DemoVideoModal';
+import { ExecutiveDemoModal } from './components/ExecutiveDemoModal';
 import { NightshiftFirstResponder } from './components/NightshiftFirstResponder';
 import { MonthlyRefresherHub } from './components/MonthlyRefresherHub';
 import { RetailerNotificationCenter } from './components/RetailerNotificationCenter';
@@ -153,6 +154,7 @@ export const App: React.FC = () => {
   const [isAIStudioOpen, setIsAIStudioOpen] = useState<boolean>(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState<boolean>(false);
   const [isDemoModalOpen, setIsDemoModalOpen] = useState<boolean>(false);
+  const [isExecDemoOpen, setIsExecDemoOpen] = useState<boolean>(false);
   const [isNotificationCenterOpen, setIsNotificationCenterOpen] = useState<boolean>(false);
   const [isDossierOpen, setIsDossierOpen] = useState<boolean>(false);
   const [isNellyOpen, setIsNellyOpen] = useState<boolean>(false);
@@ -546,6 +548,18 @@ export const App: React.FC = () => {
           </div>
         </header>
 
+        {/* Executive demo: visible on the standard route, on its own row so it never crowds the header controls */}
+        <div className="flex items-center justify-center bg-slate-950 border-b border-slate-800 px-3 py-2">
+          <button
+            type="button"
+            onClick={() => setIsExecDemoOpen(true)}
+            data-testid="open-executive-demo-btn"
+            className="w-full sm:w-auto max-w-full px-4 py-2 rounded-xl bg-[#064E3B] hover:bg-[#065F46] text-white font-extrabold text-sm border-2 border-[#D97706] shadow-lg transition focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+          >
+            Watch 2-Min Executive Demo
+          </button>
+        </div>
+
         {/* Horizontal Module Navigation Strip with Visible Left/Right Scroll Cues (< 1280px) */}
         <div className="flex xl:hidden items-center bg-slate-900/95 border-b border-slate-800 w-full relative">
           <button
@@ -694,6 +708,9 @@ export const App: React.FC = () => {
         onClose={() => setIsCertModalOpen(false)}
         lang={lang}
       />
+
+      {/* Executive Demo Video Modal */}
+      <ExecutiveDemoModal isOpen={isExecDemoOpen} onClose={() => setIsExecDemoOpen(false)} />
 
       {/* Multilingual Demo Video Modal */}
       <DemoVideoModal
