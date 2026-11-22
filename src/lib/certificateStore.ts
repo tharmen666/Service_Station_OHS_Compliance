@@ -109,7 +109,7 @@ export function issueAndStoreCertificate(params: {
   const record: IssuedCertificateRecord = {
     certificateId: generateUniqueCertificateId(now),
     candidateName: params.candidateName.trim() || 'Forecourt Attendant',
-    moduleName: params.moduleName.trim() || 'Forecourt OHS Competency Assessment',
+    moduleName: params.moduleName.trim() || 'Basic Forecourt Safety & OHS Awareness Training',
     score: params.score,
     totalQuestions: denominator,
     answeredCount: params.answeredCount ?? denominator,
@@ -179,7 +179,7 @@ export function getLatestQuizAttempt(): QuizAttemptSnapshot {
     score: 0,
     totalQuestions: assessmentQuestions.length,
     answeredCount: 0,
-    moduleName: 'Forecourt OHS Competency Assessment (All Topics)',
+    moduleName: 'Basic Forecourt Safety & OHS Awareness Training (All Topics)',
     updatedAt: new Date().toISOString(),
   };
 }

@@ -100,7 +100,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({
         score,
         totalQuestions: filteredQuestions.length,
         answeredCount,
-        moduleName: `Forecourt OHS Competency (${selectedTopic})`,
+        moduleName: `Basic Forecourt Safety & OHS Awareness Training (${selectedTopic})`,
         updatedAt: new Date().toISOString(),
       });
     }
@@ -328,7 +328,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({
             </h3>
             <p className="text-xs text-slate-200 mt-1">
               {percentage >= PASS_MARK
-                ? `Passed (meets ${PASS_MARK}% threshold). You may now generate your OHS Compliance Certificate.`
+                ? `Passed (meets ${PASS_MARK}% threshold). You may now generate your Basic Forecourt Safety & OHS Awareness Training certificate.`
                 : `Not yet certified: score ${score}/${filteredQuestions.length}, pass mark ${PASS_MARK}%. Review remediation clips and retry.`}
             </p>
           </div>
@@ -547,7 +547,7 @@ export const AssessmentQuiz: React.FC<AssessmentQuizProps> = ({
         score={score}
         totalQuestions={filteredQuestions.length}
         answeredCount={answeredCount}
-        moduleName={`Forecourt OHS Competency (${selectedTopic})`}
+        moduleName={`Basic Forecourt Safety & OHS Awareness Training (${selectedTopic})`}
       />
     </div>
   );

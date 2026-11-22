@@ -37,8 +37,8 @@ export interface StatutoryCourse {
   title: string;
   category: 'First Aid' | 'Firefighting' | 'Risk Assessment' | 'SHE Rep' | 'Spill Response' | 'Evacuation';
   statutoryReference: string;
-  accreditationBody: string;
-  accreditationNumber: string;
+  trainingClassification: string;
+  statutoryAlignment: string;
   targetAudience: string;
   minimumStatutoryRatio: string;
   certifiedStaffCount: number;
@@ -104,8 +104,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Basic First Aid Level 1 & Hydrocarbon Emergency Triage',
       category: 'First Aid',
       statutoryReference: 'General Safety Regulations 3(4) / OHS Act 85 of 1993 & SAQA US 119567',
-      accreditationBody: 'SAQCC & Department of Employment and Labour (DEL)',
-      accreditationNumber: 'SAQCC NO. 0011 | SDL Reg. NO. L860761032',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Forecourt Attendants, Convenience Cashiers & First Aiders',
       minimumStatutoryRatio: 'Min 1 First Aider per 50 workers or 1 per operating forecourt shift',
       certifiedStaffCount: 8,
@@ -151,8 +151,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Basic Firefighting & Equipment Handling (P.A.S.S. Method)',
       category: 'Firefighting',
       statutoryReference: 'Environmental Regulations for Workplaces 9 / SANS 10089-1 & SANS 10105',
-      accreditationBody: 'SABS Fire Protection Authority & SAQCC Fire Registry',
-      accreditationNumber: 'SAQCC NO. 0011 | SANS 10105 CERT-774',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Forecourt Attendants, Supervisors & Tanker Offloading Marshals',
       minimumStatutoryRatio: 'Min 1 Fire Marshal per 25 employees / 2 marshals per shift',
       certifiedStaffCount: 12,
@@ -198,8 +198,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Hazard Identification & Risk Assessment (HIRA Master)',
       category: 'Risk Assessment',
       statutoryReference: 'Section 8(2)(b) OHS Act 85 of 1993 & Major Hazard Installation Regulations',
-      accreditationBody: 'Department of Employment and Labour (DEL) & HWSETA',
-      accreditationNumber: 'DEL HIRA-REC-9042 / SABS SANS 10089-3',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Section 16.2 Managers, Site Supervisors & Safety Officers',
       minimumStatutoryRatio: 'Mandatory for all Site Managers, Section 16.2 Assignees & Shift Leaders',
       certifiedStaffCount: 4,
@@ -245,8 +245,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Health & Safety Representative (SHE Rep Statutory Duties)',
       category: 'SHE Rep',
       statutoryReference: 'Section 17 & 18 OHS Act 85 of 1993 / General Administrative Regs 6',
-      accreditationBody: 'National OHS Institute & Registered Committee Custodian',
-      accreditationNumber: 'SAQCC NO. 0011 | SDL Reg. NO. L860761032',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Elected Health & Safety Representatives & Committee Members',
       minimumStatutoryRatio: 'Min 1 SHE Rep per 50 workers (Forecourt appointed: 3 elected reps)',
       certifiedStaffCount: 3,
@@ -292,8 +292,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Forecourt Bulk Spill Containment & Hydrocarbon Waste Protocol',
       category: 'Spill Response',
       statutoryReference: 'National Environmental Management Act (NEMA 107 of 1998) & SANS 10263',
-      accreditationBody: 'Environmental Management Inspectorate & SABS Standards',
-      accreditationNumber: 'SANS 10263-ENV-310 | DEL COMP-09',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Forecourt Attendants, Maintenance Crew & Tanker Custodians',
       minimumStatutoryRatio: 'All forecourt attendants and tanker offloading supervisors',
       certifiedStaffCount: 10,
@@ -339,8 +339,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
       title: 'Emergency Evacuation & ESD Shutoff Master Protocol',
       category: 'Evacuation',
       statutoryReference: 'Major Hazard Installation Regulations & SANS 10089-1 Standard',
-      accreditationBody: 'Department of Employment and Labour & Emergency Services',
-      accreditationNumber: 'DEL MHI-EVAC-441 / SANS 10089-1',
+      trainingClassification: 'Basic Forecourt Safety & OHS Awareness Training',
+      statutoryAlignment: 'OHS Act 85 of 1993 — Sec 8(2)(e) & Sec 13 Awareness',
       targetAudience: 'Entire Station Workforce, Shop Cashiers, Car Wash & Tenants',
       minimumStatutoryRatio: '100% of all site personnel (Annual statutory evacuation drill)',
       certifiedStaffCount: 24,
@@ -529,23 +529,23 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-black uppercase tracking-wider border border-amber-500/40">
                 <GraduationCap className="w-4 h-4 text-amber-400" />
-                Statutory OHS Competency Framework
+                Basic Forecourt Safety &amp; OHS Awareness Training
               </span>
               <span className="px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 text-[11px] font-black border border-cyan-500/30 flex items-center gap-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
-                OHS Act 85 of 1993 • SANS 10089-1
+                OHS Act 85 of 1993 • Section 8(2)(e) &amp; Section 13
               </span>
               <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-[11px] font-black border border-emerald-500/30 flex items-center gap-1">
                 <Award className="w-3.5 h-3.5 text-emerald-400" />
-                SAQCC NO. 0011 Accredited
+                General Information, Instruction &amp; Training
               </span>
             </div>
             
             <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight leading-tight">
-              Statutory OHS Training & Competency Verification
+              Basic Forecourt Safety &amp; OHS Awareness Training
             </h2>
             <p className="text-slate-300 text-sm mt-1 max-w-3xl leading-relaxed">
-              Mandatory compliance courses for petroleum forecourt retail: Basic First Aid, PASS Firefighting, Risk Assessment (HIRA), and SHE Representative statutory functions with live expiry tracking and downloadable training packs.
+              In-house forecourt safety awareness and instruction modules aligned with Occupational Health and Safety Act 85 of 1993 Section 8(2)(e) and Section 13 (Basic First Aid awareness, P.A.S.S. firefighting, HIRA, and SHE Representative duties). Built-in modules provide awareness training and do not replace external licensed practitioner accreditation.
             </p>
           </div>
 
@@ -788,7 +788,7 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
                 </div>
 
                 <div className="text-[11px] text-slate-400 mt-1">
-                  Accreditation: <span className="text-slate-300 font-mono">{course.accreditationNumber}</span>
+                  Training Scope: <span className="text-slate-300 font-mono">{course.statutoryAlignment}</span>
                 </div>
 
                 {/* Target Audience & Statutory Ratio */}
@@ -1019,8 +1019,8 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
                 <span>{selectedPackCourse.statutoryReference}</span>
               </div>
               <div className="flex justify-between items-center text-slate-300">
-                <span className="text-slate-400 font-bold">Accreditation:</span>
-                <span className="font-mono text-purple-300">{selectedPackCourse.accreditationNumber}</span>
+                <span className="text-slate-400 font-bold">Training Scope:</span>
+                <span className="font-mono text-purple-300">{selectedPackCourse.statutoryAlignment}</span>
               </div>
               <div className="flex justify-between items-center text-slate-300">
                 <span className="text-slate-400 font-bold">Current Expiry:</span>
@@ -1101,7 +1101,7 @@ export const StatutoryTrainingModule: React.FC<StatutoryTrainingModuleProps> = (
             {/* Modal Actions */}
             <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3 flex-wrap">
               <div className="text-[11px] text-slate-400">
-                Accredited under SAQCC & Department of Employment and Labour
+                Basic Forecourt Safety &amp; OHS Awareness Training • OHS Act 85 of 1993 Sec 8(2)(e) &amp; Sec 13
               </div>
 
               <div className="flex items-center gap-2">

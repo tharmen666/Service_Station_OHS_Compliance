@@ -42,7 +42,7 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
   const actualAnswered =
     typeof answeredCount === 'number' ? answeredCount : latestAttempt.answeredCount;
   const actualModule =
-    moduleName || latestAttempt.moduleName || 'Forecourt Safety, Fire, Spill & Hazmat';
+    moduleName || latestAttempt.moduleName || 'Basic Forecourt Safety & OHS Awareness Training';
 
   // Compute percentage from the actual question count (or answered count if more questions were answered)
   const denominator = Math.max(actualTotal, actualAnswered, 1);
@@ -154,7 +154,7 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
                 Current Score: <strong>{actualScore} / {denominator} ({percentage}%)</strong> • Answered: <strong>{actualAnswered} of {denominator}</strong>
               </p>
               <p className="text-slate-300">
-                A minimum score of <strong>{PASS_MARK}%</strong> ({Math.ceil((PASS_MARK / 100) * denominator)}/{denominator} correct answers) is required before an OHS Compliance Certificate can be issued.
+                A minimum score of <strong>{PASS_MARK}%</strong> ({Math.ceil((PASS_MARK / 100) * denominator)}/{denominator} correct answers) is required before a Basic Forecourt Safety &amp; OHS Awareness Training certificate can be issued.
               </p>
               <p className="text-xs text-amber-300">
                 Note: Pass mark is configured at {PASS_MARK}% (PASS_MARK constant) subject to client training policy confirmation.
@@ -181,7 +181,7 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
               <div>
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold border border-amber-500/30">
-                    SANS 10089 / OHSA 85-1993
+                    OHS Act 85 of 1993 • Sec 8(2)(e) / Sec 13
                   </span>
                   {issuedCert?.verifiedBySupervisor ? (
                     <span
@@ -200,8 +200,11 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
                   )}
                 </div>
                 <h2 id="cert-modal-heading" className="text-xl font-bold text-slate-100 mt-1">
-                  OHS Compliance Certificate
+                  Basic Forecourt Safety &amp; OHS Awareness Training
                 </h2>
+                <p className="text-xs text-slate-300 mt-0.5">
+                  Completion Certificate • General Information, Instruction &amp; Training (OHS Act 85 of 1993 Section 8(2)(e) / Section 13)
+                </p>
               </div>
             </div>
 
@@ -303,7 +306,7 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
                   />
                   <input
                     type="text"
-                    placeholder="Appointment / Registration Ref (e.g. 16.2-REF-01)"
+                    placeholder="Section 16.2 Appointment Ref (e.g. 16.2-REF-01)"
                     value={supervisorReg}
                     onChange={(e) => setSupervisorReg(e.target.value)}
                     aria-label="Supervisor Registration Reference"
@@ -356,9 +359,9 @@ export const AuditCertificateModal: React.FC<AuditCertificateModalProps> = ({
             )}
 
             <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-300 gap-2">
-              <span>Statutory Compliance Matrix • SANS 10089</span>
+              <span>Basic Forecourt Safety &amp; OHS Awareness Training • OHS Act 85 of 1993 Sec 8(2)(e) / Sec 13</span>
               <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-bold text-xs">
-                Forecourt Sentinel Compliance Record
+                Forecourt Awareness Training Record
               </span>
             </div>
           </div>
