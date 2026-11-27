@@ -1,4 +1,4 @@
-export type Language = 'EN' | 'SW' | 'ZU' | 'AF' | 'ST';
+export type Language = 'EN' | 'SW' | 'ZU' | 'AF' | 'ST' | 'XH';
 
 export interface DemoChapter {
   id: number;
@@ -17,7 +17,7 @@ export interface Translations {
   aiPromptBtn: string;
   sansCompliance: string;
   hitlSignoffBtn: string;
-  
+
   // Navigation Tabs
   tabEvacuation: string;
   tabSpill: string;
@@ -684,5 +684,125 @@ export const translations: Record<Language, Translations> = {
     remediationAvailable: 'Video ea Thuto e Teng',
     correctAnswer: '✓ Karabo e Nepahetseng',
     incorrectAnswer: '❌ Karabo e Fosahetseng'
+  },
+  XH: {
+    headerBadge: 'I-Forecourt POS OHS • SANS 10089',
+    headerTitle: 'Ithebulethi yoThobelo lwe-OHS eGaraji',
+    usbStatus: 'I-USB: D:\\ Iyasebenza',
+    esdStatus: 'Inkqubo ye-ESD: ILUNGILE',
+    aiPromptBtn: 'Google AI Studio',
+    sansCompliance: 'SANS 10089 / OHSA 85-1993',
+    hitlSignoffBtn: 'Isatifikethi soMphathi we-OHS',
+
+    tabEvacuation: '2. I-ESD nokuPhuma',
+    tabSpill: '3. UkuChitheka kwaMafutha',
+    tabCustomer: '4. Abathengi ne-Hazmat',
+    tabFire: '5. UkuCima uMlilo (PASS)',
+    tabQuiz: '7. Uvavanyo lwe-60s (42 Qs)',
+    tabCurriculum: '6. Uluhlu lwe-SANS',
+    tabDemoVideo: '9. Ividiyo yoMboniso',
+    tabFirstResponder: '10. Uncedo lokuQala eBusuku',
+
+    evacuationTitle: 'Iinkqubo zokuCima nge-ESD nokuPhuma eGaraji',
+    evacuationSubtitle: 'Imigaqo ye-SANS 10089-3 ne-OHSA yabaPhathi nabaSebenzi',
+    spillTitle: 'UkuLawula ukuChitheka kwaMafutha',
+    spillSubtitle: 'Imigaqo ye-SANS 10263 yokukhusela imijelo yamanzi',
+    customerTitle: 'INkonzo yaBathengi noKhuseleko lwaMafutha',
+    customerSubtitle: 'Ukuthintela umlilo, ukuvalwa kweefowuni nokhuseleko lwenozile',
+    fireTitle: 'Indlela ye-PASS yokuCima uMlilo noNcedo lokuQala',
+    fireSubtitle: 'Inkqubo ye-SABS SANS 1910 yezicima-mlilo ze-9kg DCP',
+    quizTitle: 'Uvavanyo loLwazi loKhuseleko eGaraji (Imibuzo engama-42)',
+    quizSubtitle: 'Uvavanyo lwemizuzwana engama-60 kunye neevidiyo zokufunda',
+    curriculumTitle: 'Ikharityhulam noXwebhu lwe-SANS',
+    curriculumSubtitle: 'Imigangatho ye-SABS / SANS neevidiyo zoqeqesho',
+    demoVideoTitle: 'Iziko leeVidiyo zoMboniso (isiXhosa)',
+    demoVideoSubtitle: 'Umboniso wemigaqo yokhuseleko ebusuku kunye novavanyo lwenyanga.',
+    firstResponderTitle: 'Uncedo lokuQala eBusuku eGaraji',
+    firstResponderSubtitle: 'Amanyathelo ama-4 oncedo lokuqala nokunxibelelana ne-intercom.',
+
+    playDemoBtn: '▶ Dlala iSahluko',
+    pauseDemoBtn: '⏸ Misa iVidiyo',
+    nextChapterBtn: 'ISahluko esilandelayo →',
+    prevChapterBtn: '← ISahluko esidlulileyo',
+    recordGuideBtn: '🎬 UkuRekhoda: Win + Shift + R',
+    voiceLanguageLabel: 'ULwimi loMboniso:',
+    accentNoteLabel: 'isiXhosa Operational Voiceover',
+    whatToClickLabel: '🖥️ Ekufuneka ukuCofe eSkrinini:',
+    scriptToReadLabel: '🗣️ Umbhalo wokuFundwa (isiXhosa Script):',
+    screenRecordingShortcut: 'ISkrini esigcweleyo: F11 | I-Mic: ON | http://localhost:3000',
+
+    chaptersList: [
+      {
+        id: 1,
+        timeRange: '0:00 - 0:20',
+        title: '1. Umngcipheko eGaraji noThobelo lweMithetho',
+        visualCue: 'Bonisa iphepha eliphambili le-Forecourt POS elibonisa imigaqo yokhuseleko.',
+        script: '"Iigaraji zamafutha ziindawo ezinomngcipheko ophezulu womlilo nokuchitheka kwamafutha. Uqeqesho olucacileyo lwedijithali lukhusela abasebenzi nekhampani."',
+        accentGuidance: 'isiXhosa esicacileyo nesikhuthazayo.'
+      },
+      {
+        id: 2,
+        timeRange: '0:20 - 0:40',
+        title: '2. I-POS ngeelwimi eziNinzi',
+        visualCue: 'Cofa uTshintsho lweLwimi phezulu.',
+        script: '"Le nkqubo inika abasebenzi ulwazi ngolwimi abaluqondayo, kubandakanya isiXhosa, isiZulu, isiBhulu, isiSotho nesiNgesi."',
+        accentGuidance: 'Izwi elicacileyo elixhasayo.'
+      },
+      {
+        id: 3,
+        timeRange: '0:40 - 1:00',
+        title: '3. UkuCima uMlilo (PASS) nokuLawula ukuChitheka',
+        visualCue: 'Vula imojuli ye-PASS okanye ukuChitheka kwaMafutha.',
+        script: '"Abasebenzi bafunda ukusebenzisa isicima-mlilo nge-PASS nokukhusela imijelo yamanzi xa kuchitheke amafutha."',
+        accentGuidance: 'Ngesantya esifanelekileyo.'
+      },
+      {
+        id: 4,
+        timeRange: '1:00 - 1:20',
+        title: '4. Uncedo lokuQala eBusuku',
+        visualCue: 'Vula imojuli ye-First Responder.',
+        script: '"Kwiimeko zikaxakeka ebusuku, inkqubo yethu ikhokela abasebenzi kumanyathelo ama-4 okunceda abalimele."',
+        accentGuidance: 'Izwi elizolileyo nelikhawulezayo.'
+      },
+      {
+        id: 5,
+        timeRange: '1:20 - 1:40',
+        title: '5. UkuHlaziya kweNyanga neZaziso',
+        visualCue: 'Vula i-Refresher Hub ne-Notification Center.',
+        script: '"Abaphathi babona inkqubela yomsebenzi ngamnye bafumane izaziso xa kukho okufuna ukulungiswa."',
+        accentGuidance: 'Izwi lolawulo.'
+      },
+      {
+        id: 6,
+        timeRange: '1:40 - 2:00',
+        title: '6. Izatifikethi ze-SHA-256 noPhicotho',
+        visualCue: 'Vula i-Audit Certificate Modal.',
+        script: '"Izatifikethi ezinophawu lwe-SHA-256 nophicotho lwe-OHS zigcinwa ngokukhuselekileyo ukwenzela uhlolo."',
+        accentGuidance: 'Izwi eliqinisekileyo.'
+      }
+    ],
+
+    certModalTitle: 'Uqeqesho oluSisiseko loKhuseleko eGaraji ne-OHS',
+    certModalSubtitle: 'OHS Act 85 of 1993 Icandelo 8(2)(e) / 13 — Ulwazi oluQhelekileyo noQeqesho',
+    candidateName: 'IGama loMsebenzi',
+    employeeId: 'Inombolo ye-ID / yoMsebenzi',
+    stationLocation: 'Indawo yeGaraji',
+    roleTitle: 'Umsebenzi (Role)',
+    managerName: 'UMphathi oQinisekisayo we-OHS (Sec 16.2)',
+    managerRegNo: 'Isalathiso sokuQeshwa kweCandelo 16.2',
+    issueDate: 'UMhla weSatifikethi',
+    auditHash: 'IKhowudi yoPhicotho ye-SHA-256',
+    sansSeal: 'OHS ACT 85 OF 1993 SEC 8(2)(e) & SEC 13 AWARENESS TRAINING',
+    printCertBtn: 'Shicilela / Gcina iSatifikethi',
+    closeBtn: 'Vala',
+    signoffApproved: 'KUQINISEKISWE NGUMPHATHI (HITL APPROVED)',
+
+    nextQuestion: 'UMbuzo oLandelayo →',
+    prevQuestion: '← UMbuzo oDlulileyo',
+    resetQuiz: 'Qala kwakhona',
+    launchVideo: 'Vula iVidiyo yoQeqesho',
+    remediationAvailable: 'Ividiyo yeNkcazelo iyafumaneka',
+    correctAnswer: '✓ Impendulo eChanekileyo',
+    incorrectAnswer: '❌ Impendulo eGwenxa'
   }
 };

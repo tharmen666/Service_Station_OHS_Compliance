@@ -1,8 +1,8 @@
 /**
- * ErgoSafe Reborn V3 — Wetstock & Reconciliation Engine
+ * ErgoSafe & LogiGuard — Wetstock & Reconciliation Engine
  * Enforces tank-by-tank daily reconciliation, ATG vs. manual dip cross-checks,
  * water-finding paste verification, manifolded siphon balance tracking,
- * the 5 Mandatory Wetstock Triggers, the 4-Tier Etwatwa Forensic Protocol
+ * the 5 Mandatory Wetstock Triggers, the 4-Tier Wetstock Loss Forensic Protocol
  * (with VacuSonic NDT hard-locks for legacy steel lines), and East African
  * regulatory telemetry compliance (EWURA ATG, KRA eTIMS, URA EFRIS, Telebirr).
  */
@@ -52,10 +52,10 @@ export interface WetstockTriggerAlert {
   thresholdValue: number;
 }
 
-export type EtwatwaTierLevel = 1 | 2 | 3 | 4;
+export type ForensicTierLevel = 1 | 2 | 3 | 4;
 
-export interface EtwatwaForensicAction {
-  tier: EtwatwaTierLevel;
+export interface WetstockForensicAction {
+  tier: ForensicTierLevel;
   tierName: string;
   mandatorySteps: string[];
   vacuSonicHardLockActive: boolean;
@@ -80,7 +80,7 @@ export interface TankReconciliationResult {
   siphonBalanceDeltaMm: number;
   siphonBalanced: boolean;
   triggers: WetstockTriggerAlert[];
-  forensicProtocol: EtwatwaForensicAction | null;
+  forensicProtocol: WetstockForensicAction | null;
   status: 'COMPLIANT' | 'INVESTIGATE' | 'CRITICAL_LOCKOUT';
 }
 
@@ -129,7 +129,7 @@ export const URA_EFRIS_MIN_PENALTY_UGX = 6_000_000;
 /**
  * Evaluates a single tank's daily wetstock reconciliation, cross-checks ATG vs. manual dip,
  * verifies water-finding paste limits, checks manifolded siphon balance, evaluates all
- * 5 Mandatory Wetstock Triggers, and escalates into the 4-Tier Etwatwa Forensic Protocol.
+ * 5 Mandatory Wetstock Triggers, and escalates into the 4-Tier Wetstock Loss Forensic Protocol.
  */
 export function reconcileTankDaily(input: TankDailyInput): TankReconciliationResult {
   const bookClosingLitres =
@@ -244,7 +244,7 @@ export function reconcileTankDaily(input: TankDailyInput): TankReconciliationRes
     });
   }
 
-  const forensicProtocol = determineEtwatwaForensicProtocol(input, triggers);
+  const forensicProtocol = determineWetstockForensicProtocol(input, triggers);
 
   const status: TankReconciliationResult['status'] =
     forensicProtocol?.vacuSonicHardLockActive || triggers.some((t) => t.severity === 'HARD_LOCK')
@@ -275,14 +275,14 @@ export function reconcileTankDaily(input: TankDailyInput): TankReconciliationRes
 }
 
 /**
- * Determines the required tier of the 4-Tier Etwatwa Forensic Protocol.
+ * Determines the required tier of the 4-Tier Wetstock Loss Forensic Protocol.
  * Legacy steel underground lines with severe/multi-day losses or missing VacuSonic NDT
  * certification immediately trigger a Tier 4 VacuSonic Hard-Lock.
  */
-export function determineEtwatwaForensicProtocol(
+export function determineWetstockForensicProtocol(
   input: TankDailyInput,
   triggers: readonly WetstockTriggerAlert[],
-): EtwatwaForensicAction | null {
+): WetstockForensicAction | null {
   if (triggers.length === 0) {
     return null;
   }
@@ -298,7 +298,7 @@ export function determineEtwatwaForensicProtocol(
   ) {
     return {
       tier: 4,
-      tierName: 'Tier 4 — Etwatwa Forensic Protocol: VacuSonic Non-Destructive Testing (NDT) Hard-Lock',
+      tierName: 'Tier 4 — Wetstock Loss Forensic Protocol: VacuSonic Non-Destructive Testing (NDT) Hard-Lock',
       mandatorySteps: [
         'IMMEDIATE HARD-LOCK: Cease all dispensing and block bulk tanker refills on affected tank.',
         'Isolate underground legacy steel suction/pressure lines and manifolded siphon bridges.',
@@ -317,7 +317,7 @@ export function determineEtwatwaForensicProtocol(
   if (hasHardLockTrigger || (hasMultiDayTrend && hasCumulativeBreach)) {
     return {
       tier: 3,
-      tierName: 'Tier 3 — Etwatwa Forensic Protocol: Line Isolation & Sump Integrity Audit',
+      tierName: 'Tier 3 — Wetstock Loss Forensic Protocol: Line Isolation & Sump Integrity Audit',
       mandatorySteps: [
         'Inspect submersible turbine pump (STP) sumps and under-dispenser containment (UDC) pans for weeping fuel.',
         'Test mechanical/electronic line leak detectors and check valves for pressure decay.',
@@ -334,7 +334,7 @@ export function determineEtwatwaForensicProtocol(
   if (triggers.length >= 2 || hasMultiDayTrend) {
     return {
       tier: 2,
-      tierName: 'Tier 2 — Etwatwa Forensic Protocol: 20L Seraphin Meter Calibration & Dip Audit',
+      tierName: 'Tier 2 — Wetstock Loss Forensic Protocol: 20L Seraphin Meter Calibration & Dip Audit',
       mandatorySteps: [
         'Conduct physical 20L Seraphin test-measure calibration across all nozzles linked to the tank.',
         'Inspect dispenser meter assize seals and air-eliminator vents for tampering or vapour bypass.',
@@ -350,7 +350,7 @@ export function determineEtwatwaForensicProtocol(
   // Tier 1: Administrative, Cut-Off & Delivery Paperwork Audit
   return {
     tier: 1,
-    tierName: 'Tier 1 — Etwatwa Forensic Protocol: Shift Cut-Off & Delivery Paperwork Reconciliation',
+    tierName: 'Tier 1 — Wetstock Loss Forensic Protocol: Shift Cut-Off & Delivery Paperwork Reconciliation',
     mandatorySteps: [
       'Cross-check POS shift close timestamp against ATG dip timestamp to eliminate drive-off/cut-off skew.',
       'Verify tanker delivery bill-of-lading (BOL), before/after dip tickets, and temperature compensation.',

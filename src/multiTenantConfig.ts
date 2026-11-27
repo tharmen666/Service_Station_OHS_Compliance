@@ -30,6 +30,16 @@ export interface CentralDepotConfig {
   sans10089BondingVerified: boolean;
 }
 
+export type PosVendorPreset =
+  | 'WINBRANCH'
+  | 'ISIS'
+  | 'NAMOS'
+  | 'SYMPHONY'
+  | 'SMARTFUEL'
+  | 'GILBARCO'
+  | 'TOKHEIM'
+  | 'GENERIC_CSV';
+
 export interface TenantBrandConfig {
   tenantId: string;
   brandName: string;
@@ -42,6 +52,14 @@ export interface TenantBrandConfig {
   address: string;
   emergencyContactNumber: string;
   fuelBrand: string;
+  platformBrand?: 'ErgoSafe' | 'LogiGuard';
+  recommendedPosVendor?: PosVendorPreset;
+  dualPosSetup?: {
+    forecourtVendor: 'NAMOS';
+    shopVendor: 'SYMPHONY';
+    shopBrandLabel: string;
+    description: string;
+  };
   customPoliciesEnabled: boolean;
   sans10089Compliant: boolean;
   popiaEncryptionActive: boolean;
@@ -261,7 +279,205 @@ export const defaultTenants: Record<string, TenantBrandConfig> = {
     assignedTruckId: 'TRK-05',
     depotOriginId: 'DEPOT-CD-01',
   },
+  bp: {
+    tenantId: 'BP-ZA-001',
+    brandName: 'ErgoSafe • BP Forecourt',
+    companyLegalName: 'BP Retail Forecourt Network',
+    logoUrl: '/assets/posters/statutory_rights_poster.png',
+    primaryColor: '#007A33',
+    accentColor: '#FFCC00',
+    siteCode: 'BP-ZA-001',
+    stationName: 'BP Express Forecourt Hub',
+    address: 'Sandton Corridor, Gauteng, South Africa',
+    emergencyContactNumber: '+27 11 800 1000 / 10177',
+    fuelBrand: 'BP',
+    platformBrand: 'ErgoSafe',
+    recommendedPosVendor: 'WINBRANCH',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🟢',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-01',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  shell: {
+    tenantId: 'SHL-ZA-002',
+    brandName: 'ErgoSafe • Shell Select',
+    companyLegalName: 'Shell Retail Service Station Network',
+    logoUrl: '/assets/posters/evacuation_poster.png',
+    primaryColor: '#DD1D21',
+    accentColor: '#FBCE07',
+    siteCode: 'SHL-ZA-002',
+    stationName: 'Shell Select Highway Forecourt',
+    address: 'Midrand N1 Corridor, Gauteng, South Africa',
+    emergencyContactNumber: '+27 11 800 2000 / 10177',
+    fuelBrand: 'Shell',
+    platformBrand: 'ErgoSafe',
+    recommendedPosVendor: 'SMARTFUEL',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🔴',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-02',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  engen: {
+    tenantId: 'ENG-ZA-003',
+    brandName: 'LogiGuard • Engen QuickShop',
+    companyLegalName: 'Engen Retail Forecourt Operations',
+    logoUrl: '/assets/posters/spill_response_poster.png',
+    primaryColor: '#005A9C',
+    accentColor: '#ED1C24',
+    siteCode: 'ENG-ZA-003',
+    stationName: 'Engen QuickShop Flagship',
+    address: 'Rosebank Avenue, Gauteng, South Africa',
+    emergencyContactNumber: '+27 11 800 3000 / 10177',
+    fuelBrand: 'Engen',
+    platformBrand: 'LogiGuard',
+    recommendedPosVendor: 'WINBRANCH',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🔵',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-03',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  astron: {
+    tenantId: 'AST-ZA-004',
+    brandName: 'LogiGuard • Astron Energy & FreshStop',
+    companyLegalName: 'Astron Energy Forecourt & FreshStop Retail',
+    logoUrl: '/assets/posters/customer_service_poster.png',
+    primaryColor: '#F36F21',
+    accentColor: '#1E3A8A',
+    siteCode: 'AST-ZA-004',
+    stationName: 'Astron Energy / FreshStop Plaza',
+    address: 'Van Wyk Arterial Hub, Gauteng, South Africa',
+    emergencyContactNumber: '+27 11 800 4000 / 10177',
+    fuelBrand: 'Astron Energy',
+    platformBrand: 'LogiGuard',
+    recommendedPosVendor: 'NAMOS',
+    dualPosSetup: {
+      forecourtVendor: 'NAMOS',
+      shopVendor: 'SYMPHONY',
+      shopBrandLabel: 'FreshStop',
+      description:
+        'Dual-BOS architecture: NAMOS forecourt wetstock & dispenser controller merged with Symphony FreshStop convenience store & QSR POS.',
+    },
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🟠',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-04',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  totalenergies: {
+    tenantId: 'TOT-ZA-005',
+    brandName: 'ErgoSafe • TotalEnergies Bonjour',
+    companyLegalName: 'TotalEnergies Retail Station Network',
+    logoUrl: '/assets/posters/pass_firefighting_poster.png',
+    primaryColor: '#E10028',
+    accentColor: '#00A3E0',
+    siteCode: 'TOT-ZA-005',
+    stationName: 'TotalEnergies Bonjour Hub',
+    address: 'La Rochelle Transit Plaza, Gauteng, South Africa',
+    emergencyContactNumber: '+27 11 800 5000 / 10177',
+    fuelBrand: 'TotalEnergies',
+    platformBrand: 'ErgoSafe',
+    recommendedPosVendor: 'ISIS',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🔷',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-05',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  ergosafe: {
+    tenantId: 'ERG-DLR-01',
+    brandName: 'ErgoSafe Enterprise',
+    companyLegalName: 'ErgoSafe Independent Dealer Platform',
+    logoUrl: '/assets/posters/statutory_rights_poster.png',
+    primaryColor: '#059669',
+    accentColor: '#F59E0B',
+    siteCode: 'ERG-DLR-01',
+    stationName: 'ErgoSafe Independent Forecourt',
+    address: 'Regional Retail Network',
+    emergencyContactNumber: '+27 11 800 6000 / 10177',
+    fuelBrand: 'ErgoSafe',
+    platformBrand: 'ErgoSafe',
+    recommendedPosVendor: 'GENERIC_CSV',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '🛡️',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-01',
+    depotOriginId: 'DEPOT-CD-01',
+  },
+  logiguard: {
+    tenantId: 'LGD-DLR-02',
+    brandName: 'LogiGuard Sentinel',
+    companyLegalName: 'LogiGuard Fleet & Forecourt Platform',
+    logoUrl: '/assets/posters/evacuation_poster.png',
+    primaryColor: '#0284C7',
+    accentColor: '#10B981',
+    siteCode: 'LGD-DLR-02',
+    stationName: 'LogiGuard Fleet Forecourt',
+    address: 'Logistics Corridor Hub',
+    emergencyContactNumber: '+27 11 800 7000 / 10177',
+    fuelBrand: 'LogiGuard',
+    platformBrand: 'LogiGuard',
+    recommendedPosVendor: 'GILBARCO',
+    customPoliciesEnabled: true,
+    sans10089Compliant: true,
+    popiaEncryptionActive: true,
+    badgeSymbol: '⚡',
+    dailyDeliveryVolumeLitres: 32000,
+    assignedTruckId: 'TRK-02',
+    depotOriginId: 'DEPOT-CD-01',
+  },
 };
+
+export interface FuelBrandPresetOption {
+  key: string;
+  label: string;
+  platformBrand: 'ErgoSafe' | 'LogiGuard';
+  posSummary: string;
+}
+
+export const FUEL_BRAND_PRESETS: FuelBrandPresetOption[] = [
+  { key: 'alpha', label: 'Standard (STN-ALPHA)', platformBrand: 'ErgoSafe', posSummary: 'Universal POS' },
+  { key: 'bp', label: 'BP', platformBrand: 'ErgoSafe', posSummary: 'WinBranch' },
+  { key: 'shell', label: 'Shell', platformBrand: 'ErgoSafe', posSummary: 'SmartFuel' },
+  { key: 'engen', label: 'Engen', platformBrand: 'LogiGuard', posSummary: 'WinBranch' },
+  { key: 'astron', label: 'Astron Energy / FreshStop', platformBrand: 'LogiGuard', posSummary: 'NAMOS + Symphony' },
+  { key: 'totalenergies', label: 'TotalEnergies', platformBrand: 'ErgoSafe', posSummary: 'ISIS' },
+  { key: 'ergosafe', label: 'ErgoSafe White-Label', platformBrand: 'ErgoSafe', posSummary: 'Generic CSV/XML' },
+  { key: 'logiguard', label: 'LogiGuard White-Label', platformBrand: 'LogiGuard', posSummary: 'Gilbarco / Tokheim' },
+];
+
+export function setCustomDealerBranding(
+  dealerName: string,
+  siteCode: string,
+  platformBrand: 'ErgoSafe' | 'LogiGuard' = 'ErgoSafe'
+): TenantBrandConfig {
+  const cleanName = dealerName.trim() || `${platformBrand} Custom Dealer`;
+  const cleanCode = siteCode.trim().toUpperCase() || 'DLR-CUST-01';
+  return setTenantState({
+    tenantId: cleanCode,
+    siteCode: cleanCode,
+    brandName: `${platformBrand} • ${cleanName}`,
+    companyLegalName: cleanName,
+    stationName: cleanName,
+    fuelBrand: cleanName,
+    platformBrand,
+    dualPosSetup: undefined,
+  });
+}
 
 // Aliases for backward compatibility with previous tabs
 defaultTenants.standard = defaultTenants.alpha;

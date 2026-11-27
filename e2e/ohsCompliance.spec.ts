@@ -45,9 +45,10 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // Navigate to Quiz (7. 60s Assessment (42 Qs))
-    const quizTabBtn = page.getByRole('button', { name: /60s Assessment \(42 Qs\)/i }).first();
-    await quizTabBtn.click();
+    // Navigate to Pillar 3 (Shop, Food Service & Training) -> Video Training Academy -> Quiz
+    await page.getByTestId('pillar-nav-shopTraining').click();
+    await page.getByTestId('shop-subtab-videoAcademy').click();
+    await page.getByTestId('academy-toggle-quiz-btn').click();
 
     // Fix 2: Verify All (42 Qs) and category filter counts match actual questions
     await expect(page.getByRole('tab', { name: 'All (42 Qs)' })).toBeVisible();
@@ -72,13 +73,15 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
 
     // Fix 3: Verify Timer Lock at 0s (using ?quizTimer=1)
     await page.goto('/?quizTimer=1', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /60s Assessment \(42 Qs\)/i }).first().click();
+    await page.getByTestId('pillar-nav-shopTraining').click();
+    await page.getByTestId('academy-toggle-quiz-btn').click();
     await expect(page.getByTestId('quiz-timeout-alert')).toBeVisible({ timeout: 5000 });
     await expect(page.getByTestId('quiz-option-A')).toBeDisabled();
 
     // Verify passing score (>= 80%, e.g., 35/42 = 83%) issues unique certificate and gates verification badges
     await page.goto('/?mockScore=35', { waitUntil: 'domcontentloaded' });
-    await page.getByRole('button', { name: /60s Assessment \(42 Qs\)/i }).first().click();
+    await page.getByTestId('pillar-nav-shopTraining').click();
+    await page.getByTestId('academy-toggle-quiz-btn').click();
     await page.getByRole('button', { name: /HITL OHS Sign-off Certificate/i }).click();
 
     await expect(page.getByTestId('cert-issued-view')).toBeVisible();
@@ -194,8 +197,9 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // Open Wetstock & Reconciliation tab
-    await page.getByRole('button', { name: /8\. Wetstock & Reconciliation/i }).first().click();
+    // Open Pillar 2: Shift Cash-Up & Wetstock
+    await page.getByTestId('pillar-nav-shiftWetstock').click();
+    await page.getByTestId('wetstock-subtab-shiftCashUp').click();
     await expect(page.getByTestId('dual-mode-wetstock-panel')).toBeVisible();
     await expect(page.getByTestId('wetstock-active-shift-badge')).toContainText('Active Shift #1');
 
@@ -219,15 +223,18 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
 
-    // 1. Customer Service (Tab 4): Verify 5-Step SOP, Store Promos & 4+1 Spare Wheel Checker
-    await page.getByRole('button', { name: /4\. Customer Hazmat/i }).first().click();
+    // 1. Customer Service (Pillar 3 -> 7-Step Customer Service): Verify Store Promos & 4+1 Spare Wheel Checker
+    await page.getByTestId('pillar-nav-shopTraining').click();
+    await page.getByTestId('shop-subtab-customerService').click();
     await expect(page.getByTestId('sa-customer-service-5steps')).toContainText(
       'Offer Store Promos'
     );
     await expect(page.getByTestId('spare-wheel-4plus1-checker')).toBeVisible();
 
-    // 2. Spill Response (Tab 3): Verify 6-to-7-person spill team, old-oil drums & single-use spill kit
-    await page.getByRole('button', { name: /3\. Fuel Spill Containment/i }).first().click();
+    // 2. Spill Response (Pillar 1 -> Emergency SOPs -> Spill Response)
+    await page.getByTestId('pillar-nav-forecourtOps').click();
+    await page.getByTestId('forecourt-subtab-emergency').click();
+    await page.getByRole('button', { name: /8-Step Spill Response/i }).click();
     await expect(page.getByTestId('spill-team-6to7-singleuse-banner')).toContainText(
       '6-to-7-person spill team'
     );
@@ -235,8 +242,8 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
       'single-use only'
     );
 
-    // 3. Emergency Evacuation (Tab 2): Verify Shift Sheet Roll Call & Twice-Yearly Fire Drills
-    await page.getByRole('button', { name: /2\. ESD & Evacuation/i }).first().click();
+    // 3. Emergency Evacuation (Pillar 1 -> Emergency SOPs -> Evacuation)
+    await page.getByRole('button', { name: /9-Step Evacuation & Roll-Call/i }).click();
     await expect(page.getByTestId('evacuation-drill-rollcall-banner')).toContainText(
       'daily shift sheet'
     );
@@ -244,8 +251,8 @@ test.describe('Forecourt Sentinel OHS Compliance - Comprehensive Audit & E2E Sui
       'twice a year'
     );
 
-    // 4. RSD 26 Checklists (Tab 13): Verify Core Operational Protocols Matrix
-    await page.getByRole('button', { name: /13\. RSD 26 Checklists/i }).first().click();
+    // 4. RSD 26 Checklists (Pillar 1 -> Emergency SOPs -> RSD 26)
+    await page.getByRole('button', { name: /RSD 26 Checklists/i }).click();
     await expect(page.getByTestId('rsd-core-operational-protocols')).toBeVisible();
   });
 });

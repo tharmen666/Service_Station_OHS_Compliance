@@ -29,7 +29,7 @@ interface ServiceStep {
 export const SA_CUSTOMER_SERVICE_STEPS: ServiceStep[] = [
   {
     stepNumber: 1,
-    title: 'Direct the Customer to the Correct Pump',
+    title: 'Direct the Customer to the Correct Pump & Marshal Lane',
     badge: 'Step 1 • Lane Marshalling',
     dialogue:
       '"Good day! Please pull forward to Pump 3 on your left for Unleaded 95 / Diesel 50ppm, switch off your engine, and engage your handbrake."',
@@ -39,10 +39,10 @@ export const SA_CUSTOMER_SERVICE_STEPS: ServiceStep[] = [
   },
   {
     stepNumber: 2,
-    title: 'Greet with a Smile, Confirm Fuel Order & Zero Meter',
-    badge: 'Step 2 • Warm Welcome & Order Check',
+    title: 'Greet with a Smile, Confirm Fuel Grade/Amount & Zero Meter',
+    badge: 'Step 2 • Warm Welcome & Zero-Meter Check',
     dialogue:
-      '"Welcome! How are you today? Just confirming: R500 Unleaded 95, and please note the pump meter is reset to zero (0.00)."',
+      '"Welcome! How are you today? Just confirming: R500 Unleaded 95, and please verify the pump meter is reset to zero (0.00)."',
     whyItMatters:
       'Builds immediate customer trust, prevents misfuelling (petrol in diesel or vice versa), and eliminates meter disputes.',
     icon: Smile,
@@ -59,29 +59,49 @@ export const SA_CUSTOMER_SERVICE_STEPS: ServiceStep[] = [
   },
   {
     stepNumber: 4,
-    title: 'Offer Store Promos & Ask for Additional Services: Oil, Water, Windscreen & 4+1 Spare Wheel Check',
-    badge: 'Step 4 • Store Promos & The Spare Wheel Rule',
+    title: 'Offer Store Promos & Convenience / QSR Refreshments',
+    badge: 'Step 4 • Store Promos & Basket Uplift',
     dialogue:
-      '"While your fuel is dispensing, we have a great store promotion inside today! May I also check your oil, water, clean your windscreen, and check the pressure in all 4 tyres PLUS your spare wheel?"',
+      '"While your fuel is dispensing, we have a great fresh coffee & combo promotion inside the convenience store today!"',
     whyItMatters:
-      'When does a motorist check their spare wheel? Only when they already have a puncture! Offering store promos boosts convenience store basket size, while checking all 4+1 wheels prevents roadside strandings.',
-    icon: Wrench,
+      'Drives convenience store / FreshStop / Bonjour / QuickShop footfall while maintaining safe forecourt supervision.',
+    icon: Fuel,
   },
   {
     stepNumber: 5,
-    title: 'Confirm Card or Cash Payment & Departure Greeting with a Smile',
-    badge: 'Step 5 • Payment & Smiling Farewell',
+    title: 'Windscreen Wash, Oil & Water Check, and 4+1 Spare Wheel Rule',
+    badge: 'Step 5 • Forecourt Value-Add & 4+1 Tyre Check',
     dialogue:
-      '"Your fuelcap is locked and your spare wheel is at target pressure. Will you be paying by card or cash today? Thank you—drive safely and have a wonderful day!"',
+      '"May I clean your windscreen, check your oil and coolant water, and inspect all 4 road tyres PLUS your spare wheel?"',
     whyItMatters:
-      'Ensures accurate POS speedpoint/cash handling, confirms filler cap closure, and leaves a lasting positive impression.',
+      'When does a motorist check their spare wheel? Only when they already have a puncture! Checking all 4+1 wheels prevents roadside strandings.',
+    icon: Wrench,
+  },
+  {
+    stepNumber: 6,
+    title: 'Secure Fuel Cap, Confirm Card / Fleet / Cash Payment',
+    badge: 'Step 6 • Cap Lock & Payment Verification',
+    dialogue:
+      '"Your fuel cap is securely locked and your tyres are at target pressure. Will you be paying by Speedpoint card, fleet card, or cash?"',
+    whyItMatters:
+      'Prevents fuel-cap drive-offs, ensures accurate POS tender reconciliation, and prevents forecourt drive-off losses.',
     icon: CreditCard,
+  },
+  {
+    stepNumber: 7,
+    title: 'Hand Over Receipt, Loyalty Scan & Smiling Farewell',
+    badge: 'Step 7 • Receipt & Safe Departure',
+    dialogue:
+      '"Here is your receipt and loyalty confirmation. Thank you for fuelling with us—drive safely and have a wonderful day!"',
+    whyItMatters:
+      'Completes fiscal receipt compliance, confirms safe lane exit, and reinforces high-trust customer service.',
+    icon: CheckCircle2,
   },
 ];
 
 export const CustomerServiceModule: React.FC = () => {
   const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
-  const [completedSteps, setCompletedSteps] = useState<number[]>([1, 2, 3, 4, 5]);
+  const [completedSteps, setCompletedSteps] = useState<number[]>([1, 2, 3, 4, 5, 6, 7]);
 
   // Interactive 4+1 Spare Wheel Pressure Checker state
   const [roadPsi, setRoadPsi] = useState<number>(32);
@@ -177,7 +197,7 @@ export const CustomerServiceModule: React.FC = () => {
               Standard Operating Sequence (South African Service Stations)
             </span>
             <h3 className="text-xl font-black text-white mt-0.5">
-              5-Step Forecourt Attendant Customer Service Journey
+              7-Step Forecourt Attendant Customer Service Standard
             </h3>
           </div>
           <span className="px-3 py-1.5 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-black">

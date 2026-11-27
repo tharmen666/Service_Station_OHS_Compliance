@@ -1,6 +1,7 @@
 import { defineConfig, Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import complianceHandler from './server/handler';
+import posIngestHandler from './server/posIngestHandler';
 import { processNellyQuery } from './api/nelly';
 
 function attachApiMiddlewares(middlewares: any) {
@@ -39,6 +40,42 @@ function attachApiMiddlewares(middlewares: any) {
             })
           );
           console.error('[compliance api]', err?.name || 'unknown');
+        }
+      });
+    } else {
+      next();
+    }
+  });
+
+  middlewares.use('/api/v1/pos/shift-ingest', (req: any, res: any, next: any) => {
+    if (req.method === 'POST' || req.method === 'GET' || req.method === 'OPTIONS') {
+      let bodyStr = '';
+      req.on('data', (chunk: any) => {
+        bodyStr += chunk;
+      });
+      req.on('end', async () => {
+        try {
+          const fakeRes = {
+            statusCode: 200,
+            status(code: number) {
+              this.statusCode = code;
+              return this;
+            },
+            json(payload: unknown) {
+              res.setHeader('Content-Type', 'application/json');
+              res.statusCode = this.statusCode;
+              res.end(JSON.stringify(payload));
+              return this;
+            },
+          };
+          await posIngestHandler(
+            { method: req.method, headers: req.headers, body: bodyStr, socket: req.socket },
+            fakeRes
+          );
+        } catch (err: any) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ success: false, error: err?.message || 'POS ingest error' }));
         }
       });
     } else {

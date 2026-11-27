@@ -327,7 +327,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
             </h2>
             <p className="text-slate-300 text-sm mt-1 max-w-3xl leading-relaxed">
               Standardized daily reconciliation under South African SANS 10089, eBOL seal verification, 
-              temperature-compensated density tracking (15°C), and 4-tier Etwatwa loss forensics with VacuSonic NDT hard-lock containment.
+              temperature-compensated density tracking (15°C), and 4-tier loss forensics with VacuSonic NDT hard-lock containment.
             </p>
           </div>
 
@@ -801,7 +801,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
         </div>
       )}
 
-      {/* VIEW B: LOSS / GAIN FORENSICS (5 MANDATORY TRIGGERS & 4-TIER ETWATWA PROTOCOL) */}
+      {/* VIEW B: LOSS / GAIN FORENSICS (5 MANDATORY TRIGGERS & 4-TIER FORENSIC PROTOCOL) */}
       {activeTabSubView === 'forensics' && (
         <div className="space-y-6">
           
@@ -814,7 +814,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                   Statutory Petroleum Forensics Protocol
                 </div>
                 <h3 className="text-xl font-black text-white">
-                  The 5 Mandatory Wetstock Triggers &amp; 4-Tier Etwatwa Protocol
+                  The 5 Mandatory Wetstock Triggers &amp; 4-Tier Loss Forensic Protocol
                 </h3>
                 <p className="text-slate-400 text-xs mt-0.5 max-w-2xl">
                   Automated loss forensics detects subterranean pipeline weeping, tanker drop shortages, meter drift, and water ingress. 
@@ -947,7 +947,7 @@ export const WetstockManagementModule: React.FC<WetstockManagementModuleProps> =
                       </div>
                     )}
 
-                    {/* Etwatwa Forensic Action Plan */}
+                    {/* Wetstock Forensic Action Plan */}
                     {protocol && (
                       <div className="p-3.5 rounded-2xl bg-rose-950/30 border border-rose-500/40 text-xs space-y-2">
                         <div className="font-black text-rose-300 flex items-center gap-1.5">

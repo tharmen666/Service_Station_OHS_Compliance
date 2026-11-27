@@ -273,21 +273,21 @@
     {
       "question_id": "SR_Q04",
       "topic": "Emergency Spill Response",
-      "question": "What absorbents should be applied to absorb spilled diesel or petrol on forecourt surfaces?",
+      "question": "Why must forecourt staff use a non-sparking plastic spade and hard-bristle broom (never a steel shovel) when cleaning a fuel spill?",
       "options": {
-        "A": "Sawdust or shredded cardboard.",
-        "B": "Hydrocarbon-specific absorbents (peat moss, synthetic absorbent granules, or polypropylene pads).",
-        "C": "Baking soda mixed with sand.",
-        "D": "Cement powder only."
+        "A": "Plastic spades are lighter to store in the kiosk.",
+        "B": "Metal scraping on concrete forecourt paving creates friction sparks that can ignite volatile petrol and hydrocarbon vapors.",
+        "C": "Steel shovels dissolve immediately when touching diesel.",
+        "D": "Plastic tools absorb fuel faster than absorbent granules."
       },
       "correct_answer": "B",
-      "explanation": "Certified absorbent granules encapsulate fuel without creating secondary combustible dust hazards like sawdust.",
+      "explanation": "Forecourt spill kits strictly use non-sparking plastic spades and hard-bristle brooms because metal scraping on concrete paving creates friction sparks capable of igniting volatile petrol and hydrocarbon vapors.",
       "remediation": {
         "video_reference": "invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
         "video_path": "assets/remediation/invideo-ai-1080 Safety Made Simple_ Nelly in 60 Seconds.mp4",
         "timestamp_start": "00:30",
         "timestamp_end": "00:50",
-        "remediation_guidance": "Review approved spill absorbent materials and application steps."
+        "remediation_guidance": "Review non-sparking spill kit tools (plastic spade & hard broom) and why steel tools are strictly prohibited."
       }
     },
     {

@@ -17,7 +17,8 @@ test('Video Showcase tab plays the narrated demo and no longer uses the 10-secon
   });
 
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await page.getByRole('button', { name: /Video Showcase/i }).first().click();
+  await page.getByTestId('pillar-nav-shopTraining').click();
+  await page.getByTestId('shop-subtab-statutoryHub').click();
 
   const player = page.getByTestId('demo-video-tab-narrated-player');
   await expect(player).toBeVisible({ timeout: 20000 });

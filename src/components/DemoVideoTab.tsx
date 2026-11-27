@@ -145,7 +145,7 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
         </div>
 
         <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-slate-950 border border-slate-800 w-full sm:w-auto overflow-x-auto">
-          {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => (
+          {(['EN', 'SW', 'ZU', 'AF', 'ST', 'XH'] as const).map((l) => (
             <button
               key={l}
               onClick={() => setVoiceLang(l)}
@@ -164,6 +164,8 @@ export const DemoVideoTab: React.FC<DemoVideoTabProps> = ({
                   ? 'isiZulu'
                   : l === 'AF'
                   ? 'Afrikaans'
+                  : l === 'XH'
+                  ? 'isiXhosa'
                   : 'Sesotho'}
               </span>
             </button>

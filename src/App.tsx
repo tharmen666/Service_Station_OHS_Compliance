@@ -1,31 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { EvacuationFlow } from './components/EvacuationFlow';
-import { SpillTeamwork } from './components/SpillTeamwork';
-import { PASSFirefighting } from './components/PASSFirefighting';
-import { CustomerServiceModule } from './components/CustomerServiceModule';
-import { AssessmentQuiz } from './components/AssessmentQuiz';
-import { DemoVideoTab } from './components/DemoVideoTab';
+import React, { useState, useEffect } from 'react';
 import { DemoVideoModal } from './components/DemoVideoModal';
 import { ExecutiveDemoModal } from './components/ExecutiveDemoModal';
-import { NightshiftFirstResponder } from './components/NightshiftFirstResponder';
-import { MonthlyRefresherHub } from './components/MonthlyRefresherHub';
 import { RetailerNotificationCenter } from './components/RetailerNotificationCenter';
 import { CorporateStewardshipExporter } from './components/CorporateStewardshipExporter';
-import { StatutoryRightsModule } from './components/StatutoryRightsModule';
 import { AIStudioDrawer } from './components/AIStudioDrawer';
 import { AuditCertificateModal } from './components/AuditCertificateModal';
-import { ExecutiveBriefingDashboard } from './components/ExecutiveBriefingDashboard';
 import { StatutoryDocGeneratorModal } from './components/StatutoryDocGeneratorModal';
 import { NellyAIAgentWindow } from './components/NellyAIAgentWindow';
-import { StatutoryTrainingModule } from './components/StatutoryTrainingModule';
-import { WetstockManagementModule } from './components/WetstockManagementModule';
-import { WetstockOffloadBridge } from './components/WetstockOffloadBridge';
 import { JurisdictionCode, EAST_AFRICA_PRESETS } from './data/eastAfricaConfig';
 import { EnterpriseFooter } from './components/EnterpriseFooter';
 import { GearPillarSettingsModal } from './components/GearPillarSettingsModal';
-import { RSDChecklistModule } from './components/RSDChecklistModule';
 import { Language, translations } from './data/translations';
-import { assessmentQuestions } from './data/assessmentData';
 import {
   LANGUAGE_LABELS,
   REGIONAL_DEFAULTS,
@@ -35,118 +20,104 @@ import {
 } from './nelly-localization-engine';
 import { getActiveTenant, subscribeTenantChange, switchTenantBrand } from './multiTenantConfig';
 import { verifyPOPIAEncryption } from './popiActCompliance';
+import { getNcrs, subscribeNcrChange } from './lib/ncrStore';
 import {
-  AlertOctagon,
-  Shield,
-  Flame,
-  Award,
+  ForecourtFuelOpsWorkspace,
+  ForecourtSubTab,
+} from './components/workspaces/ForecourtFuelOpsWorkspace';
+import {
+  ShiftWetstockWorkspace,
+  ShiftWetstockSubTab,
+} from './components/workspaces/ShiftWetstockWorkspace';
+import {
+  ShopTrainingWorkspace,
+  ShopTrainingSubTab,
+} from './components/workspaces/ShopTrainingWorkspace';
+import {
+  ExecutiveAuditWorkspace,
+  ExecutiveAuditSubTab,
+} from './components/workspaces/ExecutiveAuditWorkspace';
+import {
   Bot,
   HardDrive,
   Zap,
   Globe,
-  FileCheck,
-  Building2,
   Lock,
-  Video,
-  HeartPulse,
-  RotateCcw,
-  BellRing,
   FileSpreadsheet,
   Scale,
   Sliders,
   LayoutDashboard,
   GraduationCap,
   Gauge,
-  Truck,
+  Fuel,
   Menu,
   X,
-  ChevronLeft,
-  ChevronRight,
+  BellRing,
 } from 'lucide-react';
 
-type ModuleTabId =
-  | 'executiveDashboard'
-  | 'training'
-  | 'wetstock'
-  | 'wetstockBridge'
-  | 'evacuation'
-  | 'spill'
-  | 'customer'
-  | 'fire'
-  | 'quiz'
-  | 'demo'
-  | 'firstResponder'
-  | 'refresher'
-  | 'rights'
-  | 'rsdChecklists';
+export type PillarId = 'forecourtOps' | 'shiftWetstock' | 'shopTraining' | 'executiveAudit';
 
-const EXTRA_NAV_TRANSLATIONS: Record<
+const PILLAR_NAV_LABELS: Record<
   Language,
   {
-    exec: string;
-    training: string;
-    wetstockBridge: string;
-    wetstock: string;
-    refresher: string;
-    rights: string;
-    rsd: string;
+    forecourtOps: string;
+    shiftWetstock: string;
+    shopTraining: string;
+    executiveAudit: string;
     statutoryDocBtn: string;
   }
 > = {
   EN: {
-    exec: '0. Executive Briefing',
-    training: '1. Statutory Training',
-    wetstockBridge: '6. Wetstock & Offload',
-    wetstock: '8. Wetstock & Reconciliation',
-    refresher: '11. Refresher Hub',
-    rights: '12. Employee Rights',
-    rsd: '13. RSD 26 Checklists',
+    forecourtOps: '1. Forecourt & Fuel Ops',
+    shiftWetstock: '2. Shift Cash-Up & Wetstock',
+    shopTraining: '3. Shop, Food Service & Training',
+    executiveAudit: '4. Executive Audit & NCRs',
     statutoryDocBtn: 'Statutory Doc',
   },
   SW: {
-    exec: '0. Muhtasari wa Utendaji',
-    training: '1. Mafunzo ya Kisheria (Training)',
-    wetstockBridge: '6. Upakuaji wa Mafuta (Wetstock & Offload)',
-    wetstock: '8. Usawazishaji wa Wetstock',
-    refresher: '11. Kituo cha Kurudia Mafunzo',
-    rights: '12. Haki za Wafanyakazi (Employee Rights)',
-    rsd: '13. Orodha za Ukaguzi za RSD 26',
+    forecourtOps: '1. Forecourt & Mafuta',
+    shiftWetstock: '2. Zamu & Wetstock',
+    shopTraining: '3. Duka, Chakula & Mafunzo',
+    executiveAudit: '4. Ukaguzi & NCR',
     statutoryDocBtn: 'Nyaraka za Sheria',
   },
   ZU: {
-    exec: '0. Umbiko Omkhulu (Executive)',
-    training: '1. Ukuqeqeshwa Kwemithetho (Training)',
-    wetstockBridge: '6. Ukuthululwa Kwamafutha (Wetstock & Offload)',
-    wetstock: '8. Ukubalwa Kwamafutha (Wetstock)',
-    refresher: '11. Ukubukeza Kwanyanga Zonke',
-    rights: '12. Amalungelo Abasebenzi (Employee Rights)',
-    rsd: '13. Uhlu Lokuhlola RSD 26',
+    forecourtOps: '1. I-Forecourt Namafutha',
+    shiftWetstock: '2. Ukubalwa Kweshefti',
+    shopTraining: '3. Isitolo, Ukudla & Uqeqesho',
+    executiveAudit: '4. Uhlolo & Ama-NCR',
     statutoryDocBtn: 'Idokhumenti Ye-OHS',
   },
   AF: {
-    exec: '0. Uitvoerende Oorsig',
-    training: '1. Statutêre Opleiding (Training)',
-    wetstockBridge: '6. Brandstof Aflaai (Wetstock & Offload)',
-    wetstock: '8. Voorraad Rekonsiliasie (Wetstock)',
-    refresher: '11. Maandelikse Opknapping',
-    rights: '12. Werknemerregte (Employee Rights)',
-    rsd: '13. RSD 26 Kontrolelyste',
+    forecourtOps: '1. Voorhof & Brandstof',
+    shiftWetstock: '2. Skof Kontant & Voorraad',
+    shopTraining: '3. Winkel, Kos & Opleiding',
+    executiveAudit: '4. Oudit & NCRs',
     statutoryDocBtn: 'Statutêre Dok',
   },
   ST: {
-    exec: '0. Kakaretso ea Tsamaiso',
-    training: '1. Koetliso ea Molao (Training)',
-    wetstockBridge: '6. Ho Laolla Mafura (Wetstock & Offload)',
-    wetstock: '8. Tlhahlobo ea Mafura (Wetstock)',
-    refresher: '11. Thuto ea Khoeli le Khoeli',
-    rights: '12. Litokelo tsa Basebetsi (Employee Rights)',
-    rsd: '13. Manane a Tlhahlobo a RSD 26',
+    forecourtOps: '1. Seteishene & Mafura',
+    shiftWetstock: '2. Tlhahlobo ea Shefte',
+    shopTraining: '3. Lebenkele, Lijo & Thupelo',
+    executiveAudit: '4. Hlahlobo & Li-NCR',
     statutoryDocBtn: 'Tokomane ea OHS',
+  },
+  XH: {
+    forecourtOps: '1. I-Forecourt naMafutha',
+    shiftWetstock: '2. Ubalo lweShefti neWetstock',
+    shopTraining: '3. Ivenkile, Ukutya noQeqesho',
+    executiveAudit: '4. UPhicotho nee-NCR',
+    statutoryDocBtn: 'Uxwebhu lwe-OHS',
   },
 };
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<ModuleTabId>('executiveDashboard');
+  const [activePillar, setActivePillar] = useState<PillarId>('executiveAudit');
+  const [forecourtSubTab, setForecourtSubTab] = useState<ForecourtSubTab>('offload');
+  const [wetstockSubTab, setWetstockSubTab] = useState<ShiftWetstockSubTab>('shiftCashUp');
+  const [shopSubTab, setShopSubTab] = useState<ShopTrainingSubTab>('videoAcademy');
+  const [execSubTab, setExecSubTab] = useState<ExecutiveAuditSubTab>('overview');
+
   const [lang, setLang] = useState<Language>('EN');
   const [hasManualLanguageOverride, setHasManualLanguageOverride] = useState<boolean>(false);
   const [jurisdiction, setJurisdiction] = useState<JurisdictionCode>('ZA');
@@ -161,23 +132,30 @@ export const App: React.FC = () => {
   const [isGearModalOpen, setIsGearModalOpen] = useState<boolean>(false);
   const [isStatutoryModalOpen, setIsStatutoryModalOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [autoStart3DTour, setAutoStart3DTour] = useState<boolean>(false);
   const [currentTime, setCurrentTime] = useState<string>('');
   const [activeTenant, setActiveTenantState] = useState(getActiveTenant());
-
-  const tabStripRef = useRef<HTMLDivElement>(null);
+  const [openNcrCount, setOpenNcrCount] = useState<number>(
+    () => getNcrs().filter((n) => n.status !== 'CLOSED').length
+  );
 
   const isAdminRoute =
     typeof window !== 'undefined' &&
     (window.location.search.includes('admin=1') || window.location.hash.includes('admin'));
 
   const t = translations[lang];
-  const extraT = EXTRA_NAV_TRANSLATIONS[lang];
+  const pillarLabels = PILLAR_NAV_LABELS[lang];
   const popiaStatus = verifyPOPIAEncryption();
-  const totalQuizCount = assessmentQuestions.length;
 
   useEffect(() => {
     const unsubTenant = subscribeTenantChange((ten) => setActiveTenantState(ten));
-    return () => unsubTenant();
+    const unsubNcr = subscribeNcrChange((list) =>
+      setOpenNcrCount(list.filter((n) => n.status !== 'CLOSED').length)
+    );
+    return () => {
+      unsubTenant();
+      unsubNcr();
+    };
   }, []);
 
   useEffect(() => {
@@ -208,40 +186,119 @@ export const App: React.FC = () => {
     setLang(selectedLang);
   };
 
-  const handleSelectModuleTab = (tabId: ModuleTabId) => {
-    setActiveTab(tabId);
-    // Fix 10: Close sidebar drawer when a module is chosen on tablet and mobile widths
+  const handleSelectPillar = (pillarId: PillarId) => {
+    setActivePillar(pillarId);
     setIsSidebarOpen(false);
   };
 
-  const scrollTabStrip = (direction: 'left' | 'right') => {
-    if (!tabStripRef.current) return;
-    const delta = direction === 'left' ? -220 : 220;
-    tabStripRef.current.scrollBy({ left: delta, behavior: 'smooth' });
+  // Unified route mapper from any legacy module target into the 4-Pillar architecture
+  const navigateToTarget = (target: string) => {
+    setIsSidebarOpen(false);
+    switch (target) {
+      case 'wetstockBridge':
+      case 'offload':
+        setActivePillar('forecourtOps');
+        setForecourtSubTab('offload');
+        break;
+      case 'dipping':
+        setActivePillar('forecourtOps');
+        setForecourtSubTab('dipping');
+        break;
+      case 'cleaning':
+        setActivePillar('forecourtOps');
+        setForecourtSubTab('cleaning');
+        break;
+      case 'evacuation':
+      case 'spill':
+      case 'fire':
+      case 'firstResponder':
+      case 'rsdChecklists':
+      case 'emergency':
+        setActivePillar('forecourtOps');
+        setForecourtSubTab('emergency');
+        break;
+      case 'wetstock':
+      case 'shiftCashUp':
+        setActivePillar('shiftWetstock');
+        setWetstockSubTab('shiftCashUp');
+        break;
+      case 'posImport':
+        setActivePillar('shiftWetstock');
+        setWetstockSubTab('posImport');
+        break;
+      case 'varianceEngine':
+        setActivePillar('shiftWetstock');
+        setWetstockSubTab('varianceEngine');
+        break;
+      case 'r638Haccp':
+        setActivePillar('shopTraining');
+        setShopSubTab('r638Haccp');
+        break;
+      case 'customer':
+      case 'customerService':
+        setActivePillar('shopTraining');
+        setShopSubTab('customerService');
+        break;
+      case 'quiz':
+      case 'videoAcademy':
+        setActivePillar('shopTraining');
+        setShopSubTab('videoAcademy');
+        break;
+      case 'training':
+      case 'demo':
+      case 'refresher':
+      case 'rights':
+      case 'statutoryHub':
+        setActivePillar('shopTraining');
+        setShopSubTab('statutoryHub');
+        break;
+      case 'ncrTracker':
+        setActivePillar('executiveAudit');
+        setExecSubTab('ncrTracker');
+        break;
+      case 'certificates':
+        setActivePillar('executiveAudit');
+        setExecSubTab('certificates');
+        break;
+      default:
+        setActivePillar('executiveAudit');
+        setExecSubTab('overview');
+        break;
+    }
   };
 
-  const moduleTabs: Array<{ id: ModuleTabId; label: string; icon: any }> = [
-    { id: 'executiveDashboard', label: extraT.exec, icon: LayoutDashboard },
-    { id: 'training', label: extraT.training, icon: GraduationCap },
-    { id: 'evacuation', label: t.tabEvacuation, icon: AlertOctagon },
-    { id: 'spill', label: t.tabSpill, icon: Shield },
-    { id: 'customer', label: t.tabCustomer, icon: Building2 },
-    { id: 'fire', label: t.tabFire, icon: Flame },
-    { id: 'wetstockBridge', label: extraT.wetstockBridge, icon: Truck },
+  const pillars: Array<{
+    id: PillarId;
+    label: string;
+    subLabel: string;
+    icon: React.ComponentType<{ className?: string }>;
+    badge?: number;
+  }> = [
     {
-      id: 'quiz',
-      label:
-        lang === 'EN'
-          ? `7. 60s Assessment (${totalQuizCount} Qs)`
-          : t.tabQuiz.replace(/\(\d+/, `(${totalQuizCount}`),
-      icon: Award,
+      id: 'forecourtOps',
+      label: pillarLabels.forecourtOps,
+      subLabel: 'Offload, Dipping, Cleaning & SOPs',
+      icon: Fuel,
     },
-    { id: 'wetstock', label: extraT.wetstock, icon: Gauge },
-    { id: 'demo', label: t.tabDemoVideo, icon: Video },
-    { id: 'firstResponder', label: t.tabFirstResponder, icon: HeartPulse },
-    { id: 'refresher', label: extraT.refresher, icon: RotateCcw },
-    { id: 'rights', label: extraT.rights, icon: Scale },
-    { id: 'rsdChecklists', label: extraT.rsd, icon: FileCheck },
+    {
+      id: 'shiftWetstock',
+      label: pillarLabels.shiftWetstock,
+      subLabel: 'POS Import, Cash-Up & SIR Engine',
+      icon: Gauge,
+    },
+    {
+      id: 'shopTraining',
+      label: pillarLabels.shopTraining,
+      subLabel: 'R638 HACCP, 7-Step & Video Gate',
+      icon: GraduationCap,
+    },
+    {
+      id: 'executiveAudit',
+      label: pillarLabels.executiveAudit,
+      subLabel: 'Multi-Site, NCRs & SHA-256 Audit',
+      icon: LayoutDashboard,
+      badge: openNcrCount,
+    },
   ];
 
   return (
@@ -254,11 +311,11 @@ export const App: React.FC = () => {
           aria-modal="true"
           aria-label="Module Navigation Drawer"
         >
-          <aside className="w-[270px] max-w-[82vw] h-full bg-[#0b1329] border-r border-slate-800 flex flex-col z-50">
+          <aside className="w-[280px] max-w-[84vw] h-full bg-[#0b1329] border-r border-slate-800 flex flex-col z-50">
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
               <div>
                 <div className="text-xs font-bold text-sky-400 tracking-wider">
-                  FORECOURT SENTINEL
+                  {activeTenant.platformBrand?.toUpperCase() || 'ERGOSAFE'} • FORECOURT
                 </div>
                 <div className="text-sm font-bold text-white">{t.headerTitle}</div>
               </div>
@@ -272,83 +329,104 @@ export const App: React.FC = () => {
             </div>
 
             <nav
-              aria-label="Mobile Module Navigation"
-              className="flex-1 overflow-y-auto p-3 flex flex-col gap-1.5"
+              aria-label="Mobile Pillar Navigation"
+              className="flex-1 overflow-y-auto p-3 flex flex-col gap-2"
             >
-              {moduleTabs.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
+              {pillars.map((p) => {
+                const Icon = p.icon;
+                const isActive = activePillar === p.id;
                 return (
                   <button
-                    key={tab.id}
-                    onClick={() => handleSelectModuleTab(tab.id)}
-                    aria-label={tab.label}
+                    key={p.id}
+                    onClick={() => handleSelectPillar(p.id)}
+                    data-testid={`mobile-pillar-nav-${p.id}`}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition ${
+                    className={`w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold flex items-start gap-3 transition ${
                       isActive
-                        ? 'bg-amber-500 text-slate-950 font-black'
-                        : 'text-slate-200 hover:bg-slate-800/80'
+                        ? 'bg-amber-500 text-slate-950 font-black shadow-lg'
+                        : 'text-slate-200 hover:bg-slate-800/80 border border-slate-800/80'
                     }`}
                   >
                     <Icon
-                      className={`w-4 h-4 flex-shrink-0 ${
-                        isActive ? 'text-slate-950' : 'text-slate-300'
+                      className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                        isActive ? 'text-slate-950' : 'text-amber-400'
                       }`}
                     />
-                    <span className="truncate">{tab.label}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="truncate">{p.label}</span>
+                        {typeof p.badge === 'number' && p.badge > 0 && (
+                          <span className="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[10px] font-black">
+                            {p.badge}
+                          </span>
+                        )}
+                      </div>
+                      <div className={`text-[10px] mt-0.5 ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
+                        {p.subLabel}
+                      </div>
+                    </div>
                   </button>
                 );
               })}
             </nav>
           </aside>
-          <div
-            className="flex-1"
-            onClick={() => setIsSidebarOpen(false)}
-            aria-hidden="true"
-          />
+          <div className="flex-1" onClick={() => setIsSidebarOpen(false)} aria-hidden="true" />
         </div>
       )}
 
-      {/* DESKTOP PERSISTENT LEFT SIDEBAR (>= 1280px xl so it never covers or crowds 800-1024px tablets) */}
+      {/* DESKTOP PERSISTENT LEFT SIDEBAR (>= 1280px) */}
       <aside
-        aria-label="Desktop Module Navigation Sidebar"
-        className="hidden xl:flex flex-col flex-shrink-0 w-[250px] min-w-[250px] h-full bg-[#0b1329] border-r border-slate-800 z-30"
+        aria-label="Desktop Pillar Navigation Sidebar"
+        className="hidden xl:flex flex-col flex-shrink-0 w-[265px] min-w-[265px] h-full bg-[#0b1329] border-r border-slate-800 z-30"
       >
-        {/* System Brand Header */}
         <div className="p-4 border-b border-slate-800">
-          <div className="text-xs font-bold text-sky-400 tracking-wider">FORECOURT SENTINEL</div>
+          <div className="text-xs font-bold text-sky-400 tracking-wider">
+            {activeTenant.platformBrand?.toUpperCase() || 'ERGOSAFE'} / LOGIGUARD
+          </div>
           <div className="text-sm font-bold text-white mt-0.5">{t.headerTitle}</div>
           <div className="text-xs text-slate-300 mt-0.5">
             {activeJurisdiction.statutoryReference} • {activeJurisdiction.siteCode}
           </div>
         </div>
 
-        {/* Vertical Module Navigation */}
         <nav
-          aria-label="Primary Compliance Modules"
-          className="flex-1 overflow-y-auto p-3 flex flex-col gap-1.5"
+          aria-label="Primary 4-Pillar Compliance Workspaces"
+          className="flex-1 overflow-y-auto p-3 flex flex-col gap-2"
         >
-          {moduleTabs.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
+          {pillars.map((p) => {
+            const Icon = p.icon;
+            const isActive = activePillar === p.id;
             return (
               <button
-                key={tab.id}
-                onClick={() => handleSelectModuleTab(tab.id)}
-                aria-label={tab.label}
+                key={p.id}
+                onClick={() => handleSelectPillar(p.id)}
+                data-testid={`pillar-nav-${p.id}`}
+                aria-label={p.label}
                 aria-current={isActive ? 'page' : undefined}
-                className={`w-full text-left px-3 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2.5 transition ${
+                className={`w-full text-left px-3.5 py-3 rounded-2xl text-xs font-bold flex items-start gap-3 transition ${
                   isActive
-                    ? 'bg-amber-500 text-slate-950 font-black'
-                    : 'text-slate-200 hover:bg-slate-800/80'
+                    ? 'bg-amber-500 text-slate-950 font-black shadow-lg'
+                    : 'text-slate-200 hover:bg-slate-800/80 border border-slate-800/80'
                 }`}
               >
                 <Icon
-                  className={`w-4 h-4 flex-shrink-0 ${
-                    isActive ? 'text-slate-950' : 'text-slate-300'
+                  className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                    isActive ? 'text-slate-950' : 'text-amber-400'
                   }`}
                 />
-                <span className="truncate">{tab.label}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="truncate">{p.label}</span>
+                    {typeof p.badge === 'number' && p.badge > 0 && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[10px] font-black">
+                        {p.badge}
+                      </span>
+                    )}
+                  </div>
+                  <div className={`text-[10px] mt-0.5 ${isActive ? 'text-slate-900 font-semibold' : 'text-slate-400'}`}>
+                    {p.subLabel}
+                  </div>
+                </div>
               </button>
             );
           })}
@@ -361,10 +439,8 @@ export const App: React.FC = () => {
 
       {/* RIGHT MAIN VIEWPORT */}
       <div className="flex-1 flex flex-col h-full min-w-0 max-w-full overflow-hidden bg-[#070d1e]">
-        {/* Compact Top Header Bar: Telemetry, Status Ticker & Region/Language Controls */}
         <header className="flex-shrink-0 border-b border-slate-800 bg-[#070d1e] w-full">
           <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-1.5 md:px-4 md:py-2 w-full">
-            {/* LEFT: Menu Drawer Trigger + Brand & Telemetry Status Ticker */}
             <div className="flex items-center gap-2.5 min-w-0">
               <button
                 type="button"
@@ -393,7 +469,7 @@ export const App: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-2">
                   <h1 className="text-sm sm:text-base md:text-lg font-black text-white leading-tight truncate">
-                    Forecourt Sentinel
+                    {activeTenant.brandName}
                   </h1>
                   <span className="hidden md:inline text-xs text-slate-300 truncate">
                     — {t.headerTitle}
@@ -401,7 +477,6 @@ export const App: React.FC = () => {
                 </div>
               </div>
 
-              {/* Desktop Telemetry Badges */}
               <div className="hidden 2xl:flex items-center gap-1.5 text-xs ml-2">
                 <div className="px-2 py-1 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1 text-slate-200 text-xs whitespace-nowrap font-mono">
                   <HardDrive className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
@@ -417,7 +492,6 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* RIGHT: Region Switcher, Language Switcher & Action Controls */}
             <div className="flex items-center gap-1.5 flex-wrap justify-end">
               {/* Regional Jurisdiction Switcher (ZA | KE | TZ | UG) */}
               <div
@@ -447,7 +521,7 @@ export const App: React.FC = () => {
                 })}
               </div>
 
-              {/* Language Switcher (EN | SW | ZU | AF | ST) */}
+              {/* Language Switcher (EN | SW | ZU | AF | ST | XH) */}
               <div
                 className="flex items-center gap-0.5 p-0.5 rounded-xl bg-slate-950 border border-slate-800"
                 role="group"
@@ -457,7 +531,7 @@ export const App: React.FC = () => {
                 }`}
               >
                 <Globe className="w-3.5 h-3.5 text-amber-400 ml-1 flex-shrink-0" />
-                {(['EN', 'SW', 'ZU', 'AF', 'ST'] as const).map((l) => {
+                {(['EN', 'SW', 'ZU', 'AF', 'ST', 'XH'] as const).map((l) => {
                   const labelMeta = LANGUAGE_LABELS[toSupportedLanguageCode(l)];
                   return (
                     <button
@@ -488,7 +562,7 @@ export const App: React.FC = () => {
                   title="Autonomous Statutory OHS Doc Generator"
                 >
                   <Scale className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                  <span className="hidden sm:inline">{extraT.statutoryDocBtn}</span>
+                  <span className="hidden sm:inline">{pillarLabels.statutoryDocBtn}</span>
                 </button>
 
                 <button
@@ -509,7 +583,6 @@ export const App: React.FC = () => {
                   <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                 </button>
 
-                {/* Fix 6: Admin Guardrails Drawer only shown on ?admin=1 or #admin route */}
                 {isAdminRoute && (
                   <button
                     onClick={() => setIsAIStudioOpen(true)}
@@ -548,7 +621,7 @@ export const App: React.FC = () => {
           </div>
         </header>
 
-        {/* Executive demo: visible on the standard route, on its own row so it never crowds the header controls */}
+        {/* Executive Demo Button Row */}
         <div className="flex items-center justify-center bg-slate-950 border-b border-slate-800 px-3 py-2">
           <button
             type="button"
@@ -560,173 +633,143 @@ export const App: React.FC = () => {
           </button>
         </div>
 
-        {/* Horizontal Module Navigation Strip with Visible Left/Right Scroll Cues (< 1280px) */}
-        <div className="flex xl:hidden items-center bg-slate-900/95 border-b border-slate-800 w-full relative">
-          <button
-            type="button"
-            onClick={() => scrollTabStrip('left')}
-            aria-label="Scroll modules left"
-            data-testid="tab-strip-scroll-left"
-            className="flex-shrink-0 h-9 px-2 bg-slate-950/90 hover:bg-slate-800 text-amber-400 border-r border-slate-800 flex items-center justify-center z-10"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          <div
-            ref={tabStripRef}
-            data-testid="horizontal-tab-strip"
-            className="flex-1 flex overflow-x-auto whitespace-nowrap scrollbar-none flex-nowrap gap-1.5 px-2 py-1.5 text-xs"
-          >
-            {moduleTabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => handleSelectModuleTab(tab.id)}
-                  aria-label={tab.label}
-                  className={`h-8 px-2.5 rounded-lg font-extrabold flex items-center gap-1.5 flex-shrink-0 transition-all whitespace-nowrap ${
-                    isActive
-                      ? 'bg-amber-500 text-slate-950 shadow-sm'
-                      : 'bg-slate-800/90 text-slate-200 hover:bg-slate-800 hover:text-white border border-slate-700/60'
-                  }`}
-                >
-                  <Icon
-                    className={`w-3.5 h-3.5 ${isActive ? 'text-slate-950' : 'text-slate-300'}`}
-                  />
-                  <span>{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => scrollTabStrip('right')}
-            aria-label="Scroll modules right"
-            data-testid="tab-strip-scroll-right"
-            className="flex-shrink-0 h-9 px-2 bg-slate-950/90 hover:bg-slate-800 text-amber-400 border-l border-slate-800 flex items-center justify-center z-10"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+        {/* Tablet/Mobile 4-Pillar Quick Bar (< 1280px) */}
+        <div
+          data-testid="horizontal-tab-strip"
+          className="grid xl:hidden grid-cols-2 md:grid-cols-4 gap-1.5 bg-slate-900/95 border-b border-slate-800 px-2.5 py-2"
+        >
+          {pillars.map((p) => {
+            const Icon = p.icon;
+            const isActive = activePillar === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => handleSelectPillar(p.id)}
+                data-testid={`strip-pillar-nav-${p.id}`}
+                className={`px-2.5 py-2 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 transition ${
+                  isActive
+                    ? 'bg-amber-500 text-slate-950 shadow'
+                    : 'bg-slate-800/90 text-slate-200 border border-slate-700/60'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 flex-shrink-0 ${isActive ? 'text-slate-950' : 'text-amber-400'}`} />
+                <span className="truncate">{p.label}</span>
+                {typeof p.badge === 'number' && p.badge > 0 && (
+                  <span className="px-1.5 py-0.2 rounded-full bg-rose-600 text-white text-[10px] font-black">
+                    {p.badge}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
-        {/* Main Active Screen */}
+        {/* Main 4-Pillar Workspace Viewport */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 md:p-6">
-          {activeTab === 'executiveDashboard' && (
-            <ExecutiveBriefingDashboard
-              lang={lang}
-              onOpenNelly={() => setIsNellyOpen(true)}
-              onOpenGearModal={() => setIsGearModalOpen(true)}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
-              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
-            />
-          )}
-          {activeTab === 'training' && (
-            <StatutoryTrainingModule
-              lang={lang}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
-              onOpenCertModal={() => setIsCertModalOpen(true)}
-              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
-            />
-          )}
-          {activeTab === 'wetstock' && (
-            <WetstockManagementModule
-              lang={lang}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
-              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
-              onOpenCertModal={() => setIsCertModalOpen(true)}
-            />
-          )}
-          {activeTab === 'wetstockBridge' && (
-            <WetstockOffloadBridge
+          {activePillar === 'forecourtOps' && (
+            <ForecourtFuelOpsWorkspace
               lang={lang}
               jurisdiction={jurisdiction}
               spillLitres={spillLitres}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
+              onSpillLitresChange={setSpillLitres}
+              activeSubTab={forecourtSubTab}
+              onSubTabChange={setForecourtSubTab}
+              onNavigateTarget={navigateToTarget}
               onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
             />
           )}
-          {activeTab === 'evacuation' && <EvacuationFlow lang={lang} />}
-          {activeTab === 'spill' && (
-            <SpillTeamwork
-              spillLitres={spillLitres}
-              onSpillLitresChange={setSpillLitres}
+
+          {activePillar === 'shiftWetstock' && (
+            <ShiftWetstockWorkspace
               lang={lang}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
-            />
-          )}
-          {activeTab === 'customer' && <CustomerServiceModule />}
-          {activeTab === 'fire' && <PASSFirefighting lang={lang} />}
-          {activeTab === 'quiz' && <AssessmentQuiz lang={lang} />}
-          {activeTab === 'demo' && (
-            <DemoVideoTab
-              lang={lang}
-              onNavigateTab={(target) => handleSelectModuleTab(target as ModuleTabId)}
+              activeSubTab={wetstockSubTab}
+              onSubTabChange={setWetstockSubTab}
+              onNavigateTarget={navigateToTarget}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
               onOpenCertModal={() => setIsCertModalOpen(true)}
             />
           )}
-          {activeTab === 'firstResponder' && <NightshiftFirstResponder lang={lang} />}
-          {activeTab === 'refresher' && (
-            <MonthlyRefresherHub lang={lang} onOpenDossier={() => setIsDossierOpen(true)} />
+
+          {activePillar === 'shopTraining' && (
+            <ShopTrainingWorkspace
+              lang={lang}
+              onLanguageChange={handleSelectLanguage}
+              activeSubTab={shopSubTab}
+              onSubTabChange={setShopSubTab}
+              onNavigateTarget={navigateToTarget}
+              onOpenCertModal={() => setIsCertModalOpen(true)}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+              onOpenDossier={() => setIsDossierOpen(true)}
+              autoStartExecutiveTour={autoStart3DTour}
+              onExecutiveTourConsumed={() => setAutoStart3DTour(false)}
+            />
           )}
-          {activeTab === 'rights' && <StatutoryRightsModule />}
-          {activeTab === 'rsdChecklists' && <RSDChecklistModule lang={lang} />}
+
+          {activePillar === 'executiveAudit' && (
+            <ExecutiveAuditWorkspace
+              lang={lang}
+              activeSubTab={execSubTab}
+              onSubTabChange={setExecSubTab}
+              onOpenNelly={() => setIsNellyOpen(true)}
+              onOpenGearModal={() => setIsGearModalOpen(true)}
+              onNavigateTarget={navigateToTarget}
+              onOpenStatutoryModal={() => setIsStatutoryModalOpen(true)}
+              onOpenCertModal={() => setIsCertModalOpen(true)}
+              onOpenDossier={() => setIsDossierOpen(true)}
+              onLaunch3DTour={() => {
+                setAutoStart3DTour(true);
+                setActivePillar('shopTraining');
+                setShopSubTab('videoAcademy');
+              }}
+            />
+          )}
         </main>
 
-        {/* ENTERPRISE FOOTER */}
         <EnterpriseFooter appName={activeTenant.brandName} />
       </div>
 
-      {/* Statutory OHS Document Generator Modal */}
+      {/* Modals & Drawers */}
       <StatutoryDocGeneratorModal
         isOpen={isStatutoryModalOpen}
         onClose={() => setIsStatutoryModalOpen(false)}
       />
 
-      {/* Persistent Dockable Nelly AI Agent Window */}
       <NellyAIAgentWindow
         isOpen={isNellyOpen}
         onClose={() => setIsNellyOpen(false)}
         lang={lang}
-        onTriggerBrandSwitch={(b) => switchTenantBrand(b as any)}
+        onTriggerBrandSwitch={(b) => switchTenantBrand(b)}
         onOpenGearModal={() => setIsGearModalOpen(true)}
       />
 
-      {/* G.E.A.R. Pillar Settings Overlay Modal */}
       <GearPillarSettingsModal
         isOpen={isGearModalOpen}
         onClose={() => setIsGearModalOpen(false)}
       />
 
-      {/* Admin Statutory Guardrails Drawer */}
       <AIStudioDrawer isOpen={isAIStudioOpen} onClose={() => setIsAIStudioOpen(false)} />
 
-      {/* HITL Audit Certificate Modal */}
       <AuditCertificateModal
         isOpen={isCertModalOpen}
         onClose={() => setIsCertModalOpen(false)}
         lang={lang}
       />
 
-      {/* Executive Demo Video Modal */}
       <ExecutiveDemoModal isOpen={isExecDemoOpen} onClose={() => setIsExecDemoOpen(false)} />
 
-      {/* Multilingual Demo Video Modal */}
       <DemoVideoModal
         isOpen={isDemoModalOpen}
         onClose={() => setIsDemoModalOpen(false)}
         lang={lang}
       />
 
-      {/* Retailer Notification Center Modal */}
       <RetailerNotificationCenter
         isOpen={isNotificationCenterOpen}
         onClose={() => setIsNotificationCenterOpen(false)}
         lang={lang}
       />
 
-      {/* Oil Company Corporate Stewardship Exporter Modal */}
       <CorporateStewardshipExporter
         isOpen={isDossierOpen}
         onClose={() => setIsDossierOpen(false)}

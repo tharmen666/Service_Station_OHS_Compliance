@@ -7,7 +7,7 @@
 
 import type { Language } from './data/translations';
 
-export type SupportedLanguageCode = 'en' | 'sw' | 'zu' | 'st' | 'af';
+export type SupportedLanguageCode = 'en' | 'sw' | 'zu' | 'st' | 'af' | 'xh';
 
 export interface RegionalDefault {
   countryCode: string;
@@ -38,13 +38,13 @@ export const REGIONAL_DEFAULTS: Record<string, RegionalDefault> = {
   ZA: {
     countryCode: 'ZA',
     defaultLanguage: 'zu', // isiZulu as dominant home language in South Africa
-    supportedFallbacks: ['en', 'zu', 'st', 'af'],
+    supportedFallbacks: ['en', 'zu', 'xh', 'st', 'af'],
     regionName: 'Southern Africa (South Africa)'
   },
   DEFAULT: {
     countryCode: 'GLOBAL',
     defaultLanguage: 'en',
-    supportedFallbacks: ['en', 'sw', 'zu', 'st', 'af'],
+    supportedFallbacks: ['en', 'sw', 'zu', 'xh', 'st', 'af'],
     regionName: 'Global / International'
   }
 };
@@ -53,6 +53,7 @@ export const LANGUAGE_LABELS: Record<SupportedLanguageCode, { native: string; en
   en: { native: 'English', english: 'English' },
   sw: { native: 'Kiswahili', english: 'Swahili (East Africa Lingua Franca)' },
   zu: { native: 'isiZulu', english: 'Zulu (South Africa)' },
+  xh: { native: 'isiXhosa', english: 'Xhosa (South Africa)' },
   st: { native: 'Sesotho', english: 'Southern Sotho' },
   af: { native: 'Afrikaans', english: 'Afrikaans' }
 };
